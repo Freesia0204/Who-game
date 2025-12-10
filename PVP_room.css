@@ -1,0 +1,388 @@
+/* === 基本設定 === */
+body {
+  margin: 0; /* 移除預設外距 */
+  font-family: "微軟正黑體", sans-serif; /* 設定全站字體 */
+  color: #333; /* 文字預設顏色 */
+  min-height: 100vh; /* 保證畫面高度至少填滿視窗 */
+  /* 背景漸層設定 */
+  background: linear-gradient(
+    135deg,
+    #fcb1d3, /* 粉玫瑰 */
+    #c2a3ff, /* 淡紫藍 */
+    #a6c1ee, /* 天青藍 */
+    #ff9a9e, /* 珊瑚粉 */
+    #d18fff  /* 夢幻紫 */
+  );
+  background-size: 500% 500%; /* 放大背景以利動畫 */
+  animation: gradientFlow 18s ease infinite; /* 動態漸層動畫 */
+}
+
+/* ✨ 動態漸層動畫 ✨ */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 100%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* === 主容器設定 === */
+.container {
+  display: flex; /* 使用彈性盒子排列子元素 */
+  flex-direction: row; /* 左右排列：左格子區，右聊天區 */
+  width: 95vw; /* 寬度佔視窗 95% */
+  height: 180vh; /* 高度佔視窗 180% (可依需求調整) */
+  gap: 12px; /* 左右區塊間距 */
+  background: rgba(255,255,255,0.05); /* 微透明白色背景 */
+  border-radius: 12px; /* 容器圓角 */
+  box-shadow: 0 10px 30px rgba(2,6,23,0.3); /* 陰影效果 */
+  padding: 12px; /* 內距 */
+  position: relative; /* 方便房號/玩家名稱絕對定位 */
+}
+
+/* === 房號 / 玩家名稱 / 房主IP 區 === */
+.room-info {
+  position: absolute; /* 絕對定位 */
+  top: 12px; /* 距離頂部 */
+  right: 16px; /* 距離右側 */
+  font-size: 0.9rem;
+  color: #fff;
+  text-align: right; /* 文字靠右 */
+  line-height: 1.2rem;
+}
+
+
+/* === 左側：格子區 === */
+.grid-area {
+  flex: 1.5; /* 左邊占比約 60% */
+  display: grid; /* 網格布局 */
+  grid-template-columns: repeat(6, 1fr); /* 6欄平均分配 */
+  grid-template-rows: repeat(5, 1fr); /* 5列平均分配 */
+  gap: 8px; /* 格子間距 */
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1); /* 微透明背景 */
+}
+
+
+
+/* === 每一個格子 === */
+.cell {
+  display: flex;
+  flex-direction: column; /* 圖片在上、文字在下 */
+  justify-content: center; /* 垂直置中 */
+  align-items: center; /* 水平置中 */
+  background: white; /* 格子白底 */
+  border: 1px solid #aaa; /* 淺灰邊框 */
+  border-radius: 8px; /* 圓角 */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* 微陰影 */
+  cursor: pointer; /* 滑鼠變手型 */
+  font-weight: bold;
+  user-select: none; /* 禁止文字選取 */
+  transition: 0.2s; /* 滑鼠滑過動畫 */
+}
+
+/* 格子內圖片樣式 */
+.cell img {
+  width: 90%; /* 圖片寬度佔格子 90% */
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 4px; /* 與文字間距 */
+}
+
+/* 格子內文字樣式 */
+.cell span {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+/* 滑鼠懸停格子效果 */
+.cell:hover {
+  background: #ffe0f0; /* 粉紅亮底 */
+}
+
+
+/* === 右側：聊天區 === */
+.chat-area {
+  flex: 0.5; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 改成 flex-start 就不會把內容拉開 */
+  height: 100%; /* 高度撐滿父容器 */
+  padding: 16px;
+  background: rgba(255,255,255,0.1); 
+  border-radius: 12px;
+}
+
+
+/* 聊天狀態文字（例如"AI先問"） */
+.status {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+
+/* === 訊息顯示框 === */
+.messages {
+  flex: 1; /* 佔據剩餘空間 */
+  list-style: none; /* 移除列表符號 */
+  overflow-y: auto; /* 超出可滾動 */
+  padding: 8px;
+  margin: 0 0 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05); /* 微透明背景 */
+  min-height: 180px; /* 最小高度 */
+}
+
+/* === 每則訊息樣式 === */
+.message {
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 系統訊息 */
+.message.system {
+  align-self: center; /* 居中 */
+  background: #e0f2fe; /* 淡藍灰底 */
+  border-left: 4px solid #38bdf8; /* 藍色左條 */
+  color: #0c4a6e;
+  font-weight: 500;
+  max-width: 70%;
+}
+
+/* AI 訊息 */
+.message.AI {
+  align-self: flex-start; /* 左對齊 */
+  background: #fff3c4; /* 淡黃底 */
+  border-left: 4px solid #facc15; /* 黃色左條 */
+  color: #713f12;
+  max-width: 70%;
+}
+
+/* 玩家訊息 */
+.message.player {
+  align-self: flex-end; /* 右對齊 */
+  background: #fce7f3; /* 淡粉底 */
+  border-left: 4px solid #f472b6; /* 粉色左條 */
+  color: #831843;
+  max-width: 70%;
+}
+
+/* 訊息內 meta（名字/系統標籤） */
+.message .meta {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 4px;
+  text-align: left; /* 靠左 */
+  opacity: 0.8;
+}
+
+/* meta 不同顏色 */
+.message.player .meta { color: #0a010c; } /* 玩家紫粉 */
+.message.AI .meta { color: #1a1919; } /* AI 橙黃 */
+.message.system .meta { color: #010f16; } /* 系統天藍 */
+
+
+/* === 聊天輸入區 === */
+.chat-form {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px; /* 保留空間給「我要猜」按鈕 */
+}
+
+/* 輸入框 */
+.chat-form input[type="text"] {
+  flex: 1; /* 佔滿剩餘寬度 */
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* 送出按鈕 */
+.chat-form button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #8b5cf6; /* 紫色 */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 滑鼠懸停效果 */
+.chat-form button:hover {
+  background: #7c3aed;
+}
+
+
+/* === 規則彈窗 === */
+.modal {
+  position: fixed; /* 固定位置 */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); /* 半透明黑底 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content p {
+  text-align: left; /* 文字靠左 */
+  margin-bottom: 8px; /* 段落間距 */
+}
+
+/* 彈窗內容框 */
+.modal-content {
+  background: #fff;
+  color: #333;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: left; /* 預設文字靠左 */
+}
+
+/* 彈窗內按鈕 */
+.modal-content button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 按鈕懸停效果 */
+.modal-content button:hover {
+  background: #7c3aed;
+}
+
+
+/* ===== 「我要猜」按鈕區塊 ===== */
+.guess-container {
+  height: 60px; /* 保留空間 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 「我要猜」按鈕樣式 */
+#guessBtn {
+  display: none; /* 初始隱藏 */
+  padding: 10px 60px;
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 淡紫→粉玫瑰 */
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* 滑鼠懸停效果 */
+#guessBtn:hover {
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* 漸層反轉 */
+  transform: translateY(-2px); /* 上浮效果 */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+
+/* === 翻格子效果 === */
+.cell {
+  position: relative;
+  cursor: pointer;
+  perspective: 800px; /* 3D翻轉效果深度 */
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  inset: 0; /* 撐滿格子 */
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  transform-origin: center;
+  transition: transform 0.6s ease, background-color 0.3s ease, filter 0.3s ease;
+  z-index: 0;
+}
+
+.cell.flipped::before {
+  transform: rotateY(180deg); /* 完整翻面 */
+  filter: grayscale(100%) brightness(0.6); /* 灰階+暗化 */
+  background-color: #ccc;
+  width: 100%;   
+  height: 100%;  
+}
+
+/* === 內容層：保持靜止 === */
+.cell img,
+.cell .cell-text {
+  position: relative;
+  z-index: 1; /* 保持在上層 */
+  transition: opacity 0.3s ease, color 0.3s ease, filter 0.3s ease;
+}
+
+/* 翻轉後淡化效果 */
+.cell.flipped img {
+  opacity: 0.4;
+  filter: grayscale(100%);
+}
+.cell.flipped .cell-text {
+  color: #666;
+  opacity: 0.8;
+}
+
+
+/* === 遊戲結束彈窗 === */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* 在最上層 */
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+}
+
+/* 彈窗按鈕群 */
+.modal-buttons { margin-top: 20px; display: flex; justify-content: space-around; } 
+.modal-buttons .btn { padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; } 
+.modal-buttons .btn:hover { background: #0056b3; }
+
+
+/* === 玩家解藥特效框 === */
+.cell.selected-antidote {
+  border: 2px solid #FFD700; /* 金色邊框 */
+  box-shadow: 0 0 10px #FFA500; /* 橙色光暈 */
+  position: relative;
+}
+
+.cell.selected-antidote::after {
+  content: "🍀"; /* 標記圖示 */
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  font-size: 1.2rem;
+  z-index: 10; /* 確保在最上層 */
+  pointer-events: none; /* 不影響點擊 */
+}
+
+/* === 猜模式格子輪廓 === */
+.grid-area.guess-mode .cell {
+  outline: 2px dashed #ff9800; /* 橙色虛線輪廓 */
+}

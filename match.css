@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: "微軟正黑體", sans-serif;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+.match-box {
+  background: rgba(255,255,255,0.1);
+  padding: 24px 32px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.3);
+}
+
+.match-box h2 {
+  margin-bottom: 16px;
+}
+
+.match-box button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 6px;
+  background: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.match-box button:hover {
+  background: #7c3aed;
+}
+
+/* 原本的樣式保留 */
+
+.match-box label {
+  display: block;            /* 讓 label 獨立一行 */
+  margin-bottom: 8px;        /* 與輸入框保持距離 */
+  font-weight: 600;          /* 字體加粗 */
+  color: #fff;               /* 白字 */
+  text-align: left;          /* 靠左對齊 */
+}
+
+.match-box input[type="text"] {
+  width: 100%;               /* 撐滿容器寬度 */
+  padding: 10px;             /* 內距 */
+  border: 1px solid #ccc;    /* 邊框 */
+  border-radius: 6px;        /* 圓角 */
+  margin-bottom: 12px;       /* 與按鈕保持距離 */
+  font-size: 14px;           /* 字體大小 */
+  box-sizing: border-box;    /* 包含邊框在寬度內 */
+}
+
+.match-box input[type="text"]:focus {
+  outline: none;             /* 移除預設外框 */
+  border-color: #8b5cf6;     /* 聚焦時邊框變紫色 */
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.6); /* 聚焦光暈 */
+}

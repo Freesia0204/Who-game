@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI 推理紀錄</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        .log {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AI 推理紀錄</h1>
+    <div id="debugArea"></div>
+
+    <script>
+        const log = window.opener?.AIDebugLog || [];
+
+        const debugArea = document.getElementById('debugArea');
+        if (!log.length) {
+            debugArea.innerHTML = '<p>⚠️ 尚未有任何推理紀錄，請先在主頁進行問答。</p>';
+        }
+
+        log.forEach((entry, index) => {
+            const div = document.createElement('div');
+            div.className = 'log';
+            div.innerHTML = `
+                <strong>第 ${index + 1} 輪</strong><br>
+                🤖 AI 問：${entry.aiQuestion || '（無）'}<br>
+                🙋 玩家答：${entry.playerAnswer || '（無）'}<br>
+                排除：${(entry.eliminated && entry.eliminated.length) ? entry.eliminated.join(', ') : '（無）'}<br>
+                剩下可能：${(entry.remaining && entry.remaining.length) ? entry.remaining.join(', ') : '（無）'}<br>
+                ${entry.guess ? `🎯 猜解藥：${entry.guess.by} 猜「${entry.guess.card}」 → ${entry.guess.result}` : ''}
+            `;
+            debugArea.appendChild(div);
+        });
+    </script>
+</body>
+
+</html>

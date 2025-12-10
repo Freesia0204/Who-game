@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>猜猜我是誰｜首頁</title>
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+    <!-- 導覽列 -->
+    <header class="navbar">
+        <nav>
+            <a href="#home">首頁</a>
+            <a href="#topics">主題預覽</a>
+            <a href="#characters">人物介紹</a>
+            <a href="#rules">玩法教學</a>
+            <a href="#rank">排行榜</a>
+            <a href="#" id="loginBtn">登入 / 註冊</a>
+        </nav>
+    </header>
+    <!-- 輪播 -->
+    <section class="carousel">
+        <div class="carousel-box">
+            <img class="slide active" src="img-KN/柯南_loge.jpg">
+            <img class="slide" src="img-GM/鬼滅之刃-logo.png">
+            <img class="slide" src="img-WB/防風少年-logo.png">
+        </div>
+    </section>
+
+    <!-- Hero 區 -->
+    <section class="hero" id="home">
+        <h1>歡迎來到猜猜我是誰</h1>
+        <p>從線索、圖片與提示中找出真正的身分 ✨</p>
+         <a href="match.html" class="start-btn">開始遊戲</a>
+    </section>
+
+
+    <!-- 主題卡片 -->
+    <section class="topics" id="topics">
+        <h2>主題預覽</h2>
+
+        <div class="topics-grid">
+            <div class="topic-card">
+                <img src="img/a.jpg">
+                <p>名偵探柯南</p>
+            </div>
+            <div class="topic-card">
+                <img src="img/b.jpg">
+                <p>名偵探柯南-紅黑篇</p>
+            </div>
+            <div class="topic-card">
+                <img src="img/c.jpg">
+                <p>鬼滅之刃</p>
+            </div>
+            <div class="topic-card">
+                <img src="img/c.jpg">
+                <p>防風少年</p>
+            </div>
+            <div class="topic-card">
+                <img src="img/c.jpg">
+                <p>FREE!男子游泳部</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 登入/註冊彈窗 -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span id="closeLogin" class="close">&times;</span>
+    <h2>登入 / 註冊</h2>
+    <p class="hint">請輸入帳號與密碼，登入後即可進入個人主頁</p>
+    <form id="loginForm">
+      <label for="username">帳號：</label>
+      <input type="text" id="username" placeholder="輸入帳號" required>
+      <label for="password">密碼：</label>
+      <input type="password" id="password" placeholder="輸入密碼" required>
+      <button type="submit">登入</button>
+    </form>
+    <hr>
+    <p class="hint">還沒有帳號？立即註冊</p>
+    <form id="registerForm">
+      <label for="newUsername">新帳號：</label>
+      <input type="text" id="newUsername" placeholder="建立新帳號" required>
+      <label for="newPassword">新密碼：</label>
+      <input type="password" id="newPassword" placeholder="建立新密碼" required>
+      <button type="submit">註冊</button>
+    </form>
+  </div>
+</div>
+
+
+
+    <script src="index.js"></script>
+
+</body>
+
+</html>

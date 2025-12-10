@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  font-family: "微軟正黑體", sans-serif;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #fff;
+}
+
+.login-box {
+  background: rgba(255,255,255,0.1);
+  padding: 24px 32px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.3);
+}
+
+.login-box input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+}
+
+.login-box input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.login-box button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 6px;
+  background: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background: #7c3aed;
+}
+/* AI 專用訊息顏色 */
+.message.AI {
+  align-self: flex-start;
+  background: #a0c4ff;
+  border-left: 4px solid #3b82f6;
+}

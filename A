@@ -1,0 +1,1166 @@
+{
+      img: 'img-KN/江戶川柯南.jpg', name: '江戶川柯南', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+
+
+    {
+      img: 'img-KN/毛利蘭.jpg', name: '毛利蘭', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: true,//他是不是長頭髮？
+        isShortHair: false,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: true,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/毛利小五郎.jpg', name: '毛利小五郎', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: true,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+
+    {
+      img: 'img-KN/灰原哀.jpg', name: '宮野志保/灰原哀/雪莉', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: true,//他是不是酒廠的?（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: true,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+
+    {
+      img: 'img-KN/怪盜基德.jpg', name: '黑羽快斗/怪盜基德', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: true,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: turn,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: true,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/鈴木園子.jpg', name: '鈴木園子', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/世良真純.jpg', name: '世良真純', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/服部平次.jpg', name: '服部平次', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/遠山和葉.jpg', name: '遠山和葉', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: true,//他是不是長頭髮？
+        isShortHair: false,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/京極真.jpg', name: '京極真', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: true,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: true,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/工藤優作.jpg', name: '工藤優作', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: true,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/工藤有希子.jpg', name: '工藤有希子', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: true,//他是不是長頭髮？
+        isShortHair: false,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: turn,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: true,//他是誰的父母嗎？
+        actor: true,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/黑羽盜一.jpg', name: '黑羽盜一', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: true,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: true,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: true,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: true,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/妃英理.jpg', name: '妃英理', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: true,//他是不是長頭髮？
+        isShortHair: false,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: true,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/阿笠博士.jpg', name: '阿笠博士', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: true,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: true,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/目暮十三.jpg', name: '目暮十三', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: true,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/佐藤美和子.jpg', name: '佐藤美和子', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: true,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？ 
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/高木涉.jpg', name: '高木涉', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+
+
+    {
+      img: 'img-KN/風見裕也.jpg', name: '風見裕也', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: true,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+
+    {
+      img: 'img-KN/赤井秀一.jpg', name: '赤井秀一/黑麥威士忌', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: true,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: true,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: true,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: true,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: true,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/沖矢昂.jpg', name: '沖矢昂', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: true,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: true,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: true,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: true,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: true,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/降谷零-安室透.jpg', name: '降谷零/安室透/波本', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: true,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: true,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: true,//他是不是公安？
+         
+        isPoliceSchoolFive: true,//他是不是警校五人組之一？
+        isDetective: true,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: false,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/吉田步美.jpg', name: '吉田步美', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/圓谷光彥.jpg', name: '圓谷光彥', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/小嶋元太.jpg', name: '小嶋元太', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: true,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: true,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:false //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/鈴木次郎吉.jpg', name: '鈴木次郎吉', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: false,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: true,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/上原由衣.jpg', name: '上原由衣', traits: {
+        boy: false,//他是不是男的
+        girl: true,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: false,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: true,//他是不是長頭髮？
+        isShortHair: false,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/大和敢助.jpg', name: '大和敢助', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+         
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: true,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？
+        Disguise: false,//他是不是會易容？
+        family: false,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+    {
+      img: 'img-KN/諸伏高明.jpg', name: '諸伏高明', traits: {
+        boy: true,//他是不是男的
+        girl: false,//他是不是女的
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+        hasBeenUndercover: false,//他有沒有當過臥底？
+        isPolice: true,//他是不是警察？
+        isFBI: false,//他是不是FBI？
+        isPublicSecurity: false,//他是不是公安？
+        isPoliceSchoolFive: false,//他是不是警校五人組之一？
+        isDetective: false,//他是不是偵探？
+        isScientist: false,//他是不是科學家？
+        isPhantomThief: false,//他是不是怪盜？
+        isChild: false,//他是不是小孩(變小的也算)？
+        hairNotBlack: true,//他的頭髮是不是黑的？
+        hasHat: false,//他有沒有戴帽子？
+        hasBeard: true,//他有沒有鬍子？
+        isFat: false,//他是不是胖的？
+        isLongHair: false,//他是不是長頭髮？
+        isShortHair: true,//他是不是短頭髮？
+        hasChildhoodFriend: false,//他有沒有青梅竹馬？
+        hasGlasses: false,//他有沒有戴眼鏡？
+        karate: false,//他是不是空手道很厲害？ 
+        Disguise: false,//他是不是會易容？
+        family: true,//他有沒有兄弟姊妹(親的)？
+        highschool: false,//他是高中生嗎？
+        parents: false,//他是誰的父母嗎？
+        actor: false,//他是演員嗎？
+        magic: false,//他是魔術師嗎？
+        adult:true //他是不是成年人
+      }
+    },
+  ],
+  '名偵探柯南-紅黑篇': [
+    {
+      img: 'img-KN/工藤新一.jpg', name: '工藤新一', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/江戶川柯南.jpg', name: '江戶川柯南', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/毛利蘭.jpg', name: '毛利蘭', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/毛利小五郎.jpg', name: '毛利小五郎', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/灰原哀.jpg', name: '宮野志保/灰原哀/雪莉', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/赤井瑪麗-瑪麗·世良.jpg', name: '赤井瑪麗/瑪麗·世良', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/世良真純.jpg', name: '世良真純', traits: {
+
+
+      }
+    },
+    {
+      img: 'img-KN/服部平次.jpg', name: '服部平次', traits: {
+
+
+      }
+    },
+    {
+      img: 'img-KN/琴酒.jpg', name: '琴酒', traits: {
+
+
+      }
+    },
+    {
+      img: 'img-KN/苦艾酒.jpg', name: '苦艾酒', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/工藤優作.jpg', name: '工藤優作', traits: {
+        isWinery: false,//他是不是酒廠的（臥底、曾經是也算）
+
+      }
+    },
+    {
+      img: 'img-KN/水無怜奈.jpg', name: '基爾/本堂瑛海/水無怜奈', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/庫拉索.jpg', name: '庫拉索', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/宮野明美.jpg', name: '宮野明美', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/諸伏景光.jpg', name: '諸伏景光/蘇格蘭威士忌', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/松田陣平.jpg', name: '松田陣平', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/萩原研二.jpg', name: '萩原研二', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/赤井秀一-沖矢昂.jpg', name: '赤井秀一/沖矢昂/黑麥威士忌/', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/降谷零-安室透.jpg', name: '降谷零/安室透/波本', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/伊達航.jpg', name: '伊達航', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/佐藤美和子.jpg', name: '佐藤美和子', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/高木涉.jpg', name: '高木涉', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/風見裕也.jpg', name: '風見裕也', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/茱蒂史坦林.jpg', name: '茱蒂·史坦林', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/黑羽盜一.jpg', name: '黑羽盜一', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/黑羽快斗-怪盜基德.jpg', name: '黑羽快斗/怪盜基德', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/阿笠博士.jpg', name: '阿笠博士', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/工藤優作.jpg', name: '工藤優作', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/工藤有希子.jpg', name: '工藤有希子', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/本堂瑛祐.jpg', name: '本堂瑛祐', traits: {
+
+      }
+    },
+    {
+      img: 'img-KN/伏特加.jpg', name: '伏特加', traits: {
+
+      }
+    },
+
+  ],
+  '鬼滅之刃': [
+    { img: 'img-GM/竈門炭治郎.jpg', name: '竈門炭治郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/竈門禰豆子.jpg', name: '竈門禰豆子', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/我妻善逸.jpg', name: '我妻善逸', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/嘴平伊之助.jpg', name: '嘴平伊之助', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/栗花落香奈乎.jpg', name: '栗花落香奈乎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/不死川玄彌.jpg', name: '不死川玄彌', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/產屋敷耀哉.jpg', name: '產屋敷耀哉', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/繼國緣壹.jpg', name: '繼國緣壹', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/富岡義勇.jpg', name: '富岡義勇', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/胡蝶忍.jpg', name: '胡蝶忍', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/胡蝶香奈惠.jpg', name: '胡蝶香奈惠', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/煉獄杏壽郎.jpg', name: '煉獄杏壽郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/宇髓天元.jpg', name: '宇髄天元', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/時透無一郎.jpg', name: '時透無一郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/甘露寺蜜璃.jpg', name: '甘露寺蜜璃', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/伊黑小芭內.jpg', name: '伊黑小芭內', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/不死川實彌.jpg', name: '不死川實彌', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/悲鳴嶼行冥.jpg', name: '悲鳴嶼行冥', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/錆兔.jpg', name: '錆兔', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/真菰.jpg', name: '真菰', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/鬼舞辻無慘.jpg', name: '鬼舞辻無慘', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/黑死牟.jpg', name: '繼國巖勝/黑死牟', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/童磨.jpg', name: '童磨', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/猗窩座.jpg', name: '狛治/猗窩座', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/玉壺.jpg', name: '玉壺', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/半天狗.jpg', name: '半天狗', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/妓夫太郎.jpg', name: '妓夫太郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/墮姬.jpg', name: '梅/墮姬', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/珠世.jpg', name: '珠世', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+    { img: 'img-GM/愈史郎.jpg', name: '愈史郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+
+  ],
+
+  '防風少年': [
+    { img: 'img/竈門炭治郎.png', name: '竈門炭治郎', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+  ],
+
+  'FREE!': [
+    { img: 'img/K.jpg', name: '工藤新一/江戶川柯南', traits: { gender: '男', hasGlasses: true, isDetective: true } },
+
+  ],

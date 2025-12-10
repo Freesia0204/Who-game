@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <title>AI 房間</title>
+  <link rel="stylesheet" href="AI_room.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- 房號 / 玩家名字 / 房主IP -->
+    <div class="room-info" id="roomInfo">
+
+      玩家: 大小姐<br>
+
+    </div>
+
+    <!-- 左邊格子區 -->
+    <div class="grid-area"></div>
+
+    <!-- 右邊聊天區 -->
+    <div class="chat-area">
+      <div class="status">系統訊息</div>
+      <ul class="messages" id="messages">
+        <li class="message.system">歡迎進入房間！請選擇主題。</li>
+      </ul>
+      <form class="chat-form" id="chatForm">
+        <input type="text" id="chatInput" placeholder="輸入訊息..." disabled>
+        <button type="submit" disabled>送出</button>
+      </form>
+      <!-- 猜格子按鈕 -->
+      <div class="guess-container">
+        <button id="guessBtn">我要猜</button>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- 規則彈窗 -->
+  <div class="modal" id="rulesModal">
+    <div class="modal-content">
+      <h3>遊戲規則</h3>
+      <p>1.開始遊戲後請點擊格子選擇主題和自己的卡牌。</p>
+      <p>2.選擇好卡牌後後，系統將自動猜拳決定先手，贏的可以先問問題。</p>
+      <p>3.玩法為互相提問，猜對方所選中的卡牌。</p>
+      <p>4.需要先問三個問題後，才能猜對方的卡牌，猜錯則需再問一個問題才能再猜。</p>
+      <p>5.人物形象以圖片為主。</p>
+      <p>6.卡牌選擇完後，點擊左邊格子可產生遮罩，以供排除。</p>
+      <button id="startBtn">開始遊戲</button>
+
+    </div>
+  </div>
+  <!-- 遊戲結束彈窗 -->
+  <div id="endModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2 id="endResultText"></h2>
+      <p id="endChoicesText"></p>
+      <div class="modal-buttons">
+        <a href="index.html" class="btn">回首頁</a>
+        <a href="AI_room.html" class="btn">再來一次</a>
+        <button onclick="window.open('AI_Debug.html', '_blank')">查看 AI 推理紀錄</button>
+
+
+      </div>
+    </div>
+  </div>
+
+  <script src="AI_room.js"></script>
+</body>
+
+</html>
