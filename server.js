@@ -1,62 +1,47 @@
-// === 連線到 Socket.IO server ===
-const socket = io('https://who-game.onrender.com');
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const cors = require('cors');
 
-// ===== 全域狀態 =====
-const roomId = new URLSearchParams(location.search).get('room') || 'demo-001';
-const meName = localStorage.getItem('playerName') || '未知玩家';
-let opponentName = '等待中';
-let mySocketId = null;
+const app = express();
+app.use(cors());
+app.use(express.static(__dirname)); // 提供前端檔案
 
-// ===== DOM =====
-const messagesEl = document.getElementById('messages');
-const chatForm = document.getElementById('chatForm');
-const chatInput = document.getElementById('chatInput');
-const gridArea = document.querySelector('.grid-area');
-const rulesModal = document.getElementById('rulesModal');
-
-// ===== 連線與加入房間 =====
-socket.on('connect', () => {
-  mySocketId = socket.id;
-  socket.emit('join_room', { roomId, name: meName });
-  updateRoomInfo();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*" }
 });
 
-// 房間玩家更新
-socket.on('room_update', ({ players }) => {
-  const ids = Object.keys(players);
-  const otherId = ids.find(id => id !== mySocketId);
-  opponentName = otherId ? players[otherId].name : '等待中';
-  updateRoomInfo();
+const rooms = {};
+
+io.on('connection', (socket) => {
+  console.log('有玩家連線:', socket.id);
+
+  socket.on('join_room', ({ roomId, name }) => {
+    socket.join(roomId);
+    if (!rooms[roomId]) rooms[roomId] = {};
+    rooms[roomId][socket.id] = { name };
+    io.to(roomId).emit('room_update', { players: rooms[roomId] });
+    io.to(roomId).emit('system_message', `${name} 加入了房間`);
+  });
+
+  socket.on('chat_message', ({ roomId, from, text }) => {
+    io.to(roomId).emit('chat_message', { from, text });
+  });
+
+  socket.on('disconnect', () => {
+    for (const roomId in rooms) {
+      if (rooms[roomId][socket.id]) {
+        const name = rooms[roomId][socket.id].name;
+        delete rooms[roomId][socket.id];
+        io.to(roomId).emit('room_update', { players: rooms[roomId] });
+        io.to(roomId).emit('system_message', `${name} 離開了房間`);
+      }
+    }
+  });
 });
 
-// 系統訊息
-socket.on('system_message', (text) => addMessage('system', text));
-
-// 聊天訊息
-socket.on('chat_message', ({ from, text }) => {
-  addMessage(from === mySocketId ? 'player' : 'opponent', text);
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
+  console.log(`伺服器運行中，PORT=${PORT}`);
 });
-
-// ===== 聊天送出 =====
-chatForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const msg = chatInput.value.trim();
-  if (!msg) return;
-  socket.emit('chat_message', { roomId, from: mySocketId, text: msg });
-  chatInput.value = '';
-});
-
-// ===== 輔助函式 =====
-function addMessage(role, text) {
-  const li = document.createElement('li');
-  li.classList.add('message', role);
-  li.textContent = text;
-  messagesEl.appendChild(li);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-function updateRoomInfo() {
-  document.getElementById('roomIdText').textContent = roomId;
-  document.getElementById('playerNameText').textContent = meName;
-  document.getElementById('opponentNameText').textContent = opponentName;
-}
