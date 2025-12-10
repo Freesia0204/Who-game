@@ -1,5 +1,6 @@
 // === 連線到 Socket.IO server ===
-const socket = io('http://localhost:3001'); // 換成你的 server 位址
+const socket = io('https://who-game.onrender.com');
+
 
 // ===== 全域狀態 =====
 const roomId = new URLSearchParams(location.search).get('room') || 'demo-001';
