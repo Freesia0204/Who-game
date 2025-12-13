@@ -386,3 +386,10 @@ body {
 .grid-area.guess-mode .cell {
   outline: 2px dashed #ff9800; /* 橙色虛線輪廓 */
 }
+.message.opponent {
+  align-self: flex-start; /* 左對齊 */
+  background: #fff3c4; /* 淡黃底 */
+  border-left: 4px solid #facc15; /* 黃色左條 */
+  color: #713f12;
+  max-width: 70%;
+}
