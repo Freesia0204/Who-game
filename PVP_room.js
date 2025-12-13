@@ -58,6 +58,17 @@ chatForm.addEventListener('submit', e => {
   socket.emit('chat_message', { roomId, from: myPlayerId, name: meName, text: msg });
   chatInput.value = '';
 });
+// 發送訊息
+document.getElementById('sendBtn').addEventListener('click', () => {
+  const msg = document.getElementById('chatInput').value;
+  socket.emit('chat_message', { roomId, name: meName, message: msg });
+});
+
+// 接收訊息
+socket.on('chat_message', ({ name, message }) => {
+  const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML += `<p><b>${name}:</b> ${message}</p>`;
+});
 
 // ===== 輔助函式 =====
 function addMessage(role, text, senderName = '') {
@@ -127,13 +138,14 @@ function createTopicCells() {
     cell.appendChild(text);
 
     cell.addEventListener('click', () => {
-      if (myPlayerId !== roomHostId) {
-        addMessage('system', '只有房主可以選主題');
-        return;
-      }
-      selectedTopic = topic.name;
-      socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
-    });
+  if (socket.id !== topicSelector) {
+    addMessage('system', '只有房主可以選主題');
+    return;
+  }
+  selectedTopic = topic.name;
+  socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+});
+
 
     gridArea.appendChild(cell);
   });
@@ -141,9 +153,10 @@ function createTopicCells() {
 
 socket.on('topic_selected', ({ topic }) => {
   selectedTopic = topic;
-  addMessage('system', `房主選擇了主題：${topic}`);
-  showCardSelection();
+  addMessage('system', `玩家選擇了主題：${topic}`);
+  showCardSelection(); // ✅ 所有人都進入卡牌選擇
 });
+
 
 // ===== 卡牌選擇 =====
 function showCardSelection() {
@@ -212,11 +225,8 @@ socket.on('rps_result', ({ hands }) => {
 });
 
 // ===== 房間更新（維持你原本邏輯） =====
-socket.on('room_update', ({ players, host }) => {
-  roomHostId = host;
-
-  // 找出自己和對手
-  const myInfo = players[socket.id]; // ✅ 用 socket.id 找自己
+socket.on('room_update', ({ players, topicSelector }) => {
+  const myInfo = players[socket.id];
   const otherId = Object.keys(players).find(id => id !== socket.id);
   const opponentInfo = otherId ? players[otherId] : null;
 
@@ -225,7 +235,14 @@ socket.on('room_update', ({ players, host }) => {
   document.getElementById('roomIdText').textContent = roomId;
   document.getElementById('playerNameText').textContent = myInfo?.name || meName;
   document.getElementById('opponentNameText').textContent = opponentName;
+
+  // ✅ 判斷自己是不是選題者
+  if (socket.id === topicSelector && !selectedTopic) {
+    createTopicCells(); // 第一人 → 顯示主題格子
+  }
+  // 第二人不用顯示主題，等 topic_selected 事件觸發後直接進卡牌
 });
+
 
 
 

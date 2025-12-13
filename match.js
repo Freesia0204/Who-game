@@ -47,7 +47,7 @@ if (joinRoomBtn) {
   });
 }
 
-// 創建房間 → 跳轉並帶上 host=true
+// 創建房間 → 跳轉，不再帶 host=true
 const createRoomBtn = document.getElementById('createRoomBtn');
 if (createRoomBtn) {
   createRoomBtn.addEventListener('click', () => {
@@ -57,9 +57,10 @@ if (createRoomBtn) {
     }
 
     const roomId = generateRoomId();
-    const url = `PVP_room.html?room=${roomId}&host=true`;
+    const url = `PVP_room.html?room=${roomId}`; // ✅ 移除 &host=true
     console.log('[match.js] create room:', url);
     window.location.href = url;
   });
 }
+
 

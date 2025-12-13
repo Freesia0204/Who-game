@@ -15,18 +15,17 @@ const rooms = {};
 io.on('connection', (socket) => {
   console.log('有玩家連線:', socket.id);
 
-  // 創建房間
+  // 創建房間 → 第一人是選題者
   socket.on('create_room', ({ roomId, playerId, name }) => {
     socket.join(roomId);
 
-    rooms[roomId] = { host: socket.id, players: {}, choices: {} };
+    rooms[roomId] = { players: {}, choices: {}, topicSelector: socket.id };
     rooms[roomId].players[socket.id] = { playerId, name };
 
     io.to(roomId).emit('room_update', {
       roomId,
       players: rooms[roomId].players,
-      host: rooms[roomId].host,
-      hostName: rooms[roomId].players[rooms[roomId].host]?.name || null
+      topicSelector: rooms[roomId].topicSelector
     });
 
     io.to(roomId).emit('system_message', `${name} 創建了房間`);
@@ -42,20 +41,19 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('room_update', {
       roomId,
       players: rooms[roomId].players,
-      host: rooms[roomId].host,
-      hostName: rooms[roomId].players[rooms[roomId].host]?.name || null
+      topicSelector: rooms[roomId].topicSelector
     });
 
     io.to(roomId).emit('system_message', `${name} 加入了房間`);
   });
 
-  // 房主選主題
+  // 選主題 → 只有第一人能選
   socket.on('select_topic', ({ roomId, topic }) => {
     if (!rooms[roomId]) return;
 
-    if (rooms[roomId].host !== socket.id) {
+    if (rooms[roomId].topicSelector !== socket.id) {
       io.to(roomId).emit('system_message',
-        `玩家 ${rooms[roomId].players[socket.id]?.name} 嘗試選主題，但不是房主`);
+        `玩家 ${rooms[roomId].players[socket.id]?.name} 嘗試選主題，但不是選題者`);
       return;
     }
 
@@ -65,7 +63,10 @@ io.on('connection', (socket) => {
   // 玩家選卡牌
   socket.on('choose_card', ({ roomId, card }) => {
     if (!rooms[roomId]) return;
-    rooms[roomId].choices[socket.id] = { playerId: rooms[roomId].players[socket.id].playerId, card };
+    rooms[roomId].choices[socket.id] = {
+      playerId: rooms[roomId].players[socket.id].playerId,
+      card
+    };
 
     io.to(roomId).emit('player_chosen', {
       player: rooms[roomId].players[socket.id].name
@@ -99,16 +100,10 @@ io.on('connection', (socket) => {
         const name = room.players[socket.id].name;
         delete room.players[socket.id];
 
-        if (room.host === socket.id) {
-          const remainingPlayers = Object.keys(room.players);
-          room.host = remainingPlayers.length > 0 ? remainingPlayers[0] : null;
-        }
-
         io.to(roomId).emit('room_update', {
           roomId,
           players: rooms[roomId].players,
-          host: rooms[roomId].host,
-          hostName: rooms[roomId].players[rooms[roomId].host]?.name || null
+          topicSelector: room.topicSelector
         });
 
         io.to(roomId).emit('system_message', `${name} 離開了房間`);
