@@ -19,6 +19,7 @@
             <a href="#rules">玩法教學</a>
             <a href="#rank">排行榜</a>
             <a href="#" id="loginBtn">登入 / 註冊</a>
+            <a href="match.html" class="start-nav-btn">開始遊戲</a> <!-- 新增 -->
         </nav>
     </header>
     <!-- 輪播 -->
@@ -70,26 +71,40 @@
 <div id="loginModal" class="modal">
   <div class="modal-content">
     <span id="closeLogin" class="close">&times;</span>
-    <h2>登入 / 註冊</h2>
-    <p class="hint">請輸入帳號與密碼，登入後即可進入個人主頁</p>
-    <form id="loginForm">
-      <label for="username">帳號：</label>
-      <input type="text" id="username" placeholder="輸入帳號" required>
-      <label for="password">密碼：</label>
-      <input type="password" id="password" placeholder="輸入密碼" required>
-      <button type="submit">登入</button>
-    </form>
-    <hr>
-    <p class="hint">還沒有帳號？立即註冊</p>
-    <form id="registerForm">
-      <label for="newUsername">新帳號：</label>
-      <input type="text" id="newUsername" placeholder="建立新帳號" required>
-      <label for="newPassword">新密碼：</label>
-      <input type="password" id="newPassword" placeholder="建立新密碼" required>
-      <button type="submit">註冊</button>
-    </form>
+    
+    <!-- 登入區塊 -->
+    <div id="loginSection">
+      <h2>登入</h2>
+      <p class="hint">請輸入帳號與密碼，登入後即可進入個人主頁</p>
+      <form id="loginForm">
+        <label for="username">帳號：</label>
+        <input type="text" id="username" placeholder="輸入帳號" required>
+        <label for="password">密碼：</label>
+        <input type="password" id="password" placeholder="輸入密碼" required>
+        <button type="submit">登入</button>
+      </form>
+      <p class="hint">
+        還沒有帳號？<a href="#" id="showRegister">立即註冊</a>
+      </p>
+    </div>
+
+    <!-- 註冊區塊（預設隱藏） -->
+    <div id="registerSection" style="display:none;">
+      <h2>註冊</h2>
+      <form id="registerForm">
+        <label for="newUsername">新帳號：</label>
+        <input type="text" id="newUsername" placeholder="建立您的帳號名" required>
+        <label for="newPassword">新密碼：</label>
+        <input type="password" id="newPassword" placeholder="建立您的4位數密碼" required>
+        <button type="submit">註冊</button>
+      </form>
+      <p class="hint">
+        已有帳號？<a href="#" id="showLogin">返回登入</a>
+      </p>
+    </div>
   </div>
 </div>
+
 
 
 

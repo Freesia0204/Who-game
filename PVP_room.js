@@ -3,14 +3,25 @@ const socket = io('https://who-game.onrender.com');
 
 // ===== 全域狀態 =====
 const roomId = new URLSearchParams(location.search).get('room') || 'demo-001';
-const meName = localStorage.getItem('playerName') || '未知玩家';
+const meName = sessionStorage.getItem('playerName');   // ✅ 改用 sessionStorage
+const myPlayerId = sessionStorage.getItem('playerId'); // ✅ 改用 sessionStorage
+if (!meName || !myPlayerId) {
+  alert('尚未登入，請先登入');
+  location.href = 'index.html';
+}
+
+const isHost = new URLSearchParams(location.search).get('host') === 'true';
+
 let opponentName = '等待中';
-let mySocketId = null;
+let roomHostId = null;
 let currentTurn = null;
 let selectedTopic = null;
 let myCard = null;
 let opponentCard = null;
 let canGuess = false;
+
+
+
 
 // ===== DOM =====
 const messagesEl = document.getElementById('messages');
@@ -22,42 +33,29 @@ const guessBtn = document.getElementById('guessBtn');
 
 // ===== 連線與加入房間 =====
 socket.on('connect', () => {
-  mySocketId = socket.id;
-  const isHost = new URLSearchParams(location.search).get('host') === 'true';
+  sessionStorage.setItem('socketId', socket.id); // ✅ 存下伺服器的唯一 ID
 
   if (isHost) {
-    socket.emit('create_room', { roomId, name: meName });
+    socket.emit('create_room', { roomId, playerId: myPlayerId, name: meName });
   } else {
-    socket.emit('join_room', { roomId, name: meName });
+    socket.emit('join_room', { roomId, playerId: myPlayerId, name: meName });
   }
-
-  updateRoomInfo();
-});
-
-// 房間玩家更新
-socket.on('room_update', ({ players }) => {
-  const ids = Object.keys(players);
-  const otherId = ids.find(id => id !== mySocketId);
-  opponentName = otherId ? players[otherId].name : '等待中';
-  updateRoomInfo();
-});
-
-// 系統訊息
-socket.on('chat_message', ({ from, text }) => {
-  const senderName = (from === mySocketId) ? meName : opponentName;
-  addMessage(from === mySocketId ? 'player' : 'opponent', text, senderName);
 });
 
 
 
-
+// ===== 系統訊息 =====
+socket.on('chat_message', ({ from, text, name }) => {
+  const role = (from === myPlayerId) ? 'player' : 'opponent';
+  addMessage(role, text, name);
+});
 
 // ===== 聊天送出 =====
 chatForm.addEventListener('submit', e => {
   e.preventDefault();
   const msg = chatInput.value.trim();
   if (!msg) return;
-  socket.emit('chat_message', { roomId, from: mySocketId, text: msg });
+  socket.emit('chat_message', { roomId, from: myPlayerId, name: meName, text: msg });
   chatInput.value = '';
 });
 
@@ -66,7 +64,6 @@ function addMessage(role, text, senderName = '') {
   const li = document.createElement('li');
   li.classList.add('message', role);
 
-  // 加上「名稱」標籤
   if (senderName) {
     const nameSpan = document.createElement('span');
     nameSpan.classList.add('sender');
@@ -82,29 +79,26 @@ function addMessage(role, text, senderName = '') {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-
 function updateRoomInfo() {
   document.getElementById('roomIdText').textContent = roomId;
   document.getElementById('playerNameText').textContent = meName;
   document.getElementById('opponentNameText').textContent = opponentName;
 }
 
-// ===== 開始遊戲按鈕 =====
-window.addEventListener('DOMContentLoaded', () => {
-  const startBtn = document.getElementById('startBtn');
-  if (startBtn) {
-    startBtn.addEventListener('click', startGame);
-  }
-});
+// === 開始遊戲按鈕 ===
+const startBtn = document.getElementById('startBtn');
+if (startBtn) {
+  startBtn.addEventListener('click', () => {
+    // ✅ 不再限制房主，所有人都能按
+    if (rulesModal) rulesModal.style.display = 'none';
+    createTopicCells();
+    addMessage('system', '遊戲開始，請等待房主選擇主題。');
+  });
+}
 
 function startGame() {
-  // 關閉規則彈窗
   if (rulesModal) rulesModal.style.display = 'none';
-
-  // 建立主題格子
   createTopicCells();
-
-  // 系統訊息提示
   addMessage('system', '遊戲開始，請選擇主題。');
 }
 
@@ -114,10 +108,10 @@ const topics = [
   { name: '名偵探柯南-紅黑篇', img: 'img-KN/柯南_loge.jpg' },
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
-  { name: 'FREE!', img: 'img/topic_free.jpg' }
+  { name: 'FREE!', img: 'img-Free/Free_logo.png' }
 ];
 
-// ===== 主題選擇 =====
+// === 主題選擇 ===
 function createTopicCells() {
   gridArea.innerHTML = '';
   topics.forEach(topic => {
@@ -133,12 +127,12 @@ function createTopicCells() {
     cell.appendChild(text);
 
     cell.addEventListener('click', () => {
-      if (mySocketId !== roomHostId) {
+      if (myPlayerId !== roomHostId) {
         addMessage('system', '只有房主可以選主題');
         return;
       }
       selectedTopic = topic.name;
-      socket.emit('select_topic', { roomId, topic: selectedTopic });
+      socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
     });
 
     gridArea.appendChild(cell);
@@ -148,11 +142,11 @@ function createTopicCells() {
 socket.on('topic_selected', ({ topic }) => {
   selectedTopic = topic;
   addMessage('system', `房主選擇了主題：${topic}`);
-  showAntidoteSelection();
+  showCardSelection();
 });
 
-// ===== 解藥選擇 =====
-function showAntidoteSelection() {
+// ===== 卡牌選擇 =====
+function showCardSelection() {
   gridArea.innerHTML = '';
   addMessage('system', '請選擇你的卡牌');
 
@@ -172,10 +166,10 @@ function showAntidoteSelection() {
     cell.appendChild(text);
 
     cell.addEventListener('click', () => {
-      if (!antidoteCell) {
-        antidoteCell = item.name;
-        cell.classList.add('selected-antidote');
-        socket.emit('choose_antidote', { roomId, antidote: antidoteCell });
+      if (!myCard) {
+        myCard = item.name;
+        cell.classList.add('selected-card');
+        socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
         addMessage('system', `玩家 ${meName} 已選好`);
       }
     });
@@ -195,8 +189,8 @@ socket.on('game_start', () => {
 
 // ===== 猜拳流程 =====
 socket.on('rps_result', ({ hands }) => {
-  const myHand = hands[mySocketId];
-  const opponentId = Object.keys(hands).find(id => id !== mySocketId);
+ const myHand = hands[players[myPlayerId].playerId]; // ✅ 用伺服器存的 playerId
+  const opponentId = Object.keys(hands).find(id => id !== myPlayerId);
   const opponentHand = hands[opponentId];
 
   addMessage('player', `你出拳：${myHand}`);
@@ -213,53 +207,33 @@ socket.on('rps_result', ({ hands }) => {
     (myHand === '剪刀' && opponentHand === '布') ||
     (myHand === '布' && opponentHand === '石頭');
 
-  turn = playerWins ? 'player' : 'opponent';
+  currentTurn = playerWins ? 'player' : 'opponent';
   addMessage('system', `${playerWins ? '你' : '對手'} 贏了，先問問題！`);
 });
 
-// ===== 輔助函式 =====
-function addMessage(role, text) {
-  const li = document.createElement('li');
-  li.classList.add('message', role);
-  const meta = document.createElement('div');
-  meta.classList.add('meta');
-  meta.textContent =
-    role === 'system' ? '系統' :
-    role === 'player' ? meName :
-    opponentName;
-  const content = document.createElement('div');
-  content.textContent = text;
-  li.appendChild(meta);
-  li.appendChild(content);
-  messagesEl.appendChild(li);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-
-
-let roomHostId = null; // 全域變數，儲存房主 ID
-
+// ===== 房間更新（維持你原本邏輯） =====
 socket.on('room_update', ({ players, host }) => {
-  roomHostId = host; // 儲存房主 ID
-  const ids = Object.keys(players);
-  const otherId = ids.find(id => id !== mySocketId);
-  opponentName = otherId ? players[otherId].name : '等待中';
-  updateRoomInfo();
+  roomHostId = host;
+
+  // 找出自己和對手
+  const myInfo = players[socket.id]; // ✅ 用 socket.id 找自己
+  const otherId = Object.keys(players).find(id => id !== socket.id);
+  const opponentInfo = otherId ? players[otherId] : null;
+
+  opponentName = opponentInfo ? opponentInfo.name : '等待中';
+
+  document.getElementById('roomIdText').textContent = roomId;
+  document.getElementById('playerNameText').textContent = myInfo?.name || meName;
+  document.getElementById('opponentNameText').textContent = opponentName;
 });
 
 
-const startBtn = document.getElementById('startBtn');
-if (startBtn) {
-  startBtn.addEventListener('click', startGame);
+
+function generateUniquePlayerId() {
+  let id;
+  do {
+    id = 'P' + Math.floor(100000 + Math.random() * 900000);
+  } while (localStorage.getItem(`playerId_${id}`));
+  localStorage.setItem(`playerId_${id}`, true);
+  return id;
 }
-
-function startGame() {
-  if (rulesModal) rulesModal.style.display = 'none';
-  createTopicCells();
-  addMessage('system', '遊戲開始，請選擇主題。');
-}
-
-
-
-
-
