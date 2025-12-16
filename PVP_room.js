@@ -4,7 +4,8 @@ const socket = io('https://who-game.onrender.com');
 // ===== 全域狀態 =====
 const roomId = new URLSearchParams(location.search).get('room') || 'demo-001';
 const meName = sessionStorage.getItem('playerName') || localStorage.getItem('playerName');
-const myPlayerId = sessionStorage.getItem('playerId') || localStorage.getItem('playerId');
+let myPlayerId = sessionStorage.getItem('playerId') || localStorage.getItem('playerId');
+
 
 if (!meName || !myPlayerId) {
   alert('尚未登入，請先登入');
