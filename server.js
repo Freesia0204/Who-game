@@ -60,23 +60,26 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('topic_selected', { topic });
   });
 
+ 
   // 玩家選卡牌
-  socket.on('choose_card', ({ roomId, card }) => {
-    if (!rooms[roomId]) return;
-    rooms[roomId].choices[socket.id] = {
-      playerId: rooms[roomId].players[socket.id].playerId,
-      card
-    };
+socket.on('choose_card', ({ roomId, card }) => {
+  if (!rooms[roomId]) return;
+  rooms[roomId].choices[socket.id] = {
+    playerId: rooms[roomId].players[socket.id].playerId,
+    card
+  };
 
-    io.to(roomId).emit('player_chosen', {
-      player: rooms[roomId].players[socket.id].name
-    });
-
-    const room = rooms[roomId];
-    if (room && Object.keys(room.players).length === 0) {
-      delete rooms[roomId];
-    }
+  io.to(roomId).emit('player_chosen', {
+    player: rooms[roomId].players[socket.id].name
   });
+
+  // ✅ 判斷雙方都選好了
+  const room = rooms[roomId];
+  if (Object.keys(room.choices).length === Object.keys(room.players).length) {
+    io.to(roomId).emit('game_start'); // 廣播給前端
+  }
+});
+
 
   // 系統隨機猜拳
   socket.on('start_rps', ({ roomId }) => {
@@ -89,7 +92,10 @@ io.on('connection', (socket) => {
     }
     io.to(roomId).emit('rps_result', { hands });
   });
-
+// 聊天訊息廣播
+socket.on('chat_message', ({ roomId, from, name, text }) => {
+  io.to(roomId).emit('chat_message', { from, name, text });
+});
   // 玩家斷線
   socket.on('disconnect', () => {
     for (const roomId in rooms) {
@@ -116,3 +122,4 @@ const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`伺服器運行中，PORT=${PORT}`);
 });
+

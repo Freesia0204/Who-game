@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (rulesModal) {
         rulesModal.style.display = 'none';
       }
-      addMessage('system', '遊戲開始中');
+      addMessage('system', '請房主先選擇主題再邀請其他玩家');
       socket.emit('start_game', { roomId });
     });
   }
@@ -174,18 +174,30 @@ function showCardSelection() {
     cell.appendChild(img);
     cell.appendChild(text);
 
+    // 左鍵選卡或翻轉
     cell.addEventListener('click', () => {
       if (!myCard) {
+        // 第一次選卡 → 標記
         myCard = item.name;
-        cell.classList.add('selected-card');
+        cell.classList.add('selected-antidote'); // 金色邊框 + 🍀 標記
         socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
         addMessage('system', `玩家 ${meName} 已選好`);
+      } else {
+        // 已選卡 → 點擊翻轉
+        cell.classList.toggle('flipped');
       }
+    });
+
+    // 右鍵翻轉
+    cell.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      cell.classList.toggle('flipped');
     });
 
     gridArea.appendChild(cell);
   });
 }
+
 
 
 socket.on('player_chosen', ({ player }) => {
