@@ -104,12 +104,13 @@ if (startBtn) {
   startBtn.addEventListener('click', () => {
     if (rulesModal) rulesModal.style.display = 'none';
     addMessage('system', '遊戲開始，請選擇主題。');
-    // 只有第一人能選主題
-    if (socket.id === topicSelector) {
+    // ✅ 加入 topicSelector 判斷保護，避免 null 導致無效
+    if (topicSelector && socket.id === topicSelector) {
       createTopicCells();
     }
   });
 }
+
 
 
 function startGame() {
