@@ -3,8 +3,9 @@ const socket = io('https://who-game.onrender.com');
 
 // ===== 全域狀態 =====
 const roomId = new URLSearchParams(location.search).get('room') || 'demo-001';
-const meName = sessionStorage.getItem('playerName');   // ✅ 改用 sessionStorage
-const myPlayerId = sessionStorage.getItem('playerId'); // ✅ 改用 sessionStorage
+const meName = sessionStorage.getItem('playerName') || localStorage.getItem('playerName');
+const myPlayerId = sessionStorage.getItem('playerId') || localStorage.getItem('playerId');
+
 if (!meName || !myPlayerId) {
   alert('尚未登入，請先登入');
   location.href = 'index.html';
@@ -19,6 +20,7 @@ let selectedTopic = null;
 let myCard = null;
 let opponentCard = null;
 let canGuess = false;
+let topicSelector = null;
 
 
 
@@ -139,12 +141,13 @@ function createTopicCells() {
 
     cell.addEventListener('click', () => {
   if (socket.id !== topicSelector) {
-    addMessage('system', '只有房主可以選主題');
+    addMessage('system', '只有第一個進房的人可以選主題');
     return;
   }
   selectedTopic = topic.name;
   socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
 });
+
 
 
     gridArea.appendChild(cell);
@@ -225,7 +228,8 @@ socket.on('rps_result', ({ hands }) => {
 });
 
 // ===== 房間更新（維持你原本邏輯） =====
-socket.on('room_update', ({ players, topicSelector }) => {
+socket.on('room_update', ({ players, topicSelector: selector }) => {
+  topicSelector = selector;
   const myInfo = players[socket.id];
   const otherId = Object.keys(players).find(id => id !== socket.id);
   const opponentInfo = otherId ? players[otherId] : null;
