@@ -102,12 +102,15 @@ function updateRoomInfo() {
 const startBtn = document.getElementById('startBtn');
 if (startBtn) {
   startBtn.addEventListener('click', () => {
-    // ✅ 不再限制房主，所有人都能按
     if (rulesModal) rulesModal.style.display = 'none';
-    createTopicCells();
-    addMessage('system', '遊戲開始，請等待房主選擇主題。');
+    addMessage('system', '遊戲開始，請選擇主題。');
+    // 只有第一人能選主題
+    if (socket.id === topicSelector) {
+      createTopicCells();
+    }
   });
 }
+
 
 function startGame() {
   if (rulesModal) rulesModal.style.display = 'none';
@@ -147,7 +150,6 @@ function createTopicCells() {
   selectedTopic = topic.name;
   socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
 });
-
 
 
     gridArea.appendChild(cell);
