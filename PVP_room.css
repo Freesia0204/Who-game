@@ -262,6 +262,9 @@ body {
   background: #7c3aed;
 }
 
+.modal.hidden {
+  display: none !important;
+}
 
 /* ===== 「我要猜」按鈕區塊 ===== */
 .guess-container {
