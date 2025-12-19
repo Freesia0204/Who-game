@@ -58,6 +58,9 @@ socket.on('connect', () => {
     socket.emit('join_room', { roomId, playerId: myPlayerId, name: meName });
   }
 });
+socket.on('system_message', (text) => {
+  addMessage('system', text);
+});
 
 // ===== 系統訊息 =====
 socket.on('chat_message', ({ from, text, name }) => {
@@ -101,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (rulesModal) {
         rulesModal.style.display = 'none';
       }
-      addMessage('system', '請房主先選擇主題再邀請其他玩家');
+      addMessage('system', '請房主先邀請其他玩家再選擇主題');
       socket.emit('start_game', { roomId });
     });
   }
@@ -224,6 +227,7 @@ socket.on('rps_result', ({ hands }) => {
     return;
   }
 
+  // ✅ 這裡才是正確的勝負判斷
   const playerWins =
     (myHand === '石頭' && opponentHand === '剪刀') ||
     (myHand === '剪刀' && opponentHand === '布') ||
@@ -232,6 +236,7 @@ socket.on('rps_result', ({ hands }) => {
   currentTurn = playerWins ? 'player' : 'opponent';
   addMessage('system', `${playerWins ? '你' : '對手'} 贏了，先問問題！`);
 });
+
 
 // ===== 房間更新 =====
 socket.on('room_update', ({ players, topicSelector: selector }) => {
