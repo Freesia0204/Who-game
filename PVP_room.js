@@ -211,7 +211,11 @@ socket.on('game_start', () => {
 });
 
 // ===== 猜拳流程 =====
+let rpsFinished = false;
+
 socket.on('rps_result', ({ hands }) => {
+  if (rpsFinished) return; // ✅ 已經有勝負就不再處理
+
   const myHand = hands[myPlayerId];
   const opponentId = Object.keys(hands).find(id => id !== myPlayerId);
   const opponentHand = hands[opponentId];
@@ -225,7 +229,6 @@ socket.on('rps_result', ({ hands }) => {
     return;
   }
 
-  // ✅ 這裡才是正確的勝負判斷
   const playerWins =
     (myHand === '石頭' && opponentHand === '剪刀') ||
     (myHand === '剪刀' && opponentHand === '布') ||
@@ -233,8 +236,11 @@ socket.on('rps_result', ({ hands }) => {
 
   currentTurn = playerWins ? 'player' : 'opponent';
   addMessage('system', `${playerWins ? '你' : '對手'} 贏了，先問問題！`);
+
+  rpsFinished = true; // ✅ 標記結束
   socket.emit('rps_done', { roomId });
 });
+
 
 
 // ===== 房間更新 =====

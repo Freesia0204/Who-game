@@ -100,10 +100,22 @@ socket.on('start_rps', ({ roomId }) => {
 // 前端通知伺服器猜拳結束
 socket.on('rps_done', ({ roomId }) => {
   if (rooms[roomId]) {
-    rooms[roomId].rpsDone = true;
+    rooms[roomId].rpsDone = true; // ✅ 標記結束
   }
 });
 
+socket.on('start_rps', ({ roomId }) => {
+  if (!rooms[roomId]) return;
+  if (rooms[roomId].rpsDone) return; // ✅ 已結束就不再猜
+
+  const options = ['石頭', '剪刀', '布'];
+  const hands = {};
+  for (const sid of Object.keys(rooms[roomId].players)) {
+    hands[rooms[roomId].players[sid].playerId] =
+      options[Math.floor(Math.random() * options.length)];
+  }
+  io.to(roomId).emit('rps_result', { hands });
+});
 
 
 
