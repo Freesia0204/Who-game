@@ -58,9 +58,7 @@ socket.on('connect', () => {
     socket.emit('join_room', { roomId, playerId: myPlayerId, name: meName });
   }
 });
-socket.on('system_message', (text) => {
-  addMessage('system', text);
-});
+
 
 // ===== 系統訊息 =====
 socket.on('chat_message', ({ from, text, name }) => {

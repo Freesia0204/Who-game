@@ -61,7 +61,8 @@ io.on('connection', (socket) => {
   });
 
  
-  // 玩家選卡牌
+ 
+// 玩家選卡牌 → 雙方都選好 → 開始遊戲
 socket.on('choose_card', ({ roomId, card }) => {
   if (!rooms[roomId]) return;
   rooms[roomId].choices[socket.id] = {
@@ -73,15 +74,14 @@ socket.on('choose_card', ({ roomId, card }) => {
     player: rooms[roomId].players[socket.id].name
   });
 
-  // ✅ 判斷雙方都選好了
   const room = rooms[roomId];
   if (Object.keys(room.choices).length === Object.keys(room.players).length) {
-    io.to(roomId).emit('game_start'); // 廣播給前端
+    room.rpsDone = false; // ✅ 重置猜拳狀態
+    io.to(roomId).emit('game_start');
   }
 });
 
-
-  // 系統隨機猜拳
+// 系統隨機猜拳
 socket.on('start_rps', ({ roomId }) => {
   if (!rooms[roomId]) return;
 
@@ -97,12 +97,15 @@ socket.on('start_rps', ({ roomId }) => {
   io.to(roomId).emit('rps_result', { hands });
 });
 
-// 前端勝負結束後通知伺服器
+// 前端通知伺服器猜拳結束
 socket.on('rps_done', ({ roomId }) => {
   if (rooms[roomId]) {
     rooms[roomId].rpsDone = true;
   }
 });
+
+
+
 
 // 在新遊戲開始時重置
 socket.on('game_start', ({ roomId }) => {
