@@ -82,16 +82,36 @@ socket.on('choose_card', ({ roomId, card }) => {
 
 
   // 系統隨機猜拳
-  socket.on('start_rps', ({ roomId }) => {
-    if (!rooms[roomId]) return;
-    const options = ['石頭', '剪刀', '布'];
-    const hands = {};
-    for (const sid of Object.keys(rooms[roomId].players)) {
-      hands[rooms[roomId].players[sid].playerId] =
-        options[Math.floor(Math.random() * options.length)];
-    }
-    io.to(roomId).emit('rps_result', { hands });
-  });
+socket.on('start_rps', ({ roomId }) => {
+  if (!rooms[roomId]) return;
+
+  // 如果已經有勝負，就不要再猜
+  if (rooms[roomId].rpsDone) return;
+
+  const options = ['石頭', '剪刀', '布'];
+  const hands = {};
+  for (const sid of Object.keys(rooms[roomId].players)) {
+    hands[rooms[roomId].players[sid].playerId] =
+      options[Math.floor(Math.random() * options.length)];
+  }
+  io.to(roomId).emit('rps_result', { hands });
+});
+
+// 前端勝負結束後通知伺服器
+socket.on('rps_done', ({ roomId }) => {
+  if (rooms[roomId]) {
+    rooms[roomId].rpsDone = true;
+  }
+});
+
+// 在新遊戲開始時重置
+socket.on('game_start', ({ roomId }) => {
+  if (rooms[roomId]) {
+    rooms[roomId].rpsDone = false; // ✅ 重置
+  }
+});
+
+
 // 聊天訊息廣播
 socket.on('chat_message', ({ roomId, from, name, text }) => {
   io.to(roomId).emit('chat_message', { from, name, text });

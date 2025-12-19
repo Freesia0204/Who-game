@@ -235,6 +235,7 @@ socket.on('rps_result', ({ hands }) => {
 
   currentTurn = playerWins ? 'player' : 'opponent';
   addMessage('system', `${playerWins ? '你' : '對手'} 贏了，先問問題！`);
+  socket.emit('rps_done', { roomId });
 });
 
 
@@ -272,4 +273,31 @@ function generateUniquePlayerId() {
   } while (localStorage.getItem(`playerId_${id}`));
   localStorage.setItem(`playerId_${id}`, "true");
   return id;
+}
+// 系統訊息廣播
+socket.on('system_message', (text) => {
+  addMessage('system', text);
+
+  // 如果有人退出房間 → 顯示斷線彈窗
+  if (text.includes('離開了房間')) {
+    showDisconnectModal();
+  }
+});
+
+// 顯示斷線彈窗
+function showDisconnectModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <p>⚠️ 對手已斷線，請回到首頁重新開始遊戲。</p>
+      <button id="backHomeBtn">回首頁</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const backBtn = document.getElementById('backHomeBtn');
+  backBtn.addEventListener('click', () => {
+    location.href = 'index.html';
+  });
 }
