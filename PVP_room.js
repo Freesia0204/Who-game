@@ -21,6 +21,8 @@ let myCard = null;
 let opponentCard = null;
 let canGuess = false;
 let topicSelector = null;
+let currentPlayers = {};
+
 
 // ===== DOM =====
 const messagesEl = document.getElementById('messages');
@@ -139,17 +141,19 @@ function createTopicCells() {
 
     // 綁定一次 click，裡面判斷是否能選
     cell.addEventListener('click', () => {
-      if (socket.id !== topicSelector) {
-        addMessage('system', '只有房主可以選主題');
-        return;
-      }
-      if (Object.keys(currentPlayers).length < 2) {
-        addMessage('system', '需要至少兩人才能選主題');
-        return;
-      }
-      selectedTopic = cell.dataset.topicName;
-      socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
-    });
+  if (socket.id !== topicSelector) {
+    addMessage('system', '只有房主可以選主題');
+    return;
+  }
+  if (Object.keys(currentPlayers).length < 2) {
+    addMessage('system', '需要至少兩人才能選主題');
+    return;
+  }
+  selectedTopic = cell.dataset.topicName;
+  socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+});
+
+
 
     gridArea.appendChild(cell);
   });
@@ -180,17 +184,31 @@ socket.on('room_update', ({ players, topicSelector: selector }) => {
   }
 
   // ✅ 房主且房間有兩人 → 解除 disabled 並啟用點擊
-  if (socket.id === topicSelector && Object.keys(players).length >= 2) {
-    document.querySelectorAll('.cell').forEach(cell => {
-      cell.classList.remove('disabled');
-      cell.addEventListener('click', () => {
-        selectedTopic = cell.dataset.topicName;
-        socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+  // 房主且房間有兩人 → 解除 disabled 並啟用點擊
+if (socket.id === topicSelector && Object.keys(players).length >= 2) {
+  document.querySelectorAll('.cell').forEach(cell => {
+    // 解除禁止狀態
+    cell.classList.remove('disabled');
+
+    // 綁定一次 click 事件
+    cell.addEventListener('click', () => {
+      selectedTopic = cell.dataset.topicName;
+      socket.emit('select_topic', {
+        roomId,
+        topic: selectedTopic,
+        playerId: myPlayerId
       });
     });
-  }
+  });
+}
+
 });
 
+socket.on('topic_selected', ({ topic }) => {
+  selectedTopic = topic;
+  addMessage('system', `玩家選擇了主題：${topic}`);
+  showCardSelection(); // ✅ 進入卡牌選擇
+});
 
 // ===== 卡牌選擇 =====
 function showCardSelection() {
