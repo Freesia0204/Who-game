@@ -102,7 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (rulesModal) {
         rulesModal.style.display = 'none';
       }
-      addMessage('system', '請房主先邀請其他玩家再選擇主題');
+      if (socket.id === topicSelector) {
+  addMessage('system', '請房主先邀請其他玩家再選擇主題');
+}
+
       socket.emit('start_game', { roomId });
     });
   }
@@ -303,5 +306,30 @@ function showDisconnectModal() {
   const backBtn = document.getElementById('backHomeBtn');
   backBtn.addEventListener('click', () => {
     location.href = 'index.html';
+  });
+}
+function renderLeftDecoration() {
+  const leftArea = document.querySelector('.left-decoration');
+  if (!leftArea || selectedTopic) return; // ✅ 主題選完就不顯示
+
+  leftArea.innerHTML = ''; // 清空
+
+  const sampleImages = [
+    'img-KN/柯南_loge.jpg',
+    'img-GM/鬼滅之刃-logo.png',
+    'img-WB/防風少年-logo.png',
+    'img-Free/Free_logo.png'
+  ];
+
+  sampleImages.forEach(src => {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '裝飾';
+
+    cell.appendChild(img);
+    leftArea.appendChild(cell);
   });
 }
