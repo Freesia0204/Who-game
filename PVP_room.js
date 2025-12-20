@@ -135,24 +135,57 @@ function createTopicCells() {
     cell.appendChild(img);
     cell.appendChild(text);
 
-    cell.addEventListener('click', () => {
-      if (socket.id !== topicSelector) {
-        addMessage('system', '只有第一個進房的人可以選主題');
-        return;
-      }
-      selectedTopic = topic.name;
-      socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
-    });
+    // 預設：不能點
+    cell.classList.add('disabled');
+
+    // 存起來，等房間更新時再決定是否啟用
+    cell.dataset.topicName = topic.name;
 
     gridArea.appendChild(cell);
   });
 }
 
+// 房間更新時決定房主是否能選主題
+socket.on('room_update', ({ players, topicSelector: selector }) => {
+  topicSelector = selector;
+
+  const myInfo = players[socket.id];
+  if (myInfo) {
+    myPlayerId = myInfo.playerId;
+  }
+
+  const otherId = Object.keys(players).find(id => id !== socket.id);
+  const opponentInfo = otherId ? players[otherId] : null;
+  opponentName = opponentInfo ? opponentInfo.name : '等待中';
+
+  document.getElementById('roomIdText').textContent = roomId;
+  document.getElementById('playerNameText').textContent = myInfo?.name || meName;
+  document.getElementById('opponentNameText').textContent = opponentName;
+
+  // 一開始就顯示主題格子
+  if (!selectedTopic) {
+    createTopicCells();
+  }
+
+  // ✅ 如果自己是房主，且房間裡有兩人 → 啟用點擊
+  if (socket.id === topicSelector && Object.keys(players).length >= 2) {
+    document.querySelectorAll('.cell').forEach(cell => {
+      cell.classList.remove('disabled');
+      cell.addEventListener('click', () => {
+        selectedTopic = cell.dataset.topicName;
+        socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+      });
+    });
+  }
+});
+
+// 主題選好後 → 進入卡牌選擇
 socket.on('topic_selected', ({ topic }) => {
   selectedTopic = topic;
   addMessage('system', `玩家選擇了主題：${topic}`);
   showCardSelection(); // ✅ 所有人都進入卡牌選擇
 });
+
 // ===== 卡牌選擇 =====
 function showCardSelection() {
   gridArea.innerHTML = '';
