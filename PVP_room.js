@@ -379,22 +379,25 @@ function renderLeftDecoration() {
   });
 }
 
-// 問句關鍵字（比照 AI 版）
-const questionKeywords = ["有沒有", "是不是", "是否", "有無"];
 
-// 雙方問答計數
-let playerQuestionCount = 0;
-let opponentQuestionCount = 0;
+// 啟用猜模式
+guessBtn.addEventListener('click', () => {
+  canGuess = true;
+  addMessage('system', '猜模式開啟，請點左邊格子來猜！');
+  gridArea.classList.add('guess-mode');
 
-function updateGuessButtonState() {
-  if (!guessBtn) return;
+  // 顯示取消猜按鈕
+  const cancelGuessBtn = document.getElementById('cancelGuessBtn');
+  if (cancelGuessBtn) cancelGuessBtn.style.display = 'inline-block';
+});
 
-  // ✅ 雙方各問 >= 3 題才解鎖
-  if (playerQuestionCount >= 3 && opponentQuestionCount >= 3) {
-    guessBtn.style.display = 'inline-block';
-    guessBtn.disabled = false;
-  } else {
-    guessBtn.style.display = 'none';
-    guessBtn.disabled = true;
-  }
-}
+// 取消猜模式
+const cancelGuessBtn = document.getElementById('cancelGuessBtn');
+cancelGuessBtn.addEventListener('click', () => {
+  canGuess = false;
+  addMessage('system', '已取消猜模式');
+  gridArea.classList.remove('guess-mode');
+
+  // 隱藏取消猜按鈕
+  cancelGuessBtn.style.display = 'none';
+});
