@@ -276,7 +276,7 @@ body {
 
 /* 「我要猜」按鈕樣式 */
 #guessBtn {
-  display: none; /* 初始隱藏 */
+ display: inline-block; /* 初始顯示 */
   padding: 10px 60px;
   background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 淡紫→粉玫瑰 */
   color: #fff;
@@ -397,6 +397,7 @@ body {
   max-width: 70%;
 }
 #cancelGuessBtn {
+  
   padding: 10px 40px;
   border: none;
   border-radius: 30px;
