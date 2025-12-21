@@ -66,6 +66,11 @@ socket.on('connect', () => {
 socket.on('chat_message', ({ from, text, name }) => {
   const role = (from === myPlayerId) ? 'player' : 'opponent';
   addMessage(role, text, name);
+  if (role === 'opponent' && questionKeywords.some(keyword => text.includes(keyword))) {
+  opponentQuestionCount++;
+  updateGuessButtonState();
+}
+
 });
 
 // ===== 聊天送出 =====
@@ -75,6 +80,11 @@ chatForm.addEventListener('submit', e => {
   if (!msg) return;
   socket.emit('chat_message', { roomId, from: myPlayerId, name: meName, text: msg });
   chatInput.value = '';
+  if (questionKeywords.some(keyword => msg.includes(keyword))) {
+  playerQuestionCount++;
+  updateGuessButtonState();
+}
+
 });
 
 // ===== 輔助函式 =====
@@ -367,4 +377,24 @@ function renderLeftDecoration() {
     cell.appendChild(img);
     leftArea.appendChild(cell);
   });
+}
+
+// 問句關鍵字（比照 AI 版）
+const questionKeywords = ["有沒有", "是不是", "是否", "有無"];
+
+// 雙方問答計數
+let playerQuestionCount = 0;
+let opponentQuestionCount = 0;
+
+function updateGuessButtonState() {
+  if (!guessBtn) return;
+
+  // ✅ 雙方各問 >= 3 題才解鎖
+  if (playerQuestionCount >= 3 && opponentQuestionCount >= 3) {
+    guessBtn.style.display = 'inline-block';
+    guessBtn.disabled = false;
+  } else {
+    guessBtn.style.display = 'none';
+    guessBtn.disabled = true;
+  }
 }
