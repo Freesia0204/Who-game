@@ -247,17 +247,35 @@ function showCardSelection() {
 
     // 左鍵選卡或翻轉
     cell.addEventListener('click', () => {
-      if (!myCard) {
-        // 第一次選卡 → 標記
-        myCard = item.name;
-        cell.classList.add('selected-antidote'); // 金色邊框 + 🍀 標記
-        socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
-        addMessage('system', `玩家 ${meName} 已選好`);
-      } else {
-        // 已選卡 → 點擊翻轉
-        cell.classList.toggle('flipped');
-      }
-    });
+  if (canGuess) {
+    // ✅ 猜模式 → 嘗試猜對方卡牌
+    const guessedName = item.name;
+    if (guessedName === opponentCard) {
+      addMessage('system', '🎉 你猜對了！你贏了！');
+      endGame('你猜對了！');
+    } else {
+      addMessage('system', '猜錯啦！請再問一題後才能再猜');
+    }
+
+    canGuess = false;
+    gridArea.classList.remove('guess-mode');
+    guessBtn.style.display = 'inline-block';
+    cancelGuessBtn.style.display = 'none';
+    return;
+  }
+
+  if (!myCard) {
+    // ✅ 第一次選卡
+    myCard = item.name;
+    cell.classList.add('selected-antidote');
+    socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
+    addMessage('system', `玩家 ${meName} 已選好`);
+  } else {
+    // ✅ 非猜模式 → 翻轉遮罩
+    cell.classList.toggle('flipped');
+  }
+});
+
 
     // 右鍵翻轉
     cell.addEventListener('contextmenu', e => {
@@ -386,10 +404,10 @@ guessBtn.addEventListener('click', () => {
   addMessage('system', '猜模式開啟，請點左邊格子來猜！');
   gridArea.classList.add('guess-mode');
 
-  // 顯示取消猜按鈕
-  const cancelGuessBtn = document.getElementById('cancelGuessBtn');
-  if (cancelGuessBtn) cancelGuessBtn.style.display = 'inline-block';
+  guessBtn.style.display = 'none'; // ✅ 隱藏「我要猜」
+  cancelGuessBtn.style.display = 'inline-block'; // ✅ 顯示「取消猜」
 });
+
 
 // 取消猜模式
 const cancelGuessBtn = document.getElementById('cancelGuessBtn');
@@ -398,6 +416,6 @@ cancelGuessBtn.addEventListener('click', () => {
   addMessage('system', '已取消猜模式');
   gridArea.classList.remove('guess-mode');
 
-  // 隱藏取消猜按鈕
-  cancelGuessBtn.style.display = 'none';
+  guessBtn.style.display = 'inline-block'; // ✅ 顯示「我要猜」
+  cancelGuessBtn.style.display = 'none'; // ✅ 隱藏「取消猜」
 });
