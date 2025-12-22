@@ -1,16 +1,71 @@
+/* 全局背景 */
 body {
   margin: 0;
   font-family: "微軟正黑體", sans-serif;
-  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4); /* 柔和漸層 */
+  background-size: 300% 300%;
+  animation: bgFlow 12s ease-in-out infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   color: #fff;
-  
   padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
 }
 
+@keyframes bgFlow {
+  0% { background-position: left top; }
+  50% { background-position: right bottom; }
+  100% { background-position: left top; }
+}
+
+/* 導覽列統一樣式 */
+.navbar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background: rgba(80, 40, 120, 0.85); /* 深紫半透明玻璃感 */
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+}
+
+.navbar nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbar nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+  color: #fbc2eb; /* 柔和淡粉紫 */
+}
+
+/* 上一步按鈕 */
+.back-btn {
+  position: fixed;
+  top: 10px; left: 10px;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1000;
+}
+.back-btn:hover {
+  background-color: #555;
+}
+
+/* 配對框 */
 .match-box {
   background: rgba(255,255,255,0.1);
   padding: 24px 32px;
@@ -30,84 +85,38 @@ body {
   margin: 6px 0;
   border: none;
   border-radius: 6px;
-  background: #8b5cf6;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* 淡藍漸層 */
   color: white;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .match-box button:hover {
-  background: #7c3aed;
+  filter: brightness(1.1);
 }
 
-/* 原本的樣式保留 */
-
+/* 房號輸入 */
 .match-box label {
-  display: block;            /* 讓 label 獨立一行 */
-  margin-bottom: 8px;        /* 與輸入框保持距離 */
-  font-weight: 600;          /* 字體加粗 */
-  color: #fff;               /* 白字 */
-  text-align: left;          /* 靠左對齊 */
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fff;
+  text-align: left;
 }
 
 .match-box input[type="text"] {
-  width: 100%;               /* 撐滿容器寬度 */
-  padding: 10px;             /* 內距 */
-  border: 1px solid #ccc;    /* 邊框 */
-  border-radius: 6px;        /* 圓角 */
-  margin-bottom: 12px;       /* 與按鈕保持距離 */
-  font-size: 14px;           /* 字體大小 */
-  box-sizing: border-box;    /* 包含邊框在寬度內 */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
 .match-box input[type="text"]:focus {
-  outline: none;             /* 移除預設外框 */
-  border-color: #8b5cf6;     /* 聚焦時邊框變紫色 */
-  box-shadow: 0 0 6px rgba(139, 92, 246, 0.6); /* 聚焦光暈 */
-}
-/* 導覽列統一樣式 */
-.navbar {
-  position: fixed;       /* 固定在最上方 */
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #333; /* 深色背景，可依需求修改 */
-  z-index: 1000;         /* 確保在最上層 */
-}
-
-.navbar nav {
-  display: flex;
-  justify-content: center; /* 導覽列置中排列 */
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.navbar nav a {
-  color: #fff;            /* 白色文字 */
-  text-decoration: none;
-  margin: 0 15px;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.navbar nav a:hover {
-  color: #ffd700;         /* 滑過時變金色，可自行調整 */
-}
-
-/* 上一步按鈕樣式 */ 
-.back-btn { 
-  position: fixed; 
-  top: 10px; left: 10px; 
-  background-color: #333; 
-  color: #fff; 
-  padding: 8px 12px; 
-  border-radius: 4px; 
-  border: none; 
-  font-size: 14px; 
-  cursor: pointer; 
-  z-index: 1000; 
-} 
-
-.back-btn:hover { 
-  background-color: #555; 
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.6);
 }

@@ -9,43 +9,22 @@
 
 <body>
   <header class="navbar">
-    <nav class="nav-container">
-      <!-- 左側導覽連結 -->
-      <div class="nav-links">
-        <a href="index.html#topics">規則</a>
-        <a href="index.html#characters">人物查詢</a>
-        <a href="index.html">退出遊戲</a>
-      </div>
-
-      <!-- 右側房間資訊 -->
-      <div class="room-info">
-        模式：AI模式
-        玩家：<span id="playerNameText"></span>　
-        對手：AI
-      </div>
+    <nav class="nav-container"> <!-- 左側導覽連結 -->
+      <div class="nav-links"> <a href="index.html#topics">規則</a> <a href="index.html#characters">人物查詢</a> <a
+          href="index.html">退出遊戲</a> </div> <!-- 右側房間資訊 -->
+      <div class="room-info"> 模式：AI模式　 玩家：<span id="playerNameText"></span>　 對手：AI </div>
     </nav>
-  </header>
-  
-
-    <!-- 左邊格子區 -->
-    <div class="grid-area"></div>
-
-    <!-- 右邊聊天區 -->
+  </header> <!-- 房間主要容器 -->
+  <div class="room-container"> <!-- 左邊格子區 -->
+    <div class="grid-area"></div> <!-- 右邊聊天區 -->
     <div class="chat-area">
       <div class="status">系統訊息</div>
       <ul class="messages" id="messages">
-        <li class="message.system">歡迎進入房間！請選擇主題。</li>
+        <li class="message system">歡迎進入房間！請選擇主題。</li>
       </ul>
-      <form class="chat-form" id="chatForm">
-        <input type="text" id="chatInput" placeholder="輸入訊息..." disabled>
-        <button type="submit" disabled>送出</button>
-      </form>
-      <!-- 猜格子按鈕 -->
-      <div class="guess-container">
-        <button id="guessBtn">我要猜</button>
-      </div>
-
-
+      <form class="chat-form" id="chatForm"> <input type="text" id="chatInput" placeholder="輸入訊息..." disabled> <button
+          type="submit" disabled>送出</button> </form> <!-- 猜格子按鈕 -->
+      <div class="guess-container"> <button id="guessBtn">我要猜</button> </div>
     </div>
   </div>
 

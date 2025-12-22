@@ -3,12 +3,13 @@ body {
   margin: 0;
   font-family: "微軟正黑體", sans-serif;
   color: #fff;
-  background: linear-gradient(135deg, #b8c0ff, #e8baff, #ffc8dd);
+  background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4);
   background-size: 300% 300%;
   animation: bgFlow 12s ease-in-out infinite;
 
   margin: 0;
-  padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
+  padding-top: 60px;
+  /* 導覽列高度，避免內容被遮住 */
 }
 
 @keyframes bgFlow {
@@ -28,23 +29,30 @@ body {
 
 /* 導覽列統一樣式 */
 .navbar {
-  position: fixed;       /* 固定在最上方 */
+  position: fixed;
+  /* 固定在最上方 */
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333; /* 深色背景，可依需求修改 */
-  z-index: 1000;         /* 確保在最上層 */
+
+  z-index: 1000;
+  /* 確保在最上層 */
+  background: rgba(80, 40, 120, 0.85);
+  /* 深紫半透明 */
+  backdrop-filter: blur(8px);
 }
 
 .navbar nav {
   display: flex;
-  justify-content: center; /* 導覽列置中排列 */
+  justify-content: center;
+  /* 導覽列置中排列 */
   align-items: center;
   padding: 10px 20px;
 }
 
 .navbar nav a {
-  color: #fff;            /* 白色文字 */
+  color: #fff;
+  /* 白色文字 */
   text-decoration: none;
   margin: 0 15px;
   font-weight: bold;
@@ -52,7 +60,8 @@ body {
 }
 
 .navbar nav a:hover {
-  color: #ffd700;         /* 滑過時變金色，可自行調整 */
+  color: #fbc2eb;
+  /* 柔和淡粉紫 */
 }
 
 
@@ -135,9 +144,10 @@ body {
 }
 
 .topic-card:hover {
-  transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-5px);
+  border: 2px solid #fbc2eb; /* 淡粉紫邊框 */
 }
+
 
 .topic-card img {
   width: 100%;
@@ -212,8 +222,10 @@ body {
   width: 350px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: popIn 0.4s ease;
-  max-height: 500px; /* 限制高度 */
-  overflow-y: auto;/* 超過高度時可滾動 */
+  max-height: 500px;
+  /* 限制高度 */
+  overflow-y: auto;
+  /* 超過高度時可滾動 */
 }
 
 @keyframes popIn {
@@ -367,18 +379,16 @@ body {
 
 
 /* 開始遊戲按鈕特別樣式 */
-.start-nav-btn {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.25);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  transition: 0.3s;
+.start-btn {
+  background: linear-gradient(135deg, #d4a5ff, #fbc2eb);
+  border: none;
 }
 
-.start-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.35);
-  color: #ffe7ff;
+.start-btn:hover {
+  filter: brightness(1.1);
 }
+
+
 /* Hero 區按鈕 */
 .hero-buttons {
   margin-top: 20px;
@@ -396,19 +406,19 @@ body {
 }
 
 .ai-btn {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
   color: #fff;
 }
 
 .pvp-btn {
-  background-color: #ff6600;
+  background: linear-gradient(135deg, #f6d365, #fda085);
   color: #fff;
 }
 
 .btn:hover {
   transform: scale(1.05);
-  background-color: #333;
-  color: #ffd700;
+  filter: brightness(1.1);
+  /* 微微加亮 */
 }
 
 /* 主題卡片 */
@@ -423,7 +433,7 @@ body {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   transition: transform 0.3s;
 }
@@ -453,26 +463,29 @@ body {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   cursor: pointer;
 }
 
 .topic-card img {
   width: 100%;
-  height: 120px; /* 固定小方框高度 */
+  height: 120px;
+  /* 固定小方框高度 */
   object-fit: cover;
 }
 
 /* 彈窗樣式 */
 .modal {
-  display: none; 
-  position: fixed; 
-  z-index: 2000; 
-  padding-top: 60px; 
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.8);
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal-content {
@@ -484,7 +497,8 @@ body {
 
 .close {
   position: absolute;
-  top: 20px; right: 35px;
+  top: 20px;
+  right: 35px;
   color: #fff;
   font-size: 30px;
   font-weight: bold;
