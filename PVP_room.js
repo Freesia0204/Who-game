@@ -289,9 +289,13 @@ function showCardSelection() {
 
 
 
-socket.on('player_chosen', ({ player }) => {
+socket.on('player_chosen', ({ player, card }) => {
   addMessage('system', `${player} 已選好`);
+  if (player !== meName) {
+    opponentCard = card; // ✅ 記錄對手的卡牌
+  }
 });
+
 
 socket.on('game_start', () => {
   addMessage('system', '雙方都選好，遊戲開始！');
@@ -419,3 +423,16 @@ cancelGuessBtn.addEventListener('click', () => {
   guessBtn.style.display = 'inline-block'; // ✅ 顯示「我要猜」
   cancelGuessBtn.style.display = 'none'; // ✅ 隱藏「取消猜」
 });
+function endGame(resultText) {
+  addMessage('system', '遊戲結束');
+
+  const endModal = document.getElementById('endModal');
+  const resultEl = document.getElementById('endResultText');
+  const choicesEl = document.getElementById('endChoicesText');
+
+  if (endModal && resultEl && choicesEl) {
+    resultEl.textContent = resultText;
+    choicesEl.textContent = `你選的是：${myCard}　｜　對手選的是：${opponentCard}`;
+    endModal.style.display = 'flex';
+  }
+}
