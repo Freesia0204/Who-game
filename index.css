@@ -7,8 +7,8 @@ body {
   background-size: 300% 300%;
   animation: bgFlow 12s ease-in-out infinite;
 
-  /* 推下整個畫面，避免被固定導覽列蓋住 */
-  padding-top: 90px;
+  margin: 0;
+  padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
 }
 
 @keyframes bgFlow {
@@ -26,31 +26,36 @@ body {
 }
 
 
-/* 導覽列 */
+/* 導覽列統一樣式 */
 .navbar {
-  position: fixed;
+  position: fixed;       /* 固定在最上方 */
   top: 0;
   left: 0;
   width: 100%;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.1);
+  background-color: #333; /* 深色背景，可依需求修改 */
+  z-index: 1000;         /* 確保在最上層 */
+}
+
+.navbar nav {
   display: flex;
-  justify-content: left;
-  padding: 18px 30px;
-  z-index: 1000;
+  justify-content: center; /* 導覽列置中排列 */
+  align-items: center;
+  padding: 10px 20px;
 }
 
-.navbar a {
+.navbar nav a {
+  color: #fff;            /* 白色文字 */
   text-decoration: none;
-  margin: 0 20px;
-  color: white;
+  margin: 0 15px;
   font-weight: bold;
-  transition: 0.3s;
+  transition: color 0.3s;
 }
 
-.navbar a:hover {
-  color: #ffe7ff;
+.navbar nav a:hover {
+  color: #ffd700;         /* 滑過時變金色，可自行調整 */
 }
+
+
 
 
 /* Hero 標題區 */
@@ -359,14 +364,7 @@ body {
   background: linear-gradient(135deg, #f77062, #fe5196);
 }
 
-/* 導覽列按鈕統一樣式 */
-.navbar a {
-  text-decoration: none;
-  margin: 0 20px;
-  color: white;
-  font-weight: bold;
-  transition: 0.3s;
-}
+
 
 /* 開始遊戲按鈕特別樣式 */
 .start-nav-btn {
@@ -380,4 +378,115 @@ body {
 .start-nav-btn:hover {
   background: rgba(255, 255, 255, 0.35);
   color: #ffe7ff;
+}
+/* Hero 區按鈕 */
+.hero-buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.ai-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pvp-btn {
+  background-color: #ff6600;
+  color: #fff;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background-color: #333;
+  color: #ffd700;
+}
+
+/* 主題卡片 */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.topic-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.topic-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.topic-card p {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.topic-card:hover {
+  transform: translateY(-5px);
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-align: center;
+  cursor: pointer;
+}
+
+.topic-card img {
+  width: 100%;
+  height: 120px; /* 固定小方框高度 */
+  object-fit: cover;
+}
+
+/* 彈窗樣式 */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 2000; 
+  padding-top: 60px; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 80%;
+  border-radius: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 20px; right: 35px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
 }

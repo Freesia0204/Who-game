@@ -8,13 +8,24 @@
 </head>
 
 <body>
-  <div class="container">
-    <!-- 房號 / 玩家名字 / 房主IP -->
-    <div class="room-info" id="roomInfo">
+  <header class="navbar">
+    <nav class="nav-container">
+      <!-- 左側導覽連結 -->
+      <div class="nav-links">
+        <a href="index.html#topics">規則</a>
+        <a href="index.html#characters">人物查詢</a>
+        <a href="index.html">退出遊戲</a>
+      </div>
 
-      玩家: 大小姐<br>
-
-    </div>
+      <!-- 右側房間資訊 -->
+      <div class="room-info">
+        模式：AI模式
+        玩家：<span id="playerNameText"></span>　
+        對手：AI
+      </div>
+    </nav>
+  </header>
+  
 
     <!-- 左邊格子區 -->
     <div class="grid-area"></div>

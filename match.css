@@ -7,6 +7,8 @@ body {
   align-items: center;
   height: 100vh;
   color: #fff;
+  
+  padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
 }
 
 .match-box {
@@ -62,4 +64,50 @@ body {
   outline: none;             /* 移除預設外框 */
   border-color: #8b5cf6;     /* 聚焦時邊框變紫色 */
   box-shadow: 0 0 6px rgba(139, 92, 246, 0.6); /* 聚焦光暈 */
+}
+/* 導覽列統一樣式 */
+.navbar {
+  position: fixed;       /* 固定在最上方 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* 深色背景，可依需求修改 */
+  z-index: 1000;         /* 確保在最上層 */
+}
+
+.navbar nav {
+  display: flex;
+  justify-content: center; /* 導覽列置中排列 */
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbar nav a {
+  color: #fff;            /* 白色文字 */
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+  color: #ffd700;         /* 滑過時變金色，可自行調整 */
+}
+
+/* 上一步按鈕樣式 */ 
+.back-btn { 
+  position: fixed; 
+  top: 10px; left: 10px; 
+  background-color: #333; 
+  color: #fff; 
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  border: none; 
+  font-size: 14px; 
+  cursor: pointer; 
+  z-index: 1000; 
+} 
+
+.back-btn:hover { 
+  background-color: #555; 
 }

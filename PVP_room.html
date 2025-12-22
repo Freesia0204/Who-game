@@ -8,19 +8,24 @@
 </head>
 
 <body>
-  <!-- 房間資訊 -->
+
+  <!-- 導覽列 -->
   <header class="navbar">
-    <nav>
-      <a href="#characters">人物介紹</a>
-      <a href="#rules">規則</a>
-      <a href="index.html">退出遊戲</a>
+    <nav class="nav-container">
+      <!-- 左側導覽連結 -->
+      <div class="nav-links">
+        <a href="index.html#topics">規則</a>
+        <a href="index.html#characters">人物查詢</a>
+        <a href="index.html">退出遊戲</a>
+      </div>
+
+      <!-- 右側房間資訊 -->
+      <div class="room-info">
+        房號：<span id="roomIdText"></span>　
+        玩家：<span id="playerNameText"></span>　
+        對手：<span id="opponentNameText"></span>
+      </div>
     </nav>
-    <!-- 房間資訊融合在導覽列右側 -->
-    <div class="room-info">
-      房號：<span id="roomIdText"></span>　
-      玩家：<span id="playerNameText"></span>　
-      對手：<span id="opponentNameText"></span>
-    </div>
   </header>
 
 
@@ -63,18 +68,19 @@
       </div>
     </div>
 
-    
+
     <!-- 遊戲結束彈窗 -->
-<div id="endModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <h2 id="endResultText"></h2>
-    <p id="endChoicesText"></p>
-    <div class="modal-buttons">
-      <a href="index.html" class="btn">回首頁</a>
-      <a href="PVP_room.html" class="btn">再來一次</a>
+    <div id="endModal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <h2 id="endResultText"></h2>
+        <p id="endChoicesText"></p>
+        <div class="modal-buttons">
+          <a href="index.html" class="btn">回首頁</a>
+          <a href="PVP_room.html" class="btn">再來一次</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
 
     <!-- Socket.IO & JS -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>

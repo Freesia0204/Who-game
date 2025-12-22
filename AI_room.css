@@ -15,6 +15,8 @@ body {
   );
   background-size: 500% 500%; /* 放大背景以利動畫 */
   animation: gradientFlow 18s ease infinite; /* 動態漸層動畫 */
+   margin: 0;
+  padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
 }
 
 /* ✨ 動態漸層動畫 ✨ */
@@ -386,3 +388,33 @@ body {
 .grid-area.guess-mode .cell {
   outline: 2px dashed #ff9800; /* 橙色虛線輪廓 */
 }
+/* 導覽列統一樣式 */
+.navbar {
+  position: fixed;       /* 固定在最上方 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* 深色背景，可依需求修改 */
+  z-index: 1000;         /* 確保在最上層 */
+}
+
+.navbar nav {
+  display: flex;
+  justify-content: center; /* 導覽列置中排列 */
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.navbar nav a {
+  color: #fff;            /* 白色文字 */
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.navbar nav a:hover {
+  color: #ffd700;         /* 滑過時變金色，可自行調整 */
+}
+
+

@@ -64,3 +64,8 @@ if (createRoomBtn) {
 }
 
 
+// 上一步按鈕事件
+document.getElementById('backBtn').addEventListener('click', () => {
+  history.back(); // 返回上一頁
+});
+

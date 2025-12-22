@@ -66,10 +66,7 @@ socket.on('connect', () => {
 socket.on('chat_message', ({ from, text, name }) => {
   const role = (from === myPlayerId) ? 'player' : 'opponent';
   addMessage(role, text, name);
-  if (role === 'opponent' && questionKeywords.some(keyword => text.includes(keyword))) {
-  opponentQuestionCount++;
-  updateGuessButtonState();
-}
+  
 
 });
 
@@ -80,10 +77,8 @@ chatForm.addEventListener('submit', e => {
   if (!msg) return;
   socket.emit('chat_message', { roomId, from: myPlayerId, name: meName, text: msg });
   chatInput.value = '';
-  if (questionKeywords.some(keyword => msg.includes(keyword))) {
-  playerQuestionCount++;
-  updateGuessButtonState();
-}
+  
+
 
 });
 
@@ -247,35 +242,37 @@ function showCardSelection() {
 
     // 左鍵選卡或翻轉
     cell.addEventListener('click', () => {
-  if (canGuess) {
-    // ✅ 猜模式 → 嘗試猜對方卡牌
-    const guessedName = item.name;
-    if (guessedName === opponentCard) {
-      addMessage('system', '🎉 你猜對了！你贏了！');
-      endGame('你猜對了！');
-    } else {
-      addMessage('system', '猜錯啦！請再問一題後才能再猜');
-    }
+      if (canGuess) {
+        const guessedName = item.name;
+        if (!opponentCard) {
+          addMessage('system', '⚠️ 對手卡牌尚未同步，請稍候再試');
+          return;
+        }
 
-    canGuess = false;
-    gridArea.classList.remove('guess-mode');
-    guessBtn.style.display = 'inline-block';
-    cancelGuessBtn.style.display = 'none';
-    return;
-  }
+        const isCorrect = guessedName.trim() === opponentCard.trim();
+        if (isCorrect) {
+          addMessage('system', '🎉 你猜對了！你贏了！');
+          endGame('你猜對了！');
+        } else {
+          addMessage('system', `猜錯啦！你選的是「${guessedName}」，請再問一題後才能再猜`);
+        }
 
-  if (!myCard) {
-    // ✅ 第一次選卡
-    myCard = item.name;
-    cell.classList.add('selected-antidote');
-    socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
-    addMessage('system', `玩家 ${meName} 已選好`);
-  } else {
-    // ✅ 非猜模式 → 翻轉遮罩
-    cell.classList.toggle('flipped');
-  }
-});
+        canGuess = false;
+        gridArea.classList.remove('guess-mode');
+        guessBtn.style.display = 'inline-block';
+        cancelGuessBtn.style.display = 'none';
+        return;
+      }
 
+      if (!myCard) {
+        myCard = item.name;
+        cell.classList.add('selected-antidote');
+        socket.emit('choose_card', { roomId, playerId: myPlayerId, card: myCard });
+        addMessage('system', `玩家 ${meName} 已選好`);
+      } else {
+        cell.classList.toggle('flipped');
+      }
+    });
 
     // 右鍵翻轉
     cell.addEventListener('contextmenu', e => {
@@ -284,15 +281,17 @@ function showCardSelection() {
     });
 
     gridArea.appendChild(cell);
-  });
+  }); // ← forEach 收尾
 }
 
 
-
-socket.on('player_chosen', ({ player, card }) => {
+// 當任何玩家選卡時，伺服器廣播
+socket.on('player_chosen', ({ player, playerId, card }) => {
   addMessage('system', `${player} 已選好`);
-  if (player !== meName) {
-    opponentCard = card; // ✅ 記錄對手的卡牌
+  // 如果是對手，記錄對手卡牌名稱
+  if (playerId !== myPlayerId && typeof card === 'string') {
+    opponentCard = card;
+    console.log('[PVP] 對手卡牌記錄：', opponentCard);
   }
 });
 
