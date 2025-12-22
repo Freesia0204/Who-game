@@ -50,20 +50,27 @@ body {
 
 /* 上一步按鈕 */
 .back-btn {
-  position: fixed;
-  top: 10px; left: 10px;
-  background-color: #333;
+  position: absolute;   /* 固定在框框左上角 */
+  top: 10px;
+  left: 10px;
+  background: #666;     /* 深灰色 */
   color: #fff;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 6px 12px;
   border: none;
+  border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  z-index: 1000;
+  width: auto;          /* 不要撐滿 */
 }
+
 .back-btn:hover {
-  background-color: #555;
+  background: #444;     /* hover 時稍微變深 */
 }
+
+.match-box {
+  position: relative;   /* 讓 back-btn 以 match-box 為定位基準 */
+}
+
 
 /* 配對框 */
 .match-box {
