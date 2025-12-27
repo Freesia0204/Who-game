@@ -61,7 +61,7 @@ body {
 .grid-area {
   flex: 1.5; /* 左邊占比約 60% */
   display: grid; /* 網格布局 */
-  grid-template-columns: repeat(6, 1fr); /* 6欄平均分配 */
+  grid-template-columns: repeat(5, 1fr); /* 6欄平均分配 */
   grid-template-rows: repeat(5, 1fr); /* 5列平均分配 */
   gap: 8px; /* 格子間距 */
   padding: 16px;
@@ -86,6 +86,7 @@ body {
   font-weight: bold;
   user-select: none; /* 禁止文字選取 */
   transition: 0.2s; /* 滑鼠滑過動畫 */
+  max-width: 180px;
 }
 
 /* 格子內圖片樣式 */
@@ -132,15 +133,17 @@ body {
 /* === 訊息顯示框 === */
 .messages {
   flex: 1; /* 佔據剩餘空間 */
-  list-style: none; /* 移除列表符號 */
+  list-style: none;
   overflow-y: auto; /* 超出可滾動 */
   padding: 8px;
   margin: 0 0 8px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background: rgba(255,255,255,0.05); /* 微透明背景 */
-  min-height: 180px; /* 最小高度 */
+  background: rgba(255,255,255,0.05);
+  min-height: 180px;
+  max-height: 300px; /* ✅ 新增：限制最大高度 */
 }
+
 
 /* === 每則訊息樣式 === */
 .message {

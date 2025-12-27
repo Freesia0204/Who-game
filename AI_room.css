@@ -86,7 +86,7 @@ body {
 .grid-area {
   flex: 1.5; /* 左邊占比約 60% */
   display: grid; /* 網格布局 */
-  grid-template-columns: repeat(6, 1fr); /* 6欄平均分配 */
+  grid-template-columns: repeat(5, 1fr); /* 6欄平均分配 */
   grid-template-rows: repeat(5, 1fr); /* 5列平均分配 */
   gap: 8px; /* 格子間距 */
   padding: 16px;
@@ -112,6 +112,7 @@ body {
   font-weight: bold;
   user-select: none; /* 禁止文字選取 */
   transition: 0.2s; /* 滑鼠滑過動畫 */
+  max-width: 180px;
 }
 
 /* 格子內圖片樣式 */

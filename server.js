@@ -71,15 +71,18 @@ socket.on('choose_card', ({ roomId, card }) => {
   };
 
   io.to(roomId).emit('player_chosen', {
-    player: rooms[roomId].players[socket.id].name
+    player: rooms[roomId].players[socket.id].name,
+    playerId: rooms[roomId].players[socket.id].playerId, // ✅ 加上
+    card // ✅ 加上
   });
 
   const room = rooms[roomId];
   if (Object.keys(room.choices).length === Object.keys(room.players).length) {
-    room.rpsDone = false; // ✅ 重置猜拳狀態
+    room.rpsDone = false;
     io.to(roomId).emit('game_start');
   }
 });
+
 
 // 系統隨機猜拳
 socket.on('start_rps', ({ roomId }) => {
