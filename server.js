@@ -161,3 +161,53 @@ server.listen(PORT, () => {
   console.log(`伺服器運行中，PORT=${PORT}`);
 });
 
+const userTopics = {}; 
+// 結構範例：
+// userTopics[playerId] = [
+//   { name: "我的混合主題", cards: [ { name: "工藤新一", img: "..." }, ... ] }
+// ]
+
+app.post('/api/saveCustomTopic', express.json(), (req, res) => {
+  const { userId, topic } = req.body;
+  if (!userId || !topic) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+  if (!userTopics[userId]) {
+    userTopics[userId] = [];
+  }
+  userTopics[userId].push(topic);
+  res.json({ success: true });
+});
+
+app.get('/api/getCustomTopics', (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.json({ customTopics: [] });
+  }
+  res.json({ customTopics: userTopics[userId] || [] });
+});
+
+app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
+  const { userId, topicName } = req.body;
+  if (!userId || !topicName) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+  if (userTopics[userId]) {
+    userTopics[userId] = userTopics[userId].filter(t => t.name !== topicName);
+  }
+  res.json({ success: true });
+});
+
+app.post('/api/editCustomTopic', express.json(), (req, res) => {
+  const { userId, topicName, newTopic } = req.body;
+  if (!userId || !topicName || !newTopic) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+  if (userTopics[userId]) {
+    userTopics[userId] = userTopics[userId].map(t => 
+      t.name === topicName ? newTopic : t
+    );
+  }
+  res.json({ success: true });
+});
+

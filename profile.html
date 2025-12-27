@@ -4,18 +4,20 @@
   <meta charset="UTF-8">
   <title>個人檔案</title>
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="profile.css"> <!-- 如果要額外樣式 -->
 </head>
 <body>
-     <header class="navbar">
-        <nav>
-            <a href="index.html">首頁</a>
-            <a href="#topics">主題預覽</a>
-            <a href="#characters">人物介紹</a>
-            <a href="#rules">玩法教學</a>
-            <a href="#rank">排行榜</a>
-            <a href="match.html" class="start-nav-btn">開始遊戲</a> <!-- 新增 -->
-        </nav>
-    </header>
+  <header class="navbar">
+    <nav>
+      <a href="index.html">首頁</a>
+      <a href="#topics">主題預覽</a>
+      <a href="#characters">人物介紹</a>
+      <a href="#rules">玩法教學</a>
+      <a href="#rank">排行榜</a>
+      <a href="match.html" class="start-nav-btn">開始遊戲</a>
+    </nav>
+  </header>
+
   <div class="profile-box">
     <h2>個人檔案</h2>
     <p>玩家姓名：<span id="profileName"></span></p>
@@ -27,38 +29,22 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const playerName = localStorage.getItem('playerName');
-      const playerId = localStorage.getItem('playerId');
+  <button id="addCustomTopicBtn">新增自訂主題</button>
+  <div id="customTopicsList"></div>
 
-      document.getElementById('profileName').textContent = playerName || '未登入';
-      document.getElementById('profileId').textContent = playerId || '未登入';
+  <!-- 自訂主題表單 Modal -->
+  <div id="customTopicModal" class="modal">
+    <div class="modal-content">
+      <h3>新增自訂主題</h3>
+      <input type="text" id="topicNameInput" placeholder="主題名稱">
+      <div id="cardsContainer"></div>
+      <button id="addCardBtn">新增卡片</button>
+      <button id="saveTopicBtn">儲存主題</button>
+      <button id="closeModalBtn">取消</button>
+    </div>
+  </div>
 
-      // 登出 → 清除登入狀態，但保留帳號資料
-      document.getElementById('goLoginBtn').addEventListener('click', () => {
-        localStorage.removeItem('playerName');
-        localStorage.removeItem('playerId');
-        alert('已登出，下次可直接登入');
-        window.location.href = 'index.html';
-      });
-
-      // 註銷 → 刪除帳號資料
-      document.getElementById('deleteBtn').addEventListener('click', () => {
-        if (!playerName) {
-          alert('目前沒有登入帳號');
-          return;
-        }
-
-        // 刪除帳號資料
-        localStorage.removeItem(`user_${playerName}`);
-        localStorage.removeItem('playerName');
-        localStorage.removeItem('playerId');
-
-        alert('帳號已註銷，請重新註冊');
-        window.location.href = 'index.html';
-      });
-    });
-  </script>
+  <!-- 引入 JS -->
+  <script src="profile.js"></script>
 </body>
 </html>
