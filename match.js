@@ -61,11 +61,13 @@ if (createRoomBtn) {
     console.log('[match.js] create room:', url);
     window.location.href = url;
   });
+
+  // 上一步按鈕事件
+  document.getElementById('backBtn').addEventListener('click', () => {
+    window.location.href = 'index.html'; // 直接回首頁
+  });
+
 }
 
 
-// 上一步按鈕事件
-document.getElementById('backBtn').addEventListener('click', () => {
-  window.location.href = 'index.html'; // 直接回首頁
-});
 

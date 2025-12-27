@@ -181,30 +181,30 @@ function generatePlayerId() {
   return id;
 }
 
-// 取得所有主題卡片
-const cards = document.querySelectorAll('.topic-card');
+
+// ===== 主題卡片 → 彈窗顯示大圖 =====
 const modal = document.getElementById('imgModal');
 const modalImg = document.getElementById('modalImg');
 const caption = document.getElementById('caption');
 const closeBtn = document.querySelector('.close');
 
-cards.forEach(card => {
+document.querySelectorAll('.topic-card').forEach(card => {
   card.addEventListener('click', () => {
-    const imgSrc = card.dataset.img;
+    const altSrc = card.getAttribute('data-alt'); // 取出大圖路徑
     const text = card.querySelector('p').textContent;
 
-    modal.style.display = 'block';
-    modalImg.src = imgSrc;
-    caption.textContent = text;
+    if (altSrc) {
+      modal.style.display = 'flex';
+      modalImg.src = altSrc;
+      caption.textContent = text;
+    }
   });
 });
 
-// 關閉彈窗
 closeBtn.addEventListener('click', () => {
   modal.style.display = 'none';
 });
 
-// 點擊背景也能關閉
 modal.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.style.display = 'none';

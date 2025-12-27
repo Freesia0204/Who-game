@@ -277,7 +277,7 @@ const topics = [
   { name: '名偵探柯南-紅黑篇', img: 'img-KN/柯南_loge.jpg' },
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
-  { name: 'FREE!', img: 'img/topic_free.jpg' }
+  { name: 'FREE!', img: 'img-Free/Free_logo.png' }
 ];
 
 // 🎲 AI 問題選擇邏輯：合併通用 + 主題題庫

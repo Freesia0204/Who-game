@@ -2,7 +2,8 @@
 body {
   margin: 0;
   font-family: "微軟正黑體", sans-serif;
-  background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4); /* 柔和漸層 */
+  background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4);
+  /* 柔和漸層 */
   background-size: 300% 300%;
   animation: bgFlow 12s ease-in-out infinite;
   display: flex;
@@ -10,28 +11,38 @@ body {
   align-items: center;
   height: 100vh;
   color: #fff;
-  padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
+  padding-top: 60px;
+  /* 導覽列高度，避免內容被遮住 */
 }
 
 @keyframes bgFlow {
-  0% { background-position: left top; }
-  50% { background-position: right bottom; }
-  100% { background-position: left top; }
+  0% {
+    background-position: left top;
+  }
+
+  50% {
+    background-position: right bottom;
+  }
+
+  100% {
+    background-position: left top;
+  }
 }
 
 /* 導覽列統一樣式 */
 .navbar {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
-  background: rgba(80, 40, 120, 0.85); /* 深紫半透明玻璃感 */
+  background: linear-gradient(135deg, rgba(168, 192, 255, 0.85), rgba(251, 194, 235, 0.85));
   backdrop-filter: blur(8px);
   z-index: 1000;
 }
 
 .navbar nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
 }
@@ -45,41 +56,44 @@ body {
 }
 
 .navbar nav a:hover {
-  color: #fbc2eb; /* 柔和淡粉紫 */
+  color: #ffe7ff;
 }
 
 /* 上一步按鈕 */
 .back-btn {
-  position: absolute;   /* 固定在框框左上角 */
-  top: 10px;
-  left: 10px;
-  background: #666;     /* 深灰色 */
-  color: #fff;
-  padding: 6px 12px;
+  position: fixed;               /* 固定在整個畫面左上角 */
+  top: 20px;                     /* 比原本再高一點 */
+  left: 20px;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* 顯眼的紅橘漸層 */
+  color: white;
+  padding: 8px 16px;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
   cursor: pointer;
-  width: auto;          /* 不要撐滿 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  z-index: 1001; /* 確保在最上層 */
+  text-decoration: none; /* ✅ 移除底線 */
 }
 
 .back-btn:hover {
-  background: #444;     /* hover 時稍微變深 */
-}
-
-.match-box {
-  position: relative;   /* 讓 back-btn 以 match-box 為定位基準 */
+  background: linear-gradient(135deg, #ffb347, #ff6a6a); /* 漸層反轉 */
+  transform: translateY(-2px); /* 上浮效果 */
 }
 
 
-/* 配對框 */
 .match-box {
-  background: rgba(255,255,255,0.1);
+  position: relative;
+  width: 320px;
+  margin: 80px auto;
+  /* 置中整個配對框 */
   padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.3);
   text-align: center;
-  width: 300px;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.3);
 }
 
 .match-box h2 {
@@ -92,7 +106,8 @@ body {
   margin: 6px 0;
   border: none;
   border-radius: 6px;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* 淡藍漸層 */
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  /* 淡藍漸層 */
   color: white;
   font-weight: 600;
   cursor: pointer;

@@ -31,16 +31,18 @@ body {
 
 /* === 主容器設定 === */
 .container {
-  display: flex; /* 使用彈性盒子排列子元素 */
-  flex-direction: row; /* 左右排列：左格子區，右聊天區 */
-  width: 95vw; /* 寬度佔視窗 95% */
-  height: 180vh; /* 高度佔視窗 180% (可依需求調整) */
-  gap: 12px; /* 左右區塊間距 */
-  background: rgba(255,255,255,0.05); /* 微透明白色背景 */
-  border-radius: 12px; /* 容器圓角 */
-  box-shadow: 0 10px 30px rgba(2,6,23,0.3); /* 陰影效果 */
-  padding: 12px; /* 內距 */
-  position: relative; /* 方便房號/玩家名稱絕對定位 */
+  display: flex;
+  flex-direction: row;
+  width: 95vw;
+  min-height: calc(100vh - 60px); /* 不會超出視窗 */
+  gap: 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.3);
+  padding: 12px;
+  position: relative;
+  align-items: stretch;
+  
 }
 
 /* === 房號 / 玩家名稱 / 房主IP 區 === */
@@ -65,8 +67,9 @@ body {
   padding: 16px;
   border-radius: 12px;
   background: rgba(255,255,255,0.1); /* 微透明背景 */
+  min-height: 600px; 
+  height: auto;
 }
-
 
 
 /* === 每一個格子 === */
@@ -111,10 +114,11 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* 改成 flex-start 就不會把內容拉開 */
-  height: 100%; /* 高度撐滿父容器 */
   padding: 16px;
   background: rgba(255,255,255,0.1); 
   border-radius: 12px;
+  min-height: 600px; 
+  height: auto;
 }
 
 
@@ -414,25 +418,27 @@ body {
   background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
   transform: translateY(-2px);
 }
+
 /* 導覽列統一樣式 */
 .navbar {
-  position: fixed;       /* 固定在最上方 */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333; /* 深色背景，可依需求修改 */
-  z-index: 1000;         /* 確保在最上層 */
+  background: linear-gradient(135deg, rgba(168, 192, 255, 0.85), rgba(251, 194, 235, 0.85));
+  backdrop-filter: blur(8px);
+  z-index: 1000;
 }
 
 .navbar nav {
   display: flex;
-  justify-content: center; /* 導覽列置中排列 */
+  justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
 }
 
 .navbar nav a {
-  color: #fff;            /* 白色文字 */
+  color: #fff;
   text-decoration: none;
   margin: 0 15px;
   font-weight: bold;
@@ -440,6 +446,5 @@ body {
 }
 
 .navbar nav a:hover {
-  color: #ffd700;         /* 滑過時變金色，可自行調整 */
+  color: #ffe7ff;
 }
-

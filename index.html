@@ -30,30 +30,54 @@
     <h1>歡迎來到猜猜我是誰</h1>
     <p>從線索、圖片與提示中找出真正的身分 ✨</p>
     <div class="hero-buttons">
-      <a href="AI_room.html" class="btn ai-btn">🤖 AI模式開始遊戲</a>
-      <a href="match.html" class="btn pvp-btn">👥 真人模式開始遊戲</a>
+      <a href="AI_room.html" class="btn ai-btn"> AI模式</a>
+      <a href="match.html" class="btn pvp-btn">真人模式</a>
     </div>
   </section>
 
   <!-- 主題卡片 -->
-  <section class="topics" id="topics">
+<section class="topics" id="topics">
   <h2>主題預覽</h2>
+  
+
   <div class="topics-grid">
-    <div class="topic-card" data-img="img-KN/柯南_loge.jpg">
+    <div class="topic-card" data-alt="img-KN/柯南人物.jpg">
       <img src="img-KN/柯南_loge.jpg" alt="名偵探柯南">
       <p>名偵探柯南</p>
     </div>
-    <div class="topic-card" data-img="img-KN/柯南_redblack.jpg">
+    <div class="topic-card" data-alt="img-KN/紅黑人物.jpg">
       <img src="img-KN/柯南_redblack.jpg" alt="紅黑篇">
+      <p>名偵探柯南-紅黑篇</p>
+    </div>
+    <div class="topic-card" data-img="img-KN/柯南_redblack.jpg">
+      <img src="img-KN/柯南_loge.jpg" alt="紅黑篇">
       <p>名偵探柯南-紅黑篇</p>
     </div>
     <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
       <img src="img-GM/鬼滅之刃-logo.png" alt="鬼滅之刃">
       <p>鬼滅之刃</p>
     </div>
-    <!-- 其他主題卡片 -->
+    <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
+      <img src="img-WB/防風少年-logo.png" alt="鬼滅之刃">
+      <p>防風少年</p>
+    </div>
+    <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
+      <img src="img-Free/Free_logo.png" alt="鬼滅之刃">
+      <p>Free!男子游泳部</p>
+    </div>
+
   </div>
+  <div id="imgModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modalImg">
+  <div id="caption"></div>
+</div>
+
 </section>
+
+
+
+  
 
 <!-- 放大圖片彈窗 -->
 <div id="imgModal" class="modal">
