@@ -1,3 +1,22 @@
+const fs = require('fs');
+const DATA_FILE = './userTopics.json';
+
+// 載入資料
+function loadData() {
+  if (fs.existsSync(DATA_FILE)) {
+    return JSON.parse(fs.readFileSync(DATA_FILE));
+  }
+  return {};
+}
+
+// 儲存資料
+function saveData() {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(userTopics, null, 2));
+}
+
+// 初始化資料
+let userTopics = loadData();
+
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -107,19 +126,6 @@ socket.on('rps_done', ({ roomId }) => {
   }
 });
 
-socket.on('start_rps', ({ roomId }) => {
-  if (!rooms[roomId]) return;
-  if (rooms[roomId].rpsDone) return; // ✅ 已結束就不再猜
-
-  const options = ['石頭', '剪刀', '布'];
-  const hands = {};
-  for (const sid of Object.keys(rooms[roomId].players)) {
-    hands[rooms[roomId].players[sid].playerId] =
-      options[Math.floor(Math.random() * options.length)];
-  }
-  io.to(roomId).emit('rps_result', { hands });
-});
-
 
 
 // 在新遊戲開始時重置
@@ -161,11 +167,7 @@ server.listen(PORT, () => {
   console.log(`伺服器運行中，PORT=${PORT}`);
 });
 
-const userTopics = {}; 
-// 結構範例：
-// userTopics[playerId] = [
-//   { name: "我的混合主題", cards: [ { name: "工藤新一", img: "..." }, ... ] }
-// ]
+
 
 app.post('/api/saveCustomTopic', express.json(), (req, res) => {
   const { userId, topic } = req.body;
@@ -176,6 +178,7 @@ app.post('/api/saveCustomTopic', express.json(), (req, res) => {
     userTopics[userId] = [];
   }
   userTopics[userId].push(topic);
+  saveData(); // ✅ 新增這行
   res.json({ success: true });
 });
 
@@ -195,6 +198,7 @@ app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
   if (userTopics[userId]) {
     userTopics[userId] = userTopics[userId].filter(t => t.name !== topicName);
   }
+  saveData(); // ✅ 新增這行
   res.json({ success: true });
 });
 
@@ -208,6 +212,7 @@ app.post('/api/editCustomTopic', express.json(), (req, res) => {
       t.name === topicName ? newTopic : t
     );
   }
+  saveData(); // ✅ 新增這行
   res.json({ success: true });
 });
 
