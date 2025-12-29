@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const playerName = localStorage.getItem('playerName');
   const playerId = localStorage.getItem('playerId');
-  const myPlayerId = playerId; // ✅ 定義
+  const myPlayerId = playerId;
 
+  // 顯示玩家資訊
   document.getElementById('profileName').textContent = playerName || '未登入';
   document.getElementById('profileId').textContent = playerId || '未登入';
 
@@ -30,70 +31,144 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== 自訂主題功能 =====
   const modal = document.getElementById('customTopicModal');
   const cardsContainer = document.getElementById('cardsContainer');
+  const cardGrid = document.getElementById('cardGrid');
+  const addCardBtn = document.getElementById('addCardBtn');
+  const saveTopicBtn = document.getElementById('saveTopicBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const topicNameInput = document.getElementById('topicNameInput');
 
+  let cardCount = 0;
+
+  function createCardSlot() {
+  const div = document.createElement('div');
+  div.className = 'card-slot';
+
+  const fileInputId = `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  div.innerHTML = `
+    <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+    <div class="card-image">
+      <input type="file" accept="image/*" id="${fileInputId}">
+    </div>
+    <div class="card-text">
+      <input type="text" placeholder="輸入文字">
+    </div>
+  `;
+
+  cardGrid.appendChild(div);
+
+  const imageContainer = div.querySelector('.card-image');
+  const fileInput = div.querySelector(`#${fileInputId}`);
+  const removeBtn = div.querySelector('.delete-bar');
+
+  // 點擊圖片區 → 開檔案選擇
+  imageContainer.addEventListener('click', (e) => {
+    if (e.target === removeBtn) return;
+    fileInput.click();
+  });
+
+  // 圖片預覽
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    const preview = document.createElement('img');
+    preview.src = URL.createObjectURL(file);
+    imageContainer.classList.add('has-image');
+    [...imageContainer.children].forEach(child => {
+      if (child.tagName === 'IMG') child.remove();
+    });
+    imageContainer.appendChild(preview);
+  });
+
+  // 整條刪除卡牌
+  removeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    div.remove();
+  });
+
+  cardCount++;
+}
+
+
+
+  // 打開 Modal → 初始一格
   document.getElementById('addCustomTopicBtn').addEventListener('click', () => {
     modal.style.display = 'flex';
-    cardsContainer.innerHTML = '';
+    cardGrid.innerHTML = '';
+    cardCount = 0;
+    createCardSlot();
   });
 
-  document.getElementById('closeModalBtn').addEventListener('click', () => {
+  // 關閉 Modal
+  closeModalBtn.addEventListener('click', () => {
     modal.style.display = 'none';
+    cardGrid.innerHTML = '';
+    topicNameInput.value = '';
   });
 
-  // 新增卡片
-  document.getElementById('addCardBtn').addEventListener('click', () => {
-    const count = cardsContainer.querySelectorAll('.card-item').length;
-    if (count >= 30) {
+  // 新增卡牌
+  addCardBtn.addEventListener('click', () => {
+    if (cardGrid.querySelectorAll('.card-slot').length >= 30) {
       alert('最多只能新增 30 格');
       return;
     }
-    const div = document.createElement('div');
-    div.className = 'card-item';
-    div.innerHTML = `
-      <input type="text" placeholder="卡片文字">
-      <input type="file" accept="image/*">
-    `;
-    cardsContainer.appendChild(div);
+    createCardSlot();
   });
 
   // 儲存主題
-  document.getElementById('saveTopicBtn').addEventListener('click', () => {
-    const topicName = document.getElementById('topicNameInput').value.trim();
+  saveTopicBtn.addEventListener('click', () => {
+    const topicName = topicNameInput.value.trim();
     if (!topicName) {
       alert('請輸入主題名稱');
       return;
     }
 
     const cards = [];
-    cardsContainer.querySelectorAll('.card-item').forEach(item => {
-      const text = item.querySelector('input[type="text"]').value.trim();
-      const fileInput = item.querySelector('input[type="file"]');
+    cardGrid.querySelectorAll('.card-slot').forEach(slot => {
+      const text = slot.querySelector('input[type="text"]').value.trim();
+      const fileInput = slot.querySelector('input[type="file"]');
       let img = null;
-      if (fileInput.files[0]) {
-        img = URL.createObjectURL(fileInput.files[0]); // 前端預覽用
+      if (fileInput && fileInput.files[0]) {
+        img = URL.createObjectURL(fileInput.files[0]);
       }
       if (text) {
         cards.push({ name: text, img });
       }
     });
 
+    if (cards.length === 0) {
+      alert('至少要填一張卡片');
+      return;
+    }
+
     const topic = { name: topicName, cards };
 
-    // 呼叫後端 API 儲存
     fetch('/api/saveCustomTopic', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: myPlayerId, topic })
-    }).then(r => r.json()).then(res => {
-      if (res.success) {
-        alert('自訂主題已儲存');
-        modal.style.display = 'none';
-        loadCustomTopics(); // 重新載入
-      }
-    });
+    })
+      .then(r => r.json())
+      .then(res => {
+        console.log('API 回應:', res);
+        if (res.success) {
+          alert('自訂主題已儲存');
+          modal.style.display = 'none';
+          loadCustomTopics();
+          cardGrid.innerHTML = '';
+          topicNameInput.value = '';
+          createCardSlot();
+
+        } else {
+          alert('儲存失敗：' + (res.message || '未知錯誤'));
+        }
+      })
+      .catch(err => {
+        console.error('API 錯誤:', err);
+        alert('伺服器錯誤，請稍後再試');
+      });
   });
 
-  // 載入自訂主題
+  // 載入自訂主題名稱列表
   function loadCustomTopics() {
     fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
       .then(r => r.json())
@@ -106,7 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
           list.appendChild(div);
         });
       });
+      
+
   }
 
   loadCustomTopics();
 });
+

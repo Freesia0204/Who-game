@@ -18,31 +18,43 @@
     </nav>
   </header>
 
-  <div class="profile-box">
-    <h2>個人檔案</h2>
-    <p>玩家姓名：<span id="profileName"></span></p>
-    <p>玩家 ID：<span id="profileId"></span></p>
+  <div class="profile-layout">
+    <!-- 右上角玩家資訊 -->
+    <div class="profile-header">
+      <p>玩家姓名：<span id="profileName"></span></p>
+      <p>玩家 ID：<span id="profileId"></span></p>
+    </div>
 
-    <div class="profile-actions">
+    <!-- 左側主體區塊 -->
+    <div class="profile-main">
+      <h2>個人檔案</h2>
+      <h3>已建立主題</h3>
+      <div id="customTopicsList"><!-- 主題列表由 JS 插入 --></div>
+      <button id="addCustomTopicBtn">新增自訂主題</button>
+    </div>
+
+    <!-- 底部操作按鈕 -->
+    <div class="profile-footer">
       <button id="goLoginBtn">登出</button>
       <button id="deleteBtn">註銷</button>
     </div>
   </div>
 
-  <button id="addCustomTopicBtn">新增自訂主題</button>
-  <div id="customTopicsList"></div>
-
-  <!-- 自訂主題表單 Modal -->
-  <div id="customTopicModal" class="modal">
+  <!-- 新增主題 Modal -->
+  <div id="customTopicModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-content">
-      <h3>新增自訂主題</h3>
-      <input type="text" id="topicNameInput" placeholder="主題名稱">
-      <div id="cardsContainer"></div>
-      <button id="addCardBtn">新增卡片</button>
-      <button id="saveTopicBtn">儲存主題</button>
-      <button id="closeModalBtn">取消</button>
+      <div id="cardEditor" class="card-editor">
+        <input type="text" id="topicNameInput" placeholder="主題名稱">
+        <div id="cardGrid" class="card-grid"></div>
+        <div class="editor-buttons">
+          <button id="addCardBtn">＋ 新增卡牌</button>
+          <button id="saveTopicBtn">儲存主題</button>
+          <button id="closeModalBtn">取消</button>
+        </div>
+      </div>
     </div>
   </div>
+
 
   <!-- 引入 JS -->
   <script src="profile.js"></script>
