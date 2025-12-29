@@ -182,6 +182,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
       
+data.customTopics.forEach(topic => {
+  const div = document.createElement('div');
+  div.className = 'topic-item';
+  div.textContent = topic.name;
+
+  // 點擊預覽與修改
+  div.addEventListener('click', () => {
+    topicNameInput.value = topic.name;
+    cardGrid.innerHTML = '';
+    topic.cards.forEach(card => {
+      const div = document.createElement('div');
+      div.className = 'card-slot';
+
+      const fileInputId = `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      div.innerHTML = `
+        <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+        <div class="card-image has-image">
+          <img src="${card.img}" alt="預覽圖片">
+          <input type="file" accept="image/*" id="${fileInputId}">
+        </div>
+        <div class="card-text">
+          <input type="text" value="${card.name}">
+        </div>
+      `;
+      cardGrid.appendChild(div);
+
+      // 綁定刪除與上傳事件（略，與 createCardSlot 相同）
+    });
+
+    modal.style.display = 'flex';
+  });
+
+  document.getElementById('customTopicsList').appendChild(div);
+});
 
   }
 

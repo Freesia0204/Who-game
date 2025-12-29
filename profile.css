@@ -11,22 +11,34 @@
 }
 
 .profile-header {
-  align-self: flex-end;
-  text-align: right;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #fff;
-}
-
-.profile-main {
   width: 100%;
-  text-align: left;
-}
-
-.profile-main h2 {
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start; /* ✅ 改成靠左 */
+  margin-bottom: 20px;
   color: #fff;
 }
+
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.player-meta p {
+  margin: 0;
+  font-weight: bold;
+}
+
 
 #customTopicsList div {
   background: rgba(255,255,255,0.1);
@@ -217,3 +229,40 @@
 
 
 
+.topic-item {
+  background: rgba(255,255,255,0.1);
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.topic-item:hover {
+  background: rgba(255,255,255,0.2);
+}
+.profile-title {
+  width: 100%;
+  text-align: center; /* ✅ 置中 */
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+
+.topic-title {
+  width: 100%;
+  text-align: left; /* ✅ 靠左 */
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.profile-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* ✅ 讓裡面的標題和內容靠左 */
+}

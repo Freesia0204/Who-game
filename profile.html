@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>個人檔案</title>
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="profile.css"> <!-- 如果要額外樣式 -->
+  <link rel="stylesheet" href="profile.css">
 </head>
 <body>
   <header class="navbar">
@@ -19,16 +19,24 @@
   </header>
 
   <div class="profile-layout">
-    <!-- 右上角玩家資訊 -->
+    <!-- 最上方標題 -->
+    <h2 class="profile-title">個人檔案</h2>
+
+    <!-- 頭像與玩家資訊 -->
     <div class="profile-header">
-      <p>玩家姓名：<span id="profileName"></span></p>
-      <p>玩家 ID：<span id="profileId"></span></p>
+      <div class="profile-info">
+        <img src="你的預設圖片路徑.jpg" alt="頭像" class="avatar">
+        <div class="player-meta">
+          <p>玩家姓名：<span id="profileName"></span></p>
+          <p>玩家 ID：<span id="profileId"></span></p>
+        </div>
+      </div>
     </div>
 
-    <!-- 左側主體區塊 -->
+    <!-- 主題區塊 -->
     <div class="profile-main">
-      <h2>個人檔案</h2>
-      <h3>已建立主題</h3>
+      <h3 class="topic-title">我的主題</h3>
+
       <div id="customTopicsList"><!-- 主題列表由 JS 插入 --></div>
       <button id="addCustomTopicBtn">新增自訂主題</button>
     </div>
@@ -54,7 +62,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- 引入 JS -->
   <script src="profile.js"></script>
