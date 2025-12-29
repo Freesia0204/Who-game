@@ -169,18 +169,7 @@ server.listen(PORT, () => {
 
 
 
-app.post('/api/saveCustomTopic', express.json(), (req, res) => {
-  const { userId, topic } = req.body;
-  if (!userId || !topic) {
-    return res.json({ success: false, message: '缺少參數' });
-  }
-  if (!userTopics[userId]) {
-    userTopics[userId] = [];
-  }
-  userTopics[userId].push(topic);
-  saveData(); // ✅ 新增這行
-  res.json({ success: true });
-});
+
 
 app.get('/api/getCustomTopics', (req, res) => {
   const { userId } = req.query;
@@ -190,17 +179,42 @@ app.get('/api/getCustomTopics', (req, res) => {
   res.json({ customTopics: userTopics[userId] || [] });
 });
 
+
+
+const path = require('path');
+
 app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
   const { userId, topicName } = req.body;
   if (!userId || !topicName) {
     return res.json({ success: false, message: '缺少參數' });
   }
+
   if (userTopics[userId]) {
+    // 找到要刪的主題
+    const topic = userTopics[userId].find(t => t.name === topicName);
+
+    if (topic) {
+      // 刪掉主題裡的圖片檔案
+      topic.cards.forEach(card => {
+        if (card.img && card.img.startsWith('/uploads/')) {
+          const filePath = path.join(__dirname, card.img);
+          fs.unlink(filePath, err => {
+            if (err) console.error('刪除圖片失敗:', err);
+            else console.log('已刪除圖片:', filePath);
+          });
+        }
+      });
+    }
+
+    // 更新 JSON 資料
     userTopics[userId] = userTopics[userId].filter(t => t.name !== topicName);
+    saveData();
   }
-  saveData(); // ✅ 新增這行
+
   res.json({ success: true });
 });
+
+
 
 app.post('/api/editCustomTopic', express.json(), (req, res) => {
   const { userId, topicName, newTopic } = req.body;
@@ -216,3 +230,28 @@ app.post('/api/editCustomTopic', express.json(), (req, res) => {
   res.json({ success: true });
 });
 
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // 存到 uploads 資料夾
+
+app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
+  const { userId, topicName } = req.body;
+  if (!userId || !topicName) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+
+  const cards = [];
+  req.files.forEach((file, index) => {
+    const name = req.body[`cards[${index}][name]`];
+    const imgPath = `/uploads/${file.filename}`;
+    cards.push({ name, img: imgPath });
+  });
+
+  const topic = { name: topicName, cards };
+
+  if (!userTopics[userId]) userTopics[userId] = [];
+  userTopics[userId].push(topic);
+  saveData();
+
+  res.json({ success: true });
+});
+app.use('/uploads', express.static('uploads'));

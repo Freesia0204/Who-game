@@ -114,111 +114,93 @@ document.addEventListener('DOMContentLoaded', () => {
     createCardSlot();
   });
 
-  // 儲存主題
-  saveTopicBtn.addEventListener('click', () => {
-    const topicName = topicNameInput.value.trim();
-    if (!topicName) {
-      alert('請輸入主題名稱');
-      return;
-    }
+  
 
-    const cards = [];
-    cardGrid.querySelectorAll('.card-slot').forEach(slot => {
-      const text = slot.querySelector('input[type="text"]').value.trim();
-      const fileInput = slot.querySelector('input[type="file"]');
-      let img = null;
-      if (fileInput && fileInput.files[0]) {
-        img = URL.createObjectURL(fileInput.files[0]);
-      }
-      if (text) {
-        cards.push({ name: text, img });
-      }
-    });
+// 載入自訂主題名稱列表
+function loadCustomTopics() {
+  fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
+    .then(r => r.json())
+    .then(data => {
+      const list = document.getElementById('customTopicsList');
+      list.innerHTML = '';
 
-    if (cards.length === 0) {
-      alert('至少要填一張卡片');
-      return;
-    }
+      data.customTopics.forEach(topic => {
+        const div = document.createElement('div');
+        div.className = 'topic-item';
+        div.textContent = topic.name;
 
-    const topic = { name: topicName, cards };
-
-    fetch('/api/saveCustomTopic', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: myPlayerId, topic })
-    })
-      .then(r => r.json())
-      .then(res => {
-        console.log('API 回應:', res);
-        if (res.success) {
-          alert('自訂主題已儲存');
-          modal.style.display = 'none';
-          loadCustomTopics();
+        // 點擊預覽與修改
+        div.addEventListener('click', () => {
+          topicNameInput.value = topic.name;
           cardGrid.innerHTML = '';
-          topicNameInput.value = '';
-          createCardSlot();
-
-        } else {
-          alert('儲存失敗：' + (res.message || '未知錯誤'));
-        }
-      })
-      .catch(err => {
-        console.error('API 錯誤:', err);
-        alert('伺服器錯誤，請稍後再試');
-      });
-  });
-
-  // 載入自訂主題名稱列表
-  function loadCustomTopics() {
-    fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
-      .then(r => r.json())
-      .then(data => {
-        const list = document.getElementById('customTopicsList');
-        list.innerHTML = '';
-        data.customTopics.forEach(topic => {
-          const div = document.createElement('div');
-          div.textContent = topic.name;
-          list.appendChild(div);
+          topic.cards.forEach(card => {
+            const slot = document.createElement('div');
+            slot.className = 'card-slot';
+            slot.innerHTML = `
+              <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+              <div class="card-image has-image">
+                <img src="${card.img}" alt="預覽圖片">
+                <input type="file" accept="image/*">
+              </div>
+              <div class="card-text">
+                <input type="text" value="${card.name}">
+              </div>
+            `;
+            cardGrid.appendChild(slot);
+          });
+          modal.style.display = 'flex';
         });
+
+        list.appendChild(div);
       });
-      
-data.customTopics.forEach(topic => {
-  const div = document.createElement('div');
-  div.className = 'topic-item';
-  div.textContent = topic.name;
+    })
+    .catch(err => console.error('API 錯誤:', err));
+}
 
-  // 點擊預覽與修改
-  div.addEventListener('click', () => {
-    topicNameInput.value = topic.name;
-    cardGrid.innerHTML = '';
-    topic.cards.forEach(card => {
-      const div = document.createElement('div');
-      div.className = 'card-slot';
+loadCustomTopics();
 
-      const fileInputId = `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      div.innerHTML = `
-        <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
-        <div class="card-image has-image">
-          <img src="${card.img}" alt="預覽圖片">
-          <input type="file" accept="image/*" id="${fileInputId}">
-        </div>
-        <div class="card-text">
-          <input type="text" value="${card.name}">
-        </div>
-      `;
-      cardGrid.appendChild(div);
-
-      // 綁定刪除與上傳事件（略，與 createCardSlot 相同）
-    });
-
-    modal.style.display = 'flex';
-  });
-
-  document.getElementById('customTopicsList').appendChild(div);
 });
-
+// 儲存主題
+saveTopicBtn.addEventListener('click', () => {
+  const topicName = topicNameInput.value.trim();
+  if (!topicName) {
+    alert('請輸入主題名稱');
+    return;
   }
 
-  loadCustomTopics();
+  const formData = new FormData();
+  formData.append('userId', myPlayerId);
+  formData.append('topicName', topicName);
+
+  // 把每張卡牌的文字和圖片一起送
+  cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
+    const text = slot.querySelector('input[type="text"]').value.trim();
+    const fileInput = slot.querySelector('input[type="file"]');
+    if (text) {
+      formData.append(`cards[${index}][name]`, text);
+    }
+    if (fileInput && fileInput.files[0]) {
+      formData.append(`cards[${index}][img]`, fileInput.files[0]); // ✅ 真正的檔案
+    }
+  });
+
+  fetch('/api/uploadTopic', {
+    method: 'POST',
+    body: formData
+  })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        alert('自訂主題已儲存');
+        modal.style.display = 'none';
+        loadCustomTopics();
+      } else {
+        alert('儲存失敗：' + (res.message || '未知錯誤'));
+      }
+    })
+    .catch(err => {
+      console.error('API 錯誤:', err);
+      alert('伺服器錯誤，請稍後再試');
+    });
 });
 

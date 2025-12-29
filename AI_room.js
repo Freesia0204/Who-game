@@ -322,17 +322,62 @@ const AI_DB = {
 
   ],
 
-  '鬼滅之刃': [
-    { question: '他是不是柱' },
-    { question: '他有沒有刀' },
-    { question: '他是不是鬼' }
-  ],
 
-  '防風少年': [
-    { question: '他是不是打架很強' },
-    { question: '他是不是有幫派' },
-    { question: '他是不是高中生' }
-  ],
+
+'鬼滅之刃': [
+{ question: '他是不是柱？（曾經也算）', trait: 'column' },
+{ question: '他最後是不是死了？', trait: 'die' },
+{ question: '？', trait: 'column' },
+{ question: '他有沒有開斑紋？', trait: 'Texture' },
+{ question: '他的臉上有沒有傷痕、疤痕？', trait: 'scar' },
+{ question: '他有沒有參加無限城決戰？', trait: 'battle ' },
+{ question: '他是不是領袖？', trait: 'leader' },
+{ question: '他是不是鬼？（曾經變鬼算，吃鬼不算）', trait: 'ghost' },
+{ question: '他是不是人？', trait: 'people' },
+{ question: '他是不是自爆而亡的？', trait: 'explode' },
+{ question: '他是不是被切一半死的？', trait: 'half' },
+{ question: '他是不是很溫柔？', trait: 'gentle' },
+{ question: '他是不是很暴躁？', trait: 'irritable' },
+{ question: '他是不是喜歡吃東西？', trait: 'eat' },
+{ question: '他的頭髮是不是不只一個顏色？', trait: 'color ' },
+{ question: '他有沒有兄弟姐妹？', trait: 'sisters' },
+{ question: '他的頭髮有黑色嗎？', trait: 'blackhair' },
+{ question: '他是上弦嗎？', trait: 'Upper' },
+{ question: '他是下弦嗎？', trait: 'lower' },
+{ question: '他的臉是不是一般五官？（一雙眼睛一個鼻子一個嘴巴，都在正常位子上）', trait: 'facial' },
+{ question: '他是不是上弦三以上？', trait: 'Mikami' },
+{ question: '他是不是上弦三以下？', trait: 'ThreeDown' },
+{ question: '他會不會使用血鬼術？', trait: 'Blood' },
+{ question: '他會使用呼吸法嗎？', trait: 'breathe' },
+{ question: '他使用日輪刀嗎？', trait: 'knife' },
+{ question: '他有戴面具嗎？', trait: 'mask' },
+{ question: '他是十二鬼月的一員嗎', trait: 'moon' },
+{ question: '他是五感組的一員嗎', trait: 'FiveSenses' },
+],
+
+'防風少年': [
+{ question: '他是風鈴的嗎？', trait: 'column' },
+{ question: '他很擅長打架嗎？', trait: 'die' },
+{ question: '？', trait: 'column' },
+{ question: '他是GRAVEL的嗎？', trait: 'Texture' },
+{ question: '他是獅子頭連的嗎？', trait: 'scar' },
+{ question: '他是六方一座的嗎？', trait: 'battle ' },
+{ question: '他是烽的嗎？', trait: 'leader' },
+{ question: '他是四天王的嗎？（曾經變鬼算，吃鬼不算）', trait: 'ghost' },
+{ question: '他是多聞眾的嗎？', trait: 'people' },
+{ question: '他是持國眾的嗎？', trait: 'explode' },
+{ question: '他是增長眾的嗎？', trait: 'half' },
+{ question: '他是廣目眾的嗎？', trait: 'gentle' },
+{ question: '他是級長嗎？', trait: 'irritable' },
+{ question: '他是副級長嗎？', trait: 'eat' },
+{ question: '他是總代嗎？', trait: 'color ' },
+{ question: '他有沒有兄弟姐妹（親的）？', trait: 'sisters' },
+{ question: '他是黑髮嗎？（半邊也算）', trait: 'blackhair' },
+{ question: '他有戴耳環嗎？', trait: 'Upper' },
+{ question: '他成年了嗎？', trait: 'lower' },
+],
+
+
 
   'FREE!': [
     { question: '他是不是游泳選手' },
