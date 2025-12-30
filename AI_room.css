@@ -94,6 +94,7 @@ body {
   background: rgba(255,255,255,0.1); /* 微透明背景 */
   min-height: 600px; 
   height: auto;
+  margin-top: 20px; /* ✅ 這裡的數值越大，圖片離上方越遠 */
 }
 
 
