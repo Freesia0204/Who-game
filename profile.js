@@ -180,7 +180,7 @@ saveTopicBtn.addEventListener('click', () => {
       formData.append(`cards[${index}][name]`, text);
     }
     if (fileInput && fileInput.files[0]) {
-      formData.append(`cards[${index}][img]`, fileInput.files[0]); // ✅ 真正的檔案
+      formData.append('cards', fileInput.files[0]); // ✅ 改成 cards
     }
   });
 

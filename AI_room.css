@@ -112,16 +112,16 @@ body {
   font-weight: bold;
   user-select: none; /* 禁止文字選取 */
   transition: 0.2s; /* 滑鼠滑過動畫 */
-  max-width: 180px;
+  max-width: 190px;
 }
 
 /* 格子內圖片樣式 */
 .cell img {
-  width: 90%;
-  aspect-ratio: 3 / 4; /* ✅ 改成直式比例 */
-  object-fit: cover;
+  width: 90%; /* 圖片寬度佔格子 90% */
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 4px; /* 與文字間距 */
 }
-
 
 /* 格子內文字樣式 */
 .cell span {

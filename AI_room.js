@@ -327,7 +327,6 @@ const AI_DB = {
 '鬼滅之刃': [
 { question: '他是不是柱？（曾經也算）', trait: 'column' },
 { question: '他最後是不是死了？', trait: 'die' },
-{ question: '？', trait: 'column' },
 { question: '他有沒有開斑紋？', trait: 'Texture' },
 { question: '他的臉上有沒有傷痕、疤痕？', trait: 'scar' },
 { question: '他有沒有參加無限城決戰？', trait: 'battle ' },
