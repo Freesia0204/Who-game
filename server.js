@@ -25,8 +25,8 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 const path = require('path');
-app.use('/data', express.static(path.join(__dirname, 'data')));
-
+app.use(express.static(__dirname)); // ✅ 公開 HTML、JS、CSS
+app.use('/data', express.static(path.join(__dirname, 'data'))); // ✅ 公開 JSON 資料
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
@@ -183,7 +183,7 @@ app.get('/api/getCustomTopics', (req, res) => {
 
 
 
-const path = require('path');
+
 
 app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
   const { userId, topicName } = req.body;
