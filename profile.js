@@ -161,6 +161,9 @@ loadCustomTopics();
 // 儲存主題
 saveTopicBtn.addEventListener('click', () => {
   const topicName = topicNameInput.value.trim();
+  console.log('前端送出的 userId:', myPlayerId);
+  console.log('送出的 topicName:', topicName);
+
   if (!topicName) {
     alert('請輸入主題名稱');
     return;
@@ -169,6 +172,8 @@ saveTopicBtn.addEventListener('click', () => {
   const formData = new FormData();
   formData.append('userId', myPlayerId);
   formData.append('topicName', topicName);
+
+
 
   // 把每張卡牌的文字和圖片一起送
   cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {

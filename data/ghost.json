@@ -166,7 +166,35 @@
         }
     },
     {  "img": "img-GM/不死川玄彌.jpg",  "name": "不死川玄彌",  "traits": {
-          
+            "boy": true,
+  "girl": false,
+    "column ":false  ,
+  "die " :true ,
+    "Texture " :false ,
+   "scar " :true ,
+   "battle  ":true  ,
+  "leader " :false ,
+   "ghost ":true  ,
+   "people " :true ,
+    "explode ":false  ,
+  "half " :true ,
+  "gentle "  :false ,
+  "irritable "  :true ,
+   "eat "  :false ,
+   "color  " :false  ,
+   "sisters " :true ,
+  "blackhair " :true ,
+   "Upper "  :false ,
+   "lower " :false  ,
+    "facial "  :true,
+  "Mikami "  :false ,
+    "ThreeDown "  :false ,
+    "Blood " :true ,
+  "breathe "  :false,
+  "knife "  :false ,
+   "mask "  :false ,
+    "moon "  :false ,
+   "FiveSenses "  :true 
         }
     },
     {  "img": "img-GM/產屋敷耀哉.jpg",  "name": "產屋敷耀哉",  "traits": { 

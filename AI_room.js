@@ -331,7 +331,7 @@ const AI_DB = {
 { question: '他的臉上有沒有傷痕、疤痕？', trait: 'scar' },
 { question: '他有沒有參加無限城決戰？', trait: 'battle ' },
 { question: '他是不是領袖？', trait: 'leader' },
-{ question: '他是不是鬼？（曾經變鬼算，吃鬼不算、無限城不算）', trait: 'ghost' },
+{ question: '他是不是鬼？（曾經變鬼算，吃鬼算、無限城不算）', trait: 'ghost' },
 { question: '他是不是人？', trait: 'people' },
 { question: '他是不是自爆而亡的？', trait: 'explode' },
 { question: '他是不是被切一半死的？', trait: 'half' },

@@ -243,11 +243,11 @@ const upload = multer({ dest: 'uploads/' }); // 存到 uploads 資料夾
 
 
 app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
-  const userId = String(req.body.userId);
-  const topicName = req.body.topicName;
+  const userId = String(req.body.userId || '').trim();
+  const topicName = (req.body.topicName || '').trim();
 
   if (!userId || !topicName) {
-    return res.json({ success: false, message: '缺少參數' });
+    return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
   // 檢查是否已有同名主題
@@ -258,7 +258,7 @@ app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
 
   const cards = [];
 
-  // 先處理有圖片的卡牌
+  // 有圖片的卡牌
   req.files.forEach((file, index) => {
     const name = req.body[`cards[${index}][name]`];
     cards.push({
@@ -267,16 +267,13 @@ app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
     });
   });
 
-  // 再補上只有文字的卡牌
- // 再補上只有文字的卡牌
-for (let i = 0; i < 30; i++) {
-  const name = req.body[`cards[${i}][name]`];
-  if (name && !cards.find(c => c.name === name)) {
-    cards.push({ name, img: '' });
+  // 只有文字的卡牌
+  for (let i = 0; i < 30; i++) {
+    const name = req.body[`cards[${i}][name]`];
+    if (name && !cards.find(c => c.name === name)) {
+      cards.push({ name, img: '' });
+    }
   }
-}
-
-
 
   const topic = { name: topicName, cards };
 
@@ -284,7 +281,8 @@ for (let i = 0; i < 30; i++) {
   userTopics[userId].push(topic);
   saveData();
 
+  console.log('送出的 userId:', userId);
   console.log('儲存主題:', topic);
-  res.json({ success: true, topic });
 
+  res.json({ success: true, topic });
 });
