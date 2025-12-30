@@ -158,8 +158,6 @@ function loadCustomTopics() {
 }
 
 loadCustomTopics();
-
-});
 // 儲存主題
 saveTopicBtn.addEventListener('click', () => {
   const topicName = topicNameInput.value.trim();
@@ -202,5 +200,7 @@ saveTopicBtn.addEventListener('click', () => {
       console.error('API 錯誤:', err);
       alert('伺服器錯誤，請稍後再試');
     });
+});
+
 });
 
