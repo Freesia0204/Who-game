@@ -1,21 +1,19 @@
-const fs = require('fs');
-const DATA_FILE = './userTopics.json';
+const mongoose = require('mongoose');
 
-// 載入資料
-function loadData() {
-  if (fs.existsSync(DATA_FILE)) {
-    return JSON.parse(fs.readFileSync(DATA_FILE));
-  }
-  return {};
-}
+mongoose.connect('mongodb+srv://kitty0905154046_db_user:DLn0bS3R4Cu9iaWT@cluster0.ttgg2s3.mongodb.net/who_game?retryWrites=true&w=majority')
+  .then(() => console.log('✅ 已連線到 MongoDB Atlas'))
+  .catch(err => console.error('❌ 連線失敗:', err.message));
 
-// 儲存資料
-function saveData() {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(userTopics, null, 2));
-}
+const TopicSchema = new mongoose.Schema({
+  userId: { type: String, index: true },
+  name: String,
+  cards: [{ name: String, img: String }]
+}, { timestamps: true });
 
-// 初始化資料
-let userTopics = loadData();
+const Topic = mongoose.model('Topic', TopicSchema);
+
+
+
 
 const express = require('express');
 const http = require('http');
@@ -24,6 +22,9 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
+
+app.use(express.json());
+
 const path = require('path');
 app.use(express.static(__dirname)); // ✅ 公開 HTML、JS、CSS
 app.use('/data', express.static(path.join(__dirname, 'data'))); // ✅ 公開 JSON 資料
@@ -171,78 +172,10 @@ server.listen(PORT, () => {
 
 
 
-
-
-app.get('/api/getCustomTopics', (req, res) => {
-  const { userId } = req.query;
-  if (!userId) {
-    return res.json({ customTopics: [] });
-  }
-  res.json({ customTopics: userTopics[userId] || [] });
-});
-
-
-
-
-
-app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
-  const { userId, topicName } = req.body;
-  if (!userId || !topicName) {
-    return res.json({ success: false, message: '缺少參數' });
-  }
-
-  if (userTopics[userId]) {
-    // 找到要刪的主題
-    const topic = userTopics[userId].find(t => t.name === topicName);
-
-    if (topic) {
-      // 刪掉主題裡的圖片檔案
-      topic.cards.forEach(card => {
-        if (card.img && card.img.startsWith('/uploads/')) {
-          const filePath = path.join(__dirname, card.img);
-          fs.unlink(filePath, err => {
-            if (err) console.error('刪除圖片失敗:', err);
-            else console.log('已刪除圖片:', filePath);
-          });
-        }
-      });
-    }
-
-    // 更新 JSON 資料
-    userTopics[userId] = userTopics[userId].filter(t => t.name !== topicName);
-    saveData();
-  }
-
-res.json({ success: true, customTopics: userTopics[userId] || [] });
-
-});
-
-
-
-app.post('/api/editCustomTopic', express.json(), (req, res) => {
-  const { userId, topicName, newTopic } = req.body;
-  if (!userId || !topicName || !newTopic) {
-    return res.json({ success: false, message: '缺少參數' });
-  }
-  if (userTopics[userId]) {
-    userTopics[userId] = userTopics[userId].map(t => 
-      t.name === topicName ? newTopic : t
-    );
-  }
-  saveData(); // ✅ 新增這行
-  res.json({ success: true, customTopics: userTopics[userId] || [] });
-
-
-
-});
-
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); // 存到 uploads 資料夾
+const upload = multer({ dest: 'uploads/' });
 
-
-
-
-app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
+app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
   const userId = String(req.body.userId || '').trim();
   const topicName = (req.body.topicName || '').trim();
 
@@ -250,8 +183,7 @@ app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
-  // 檢查是否已有同名主題
-  const exists = userTopics[userId]?.some(t => t.name === topicName);
+  const exists = await Topic.findOne({ userId, name: topicName });
   if (exists) {
     return res.json({ success: false, message: '主題名稱已存在' });
   }
@@ -275,14 +207,47 @@ app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
     }
   }
 
-  const topic = { name: topicName, cards };
-
-  if (!userTopics[userId]) userTopics[userId] = [];
-  userTopics[userId].push(topic);
-  saveData();
-
-  console.log('送出的 userId:', userId);
-  console.log('儲存主題:', topic);
-
+  const topic = await Topic.create({ userId, name: topicName, cards });
   res.json({ success: true, topic });
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+app.get('/api/getCustomTopics', async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.json({ customTopics: [] });
+
+  const topics = await Topic.find({ userId }).lean();
+  res.json({ customTopics: topics });
+});
+
+
+app.post('/api/editCustomTopic', async (req, res) => {
+  const { userId, topicName, newTopic } = req.body;
+  if (!userId || !topicName || !newTopic) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+
+  await Topic.updateOne(
+    { userId, name: topicName },
+    { $set: { name: newTopic.name, cards: newTopic.cards || [] } }
+  );
+
+  const topics = await Topic.find({ userId }).lean();
+  res.json({ success: true, customTopics: topics });
+});
+
+
+app.post('/api/deleteCustomTopic', async (req, res) => {
+  const { userId, topicName } = req.body;
+  if (!userId || !topicName) {
+    return res.json({ success: false, message: '缺少參數' });
+  }
+
+  await Topic.deleteOne({ userId, name: topicName });
+  const topics = await Topic.find({ userId }).lean();
+  res.json({ success: true, customTopics: topics });
+});
+

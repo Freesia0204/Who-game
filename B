@@ -26,4 +26,4 @@
   question:  "他使用日輪刀嗎？ "   "knife "  ,
   question:  "他有戴面具嗎？ "   "mask "  ,
   question:  "他是十二鬼月的一員嗎 "   "moon "  ,
-  question:  "他是五感組的一員嗎 "   "FiveSenses "  ,
+  question:  "他是五感組的一員嗎 "   "FiveSenses "  
