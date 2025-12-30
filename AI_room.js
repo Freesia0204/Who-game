@@ -339,7 +339,7 @@ const AI_DB = {
 { question: '他是不是很溫柔？', trait: 'gentle' },
 { question: '他是不是很暴躁？', trait: 'irritable' },
 { question: '他是不是喜歡吃東西？', trait: 'eat' },
-{ question: '他的頭髮是不是不只一個顏色？', trait: 'color ' },
+{ question: '他的頭髮是不是雙拼髮色？', trait: 'color ' },
 { question: '他有沒有兄弟姐妹？', trait: 'sisters' },
 { question: '他的頭髮有黑色嗎？', trait: 'blackhair' },
 { question: '他是上弦嗎？', trait: 'Upper' },

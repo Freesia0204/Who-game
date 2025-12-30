@@ -24,7 +24,9 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-app.use(express.static(__dirname));
+const path = require('path');
+app.use('/data', express.static(path.join(__dirname, 'data')));
+
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
