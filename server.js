@@ -213,7 +213,8 @@ app.post('/api/deleteCustomTopic', express.json(), (req, res) => {
     saveData();
   }
 
-  res.json({ success: true });
+res.json({ success: true, customTopics: userTopics[userId] || [] });
+
 });
 
 
@@ -229,24 +230,53 @@ app.post('/api/editCustomTopic', express.json(), (req, res) => {
     );
   }
   saveData(); // ✅ 新增這行
-  res.json({ success: true });
+  res.json({ success: true, customTopics: userTopics[userId] || [] });
+
+
+
 });
 
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // 存到 uploads 資料夾
 
+
+
+
 app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
-  const { userId, topicName } = req.body;
+  const userId = String(req.body.userId);
+  const topicName = req.body.topicName;
+
   if (!userId || !topicName) {
     return res.json({ success: false, message: '缺少參數' });
   }
 
+  // 檢查是否已有同名主題
+  const exists = userTopics[userId]?.some(t => t.name === topicName);
+  if (exists) {
+    return res.json({ success: false, message: '主題名稱已存在' });
+  }
+
   const cards = [];
+
+  // 先處理有圖片的卡牌
   req.files.forEach((file, index) => {
     const name = req.body[`cards[${index}][name]`];
-    const imgPath = `/uploads/${file.filename}`;
-    cards.push({ name, img: imgPath });
+    cards.push({
+      name: name || '',
+      img: `/uploads/${file.filename}`
+    });
   });
+
+  // 再補上只有文字的卡牌
+ // 再補上只有文字的卡牌
+for (let i = 0; i < 30; i++) {
+  const name = req.body[`cards[${i}][name]`];
+  if (name && !cards.find(c => c.name === name)) {
+    cards.push({ name, img: '' });
+  }
+}
+
+
 
   const topic = { name: topicName, cards };
 
@@ -254,6 +284,7 @@ app.post('/api/uploadTopic', upload.array('cards', 30), (req, res) => {
   userTopics[userId].push(topic);
   saveData();
 
-  res.json({ success: true });
+  console.log('儲存主題:', topic);
+  res.json({ success: true, topic });
+
 });
-app.use('/uploads', express.static('uploads'));
