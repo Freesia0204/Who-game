@@ -187,9 +187,20 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
   }
 
   const exists = await Topic.findOne({ userId, name: topicName });
-  if (exists) {
-    return res.json({ success: false, message: '主題名稱已存在' });
-  }
+
+if (exists) {
+  await Topic.updateOne(
+    { userId, name: topicName },
+    { $set: { cards } }
+  );
+  console.log('✅ 主題已更新:', topicName);
+  return res.json({ success: true, updated: true });
+} else {
+  const topic = await Topic.create({ userId, name: topicName, cards });
+  console.log('✅ 新主題已建立:', topicName);
+  return res.json({ success: true, created: true, topic });
+}
+
 
   const cards = [];
 
