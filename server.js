@@ -191,13 +191,15 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
   const cards = [];
 
   // 有圖片的卡牌
-  req.files.forEach((file, index) => {
-    const name = req.body[`cards[${index}][name]`];
-    cards.push({
-      name: name || '',
-      img: `/uploads/${file.filename}`
+  if (req.files) {
+    req.files.forEach((file, index) => {
+      const name = req.body[`cards[${index}][name]`] || '';
+      cards.push({
+        name,
+        img: '/uploads/' + file.filename
+      });
     });
-  });
+  }
 
   // 只有文字的卡牌
   for (let i = 0; i < 30; i++) {
@@ -207,9 +209,12 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     }
   }
 
+  console.log('✅ 儲存卡牌:', cards); // 加這行方便驗證
+
   const topic = await Topic.create({ userId, name: topicName, cards });
   res.json({ success: true, topic });
 });
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
