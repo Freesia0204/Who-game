@@ -190,11 +190,15 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
 
   const cards = [];
 
-  // 解析所有文字欄位
+  // 解析所有 cards[0][name] 欄位
   const cardKeys = Object.keys(req.body).filter(k => k.includes('cards[') && k.includes('][name]'));
   cardKeys.forEach(key => {
     const name = req.body[key];
-    const match = key.match(/cards\[(\d+)\]/); // ✅ 修正這裡
+    const match = key.match(/cards
+
+\[(\d+)\]
+
+/);
     const index = match ? parseInt(match[1]) : null;
 
     const file = index !== null ? req.files?.[index] : null;
