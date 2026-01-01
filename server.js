@@ -1,3 +1,5 @@
+const qs = require('qs');
+
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://kitty0905154046_db_user:DLn0bS3R4Cu9iaWT@cluster0.ttgg2s3.mongodb.net/who_game?retryWrites=true&w=majority')
@@ -176,8 +178,9 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
-  const userId = String(req.body.userId || '').trim();
-  const topicName = (req.body.topicName || '').trim();
+  const parsedBody = qs.parse(req.body);
+  const userId = String(parsedBody.userId || '').trim();
+  const topicName = (parsedBody.topicName || '').trim();
 
   if (!userId || !topicName) {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
@@ -190,26 +193,23 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
 
   const cards = [];
 
-  // 解析所有 cards[0][name] 欄位
-  const cardKeys = Object.keys(req.body).filter(k => k.includes('cards[') && k.includes('][name]'));
-
-cardKeys.forEach(key => {
-  const name = req.body[key];
-  const match = key.match(/cards\[(\d+)\]/); // ✅ 修正這裡
-  const index = match ? parseInt(match[1]) : null;
-
-  const file = index !== null ? req.files?.[index] : null;
-  const img = file ? '/uploads/' + file.filename : '';
-
-  cards.push({ name, img });
-});
-
+  for (let i = 0; i < 30; i++) {
+    const name = parsedBody.cards?.[i]?.name;
+    const file = req.files?.[i];
+    if (name) {
+      cards.push({
+        name,
+        img: file ? '/uploads/' + file.filename : ''
+      });
+    }
+  }
 
   console.log('✅ 儲存卡牌:', cards);
 
   const topic = await Topic.create({ userId, name: topicName, cards });
   res.json({ success: true, topic });
 });
+
 
 
 
