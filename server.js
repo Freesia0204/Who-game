@@ -192,20 +192,18 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
 
   // 解析所有 cards[0][name] 欄位
   const cardKeys = Object.keys(req.body).filter(k => k.includes('cards[') && k.includes('][name]'));
-  cardKeys.forEach(key => {
-    const name = req.body[key];
-    const match = key.match(/cards
 
-\[(\d+)\]
+cardKeys.forEach(key => {
+  const name = req.body[key];
+  const match = key.match(/cards\[(\d+)\]/); // ✅ 修正這裡
+  const index = match ? parseInt(match[1]) : null;
 
-/);
-    const index = match ? parseInt(match[1]) : null;
+  const file = index !== null ? req.files?.[index] : null;
+  const img = file ? '/uploads/' + file.filename : '';
 
-    const file = index !== null ? req.files?.[index] : null;
-    const img = file ? '/uploads/' + file.filename : '';
+  cards.push({ name, img });
+});
 
-    cards.push({ name, img });
-  });
 
   console.log('✅ 儲存卡牌:', cards);
 
