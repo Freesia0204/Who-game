@@ -93,7 +93,7 @@ function createTopicCells() {
 
   topics.forEach(topic => {
     const cell = document.createElement('div');
-    cell.className = 'cell';
+    cell.className = 'cell topic-select';
 
     const img = document.createElement('img');
     img.src = topic.img;
@@ -137,7 +137,7 @@ function showAntidoteSelection() {
 
   dataList.forEach((item, index) => {
     const cell = document.createElement('div');
-    cell.className = 'cell';
+    cell.className = 'cell card';
     cell.dataset.name = item.name;
 
     const img = document.createElement('img');

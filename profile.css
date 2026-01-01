@@ -217,16 +217,18 @@
   background: #f9f9f9;
   border-top: 1px solid #ccc;
   display: flex;
-  flex-wrap: wrap;         /* ✅ 小螢幕可換行 */
-  gap: 12px;               /* ✅ 按鈕間距 */
-  justify-content: center;
+  flex-wrap: nowrap;      /* ❌ 不允許換行 */
+  gap: 12px;              /* ✅ 按鈕間距 */
+  justify-content: center;/* ✅ 水平置中 */
   position: sticky;
   bottom: 0;
   z-index: 1;
 }
 
 .editor-buttons button {
-  padding: 10px 30px;
+  flex: 1;                /* ✅ 四個按鈕平均分配寬度 */
+  min-width: 120px;       /* ✅ 每個按鈕至少有固定寬度 */
+  padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
   background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
@@ -234,14 +236,14 @@
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* ✅ 浮起來的陰影 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 }
 
 .editor-buttons button:hover {
-  background: linear-gradient(135deg, #a6c1ee, #fbc2eb); /* ✅ 漸層反轉 */
-  transform: translateY(-2px); /* ✅ 上浮動畫 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* ✅ hover 陰影加強 */
+  background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 

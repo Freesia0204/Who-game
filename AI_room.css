@@ -118,8 +118,18 @@ body {
   height: 220px; /* ✅ 固定高度 */
   perspective: 800px; /* ✅ 保留翻格子效果 */
 }
-.grid-area.conan .cell { width: 160px; height: 220px; }
-.grid-area.redblack .cell { width: 190px; height: 260px; }
+
+/* 選主題格子（Logo 橫向，較矮） */
+.cell.topic-select {
+  width: 160px;
+  height: 120px; /* ✅ 高度降低 */
+}
+
+/* 主題內卡片（保持原本大小） */
+.cell.card {
+  width: 160px;
+  height: 220px; /* ✅ 保持原本高度 */
+}
 
 
 /* 格子內圖片樣式 */
