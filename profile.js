@@ -121,6 +121,7 @@ function loadCustomTopics() {
   fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
     .then(r => r.json())
     .then(data => {
+      console.log('✅ API 回傳資料:', data);
       const list = document.getElementById('customTopicsList');
       list.innerHTML = '';
 
