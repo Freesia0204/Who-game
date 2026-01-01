@@ -43,11 +43,14 @@
 #customTopicsList div {
   background: rgba(255,255,255,0.1);
   padding: 8px 12px;
-  margin-bottom: 8px;
   border-radius: 6px;
   color: #fff;
   font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;     /* ✅ 防止文字換行 */
+  transition: background 0.2s ease;
 }
+
 
 #addCustomTopicBtn {
   padding: 10px 40px;
@@ -208,13 +211,20 @@
 
 
 
-/* 底部按鈕區（保持間距） */
+/* 固定底部按鈕區 */
 .editor-buttons {
+  padding: 16px;
+  background: #f9f9f9;
+  border-top: 1px solid #ccc;
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
+  position: sticky; /* ✅ 固定在底部 */
+  bottom: 0;
+  z-index: 1;
 }
+
 .editor-buttons button {
   padding: 10px 20px;
   font-size: 16px;
@@ -266,3 +276,40 @@
   flex-direction: column;
   align-items: flex-start; /* ✅ 讓裡面的標題和內容靠左 */
 }
+/* Modal 外層 */
+#customTopicModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal 內容區塊 */
+.modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 編輯器區塊 */
+.card-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 卡片區域滾動 */
+#cardGrid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
