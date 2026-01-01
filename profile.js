@@ -30,71 +30,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== 自訂主題功能 =====
   const modal = document.getElementById('customTopicModal');
-  const cardsContainer = document.getElementById('cardsContainer');
   const cardGrid = document.getElementById('cardGrid');
   const addCardBtn = document.getElementById('addCardBtn');
   const saveTopicBtn = document.getElementById('saveTopicBtn');
   const closeModalBtn = document.getElementById('closeModalBtn');
+  const deleteTopicBtn = document.getElementById('deleteTopicBtn');
   const topicNameInput = document.getElementById('topicNameInput');
 
-  let cardCount = 0;
-
   function createCardSlot() {
-  const div = document.createElement('div');
-  div.className = 'card-slot';
+    const div = document.createElement('div');
+    div.className = 'card-slot';
 
-  const fileInputId = `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  div.innerHTML = `
-    <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
-    <div class="card-image">
-      <input type="file" accept="image/*" id="${fileInputId}">
-    </div>
-    <div class="card-text">
-      <input type="text" placeholder="輸入文字">
-    </div>
-  `;
+    const fileInputId = `file-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    div.innerHTML = `
+      <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+      <div class="card-image">
+        <input type="file" accept="image/*" id="${fileInputId}">
+      </div>
+      <div class="card-text">
+        <input type="text" placeholder="輸入文字">
+      </div>
+    `;
 
-  cardGrid.appendChild(div);
+    cardGrid.appendChild(div);
 
-  const imageContainer = div.querySelector('.card-image');
-  const fileInput = div.querySelector(`#${fileInputId}`);
-  const removeBtn = div.querySelector('.delete-bar');
+    const imageContainer = div.querySelector('.card-image');
+    const fileInput = div.querySelector(`#${fileInputId}`);
+    const removeBtn = div.querySelector('.delete-bar');
 
-  // 點擊圖片區 → 開檔案選擇
-  imageContainer.addEventListener('click', (e) => {
-    if (e.target === removeBtn) return;
-    fileInput.click();
-  });
-
-  // 圖片預覽
-  fileInput.addEventListener('change', () => {
-    const file = fileInput.files?.[0];
-    if (!file) return;
-    const preview = document.createElement('img');
-    preview.src = URL.createObjectURL(file);
-    imageContainer.classList.add('has-image');
-    [...imageContainer.children].forEach(child => {
-      if (child.tagName === 'IMG') child.remove();
+    imageContainer.addEventListener('click', (e) => {
+      if (e.target === removeBtn) return;
+      fileInput.click();
     });
-    imageContainer.appendChild(preview);
-  });
 
-  // 整條刪除卡牌
-  removeBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    div.remove();
-  });
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files?.[0];
+      if (!file) return;
+      const preview = document.createElement('img');
+      preview.src = URL.createObjectURL(file);
+      imageContainer.classList.add('has-image');
+      [...imageContainer.children].forEach(child => {
+        if (child.tagName === 'IMG') child.remove();
+      });
+      imageContainer.appendChild(preview);
+    });
 
-  cardCount++;
-}
-
-
+    removeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      div.remove();
+    });
+  }
 
   // 打開 Modal → 初始一格
   document.getElementById('addCustomTopicBtn').addEventListener('click', () => {
     modal.style.display = 'flex';
     cardGrid.innerHTML = '';
-    cardCount = 0;
+    topicNameInput.value = '';
     createCardSlot();
   });
 
@@ -103,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'none';
     cardGrid.innerHTML = '';
     topicNameInput.value = '';
+    // 移除刪除事件避免殘留
+    deleteTopicBtn.onclick = null;
   });
 
   // 新增卡牌
@@ -114,185 +107,126 @@ document.addEventListener('DOMContentLoaded', () => {
     createCardSlot();
   });
 
-  
+  // 載入自訂主題名稱列表
+  function loadCustomTopics() {
+    fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById('customTopicsList');
+        list.innerHTML = '';
 
-// 載入自訂主題名稱列表
-function loadCustomTopics() {
-  
+        data.customTopics.forEach(topic => {
+          const div = document.createElement('div');
+          div.className = 'topic-item';
+          div.textContent = topic.name;
 
-  fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
-    .then(r => r.json())
-    .then(data => {
-      console.log('✅ API 回傳資料:', data);
-      const list = document.getElementById('customTopicsList');
-      list.innerHTML = '';
+          // 點擊預覽與修改
+          div.addEventListener('click', () => {
+            topicNameInput.value = topic.name;
+            cardGrid.innerHTML = '';
 
-      data.customTopics.forEach(topic => {
-        const div = document.createElement('div');
-        div.className = 'topic-item';
-        div.textContent = topic.name;
-        console.log('卡牌資料:', topic.cards);
+            topic.cards.forEach(card => {
+              const slot = document.createElement('div');
+              slot.className = 'card-slot';
+              slot.innerHTML = `
+                <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+                <div class="card-image has-image">
+                  <img src="${card.img}" alt="預覽圖片">
+                  <input type="file" accept="image/*">
+                </div>
+                <div class="card-text">
+                  <input type="text" value="${card.name}">
+                </div>
+              `;
+              cardGrid.appendChild(slot);
 
-        // 點擊預覽與修改
-       div.addEventListener('click', () => {
-  topicNameInput.value = topic.name;
-  cardGrid.innerHTML = '';
+              // 卡牌刪除
+              const removeBtn = slot.querySelector('.delete-bar');
+              removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                slot.remove();
+              });
+            });
 
-  topic.cards.forEach(card => {
-    const slot = document.createElement('div');
-    slot.className = 'card-slot';
-    slot.innerHTML = `
-      <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
-      <div class="card-image has-image">
-        <img src="${card.img}" alt="預覽圖片">
-        <input type="file" accept="image/*">
-      </div>
-      <div class="card-text">
-        <input type="text" value="${card.name}">
-      </div>
-    `;
-    cardGrid.appendChild(slot);
-  });
+            // 更新刪除主題按鈕事件
+            deleteTopicBtn.onclick = () => {
+              if (confirm(`確定要刪除主題「${topic.name}」嗎？`)) {
+                fetch('/api/deleteCustomTopic', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ userId: myPlayerId, topicName: topic.name })
+                })
+                  .then(r => r.json())
+                  .then(res => {
+                    if (res.success) {
+                      alert('主題已刪除');
+                      modal.style.display = 'none';
+                      loadCustomTopics();
+                    } else {
+                      alert('刪除失敗');
+                    }
+                  })
+                  .catch(err => {
+                    console.error('API 錯誤:', err);
+                    alert('伺服器錯誤，請稍後再試');
+                  });
+              }
+            };
 
-  // ✅ 加入刪除主題按鈕
-  const deleteTopicBtn = document.getElementById('deleteTopicBtn');
-
-function loadCustomTopics() {
-  fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
-    .then(r => r.json())
-    .then(data => {
-      const list = document.getElementById('customTopicsList');
-      list.innerHTML = '';
-
-      data.customTopics.forEach(topic => {
-        const div = document.createElement('div');
-        div.className = 'topic-item';
-        div.textContent = topic.name;
-
-        div.addEventListener('click', () => {
-          topicNameInput.value = topic.name;
-          cardGrid.innerHTML = '';
-
-          topic.cards.forEach(card => {
-            const slot = document.createElement('div');
-            slot.className = 'card-slot';
-            slot.innerHTML = `
-              <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
-              <div class="card-image has-image">
-                <img src="${card.img}" alt="預覽圖片">
-                <input type="file" accept="image/*">
-              </div>
-              <div class="card-text">
-                <input type="text" value="${card.name}">
-              </div>
-            `;
-            cardGrid.appendChild(slot);
+            modal.style.display = 'flex';
           });
 
-          // ✅ 更新刪除按鈕事件
-          deleteTopicBtn.onclick = () => {
-            if (confirm(`確定要刪除主題「${topic.name}」嗎？`)) {
-              fetch('/api/deleteCustomTopic', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: myPlayerId, topicName: topic.name })
-              })
-                .then(r => r.json())
-                .then(res => {
-                  if (res.success) {
-                    alert('主題已刪除');
-                    modal.style.display = 'none';
-                    loadCustomTopics();
-                  } else {
-                    alert('刪除失敗');
-                  }
-                })
-                .catch(err => {
-                  console.error('API 錯誤:', err);
-                  alert('伺服器錯誤，請稍後再試');
-                });
-            }
-          };
-
-          modal.style.display = 'flex';
+          list.appendChild(div);
         });
-
-        list.appendChild(div);
-      });
-    });
-}
-
-
-          modal.style.display = 'flex';
-        });
-
-        list.appendChild(div);
-      });
-    })
-    .catch(err => console.error('API 錯誤:', err));
-}
-
-loadCustomTopics();
-// 儲存主題
-saveTopicBtn.addEventListener('click', () => {
-  const topicName = topicNameInput.value.trim();
-  console.log('前端送出的 userId:', myPlayerId);
-  console.log('送出的 topicName:', topicName);
-
-  if (!topicName) {
-    alert('請輸入主題名稱');
-    return;
+      })
+      .catch(err => console.error('API 錯誤:', err));
   }
 
-  const formData = new FormData();
-  formData.append('userId', myPlayerId);
-  formData.append('topicName', topicName);
+  loadCustomTopics();
 
+  // 儲存主題
+  saveTopicBtn.addEventListener('click', () => {
+    const topicName = topicNameInput.value.trim();
+    if (!topicName) {
+      alert('請輸入主題名稱');
+      return;
+    }
 
+    const formData = new FormData();
+    formData.append('userId', myPlayerId);
+    formData.append('topicName', topicName);
 
-  // 把每張卡牌的文字和圖片一起送
-  cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
-  const text = slot.querySelector('input[type="text"]').value.trim();
-  const fileInput = slot.querySelector('input[type="file"]');
-  const file = fileInput?.files?.[0];
+    // 把每張卡牌的文字和圖片一起送
+    cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
+      const text = slot.querySelector('input[type="text"]').value.trim();
+      const fileInput = slot.querySelector('input[type="file"]');
+      const file = fileInput?.files?.[0];
 
-  // 送文字
-  if (text) {
-    formData.append(`cards[${index}][name]`, text);
-  }
-
-  // 送圖片（只有真的有檔案才送）
-  if (file) {
-    formData.append('cards', file);
-  }
-});
-
-
-
-for (let pair of formData.entries()) {
-  console.log('🧾 formData:', pair[0], pair[1]);
-}
-
-
-  fetch('/api/uploadTopic', {
-    method: 'POST',
-    body: formData
-  })
-    .then(r => r.json())
-    .then(res => {
-      if (res.success) {
-        alert('自訂主題已儲存');
-        modal.style.display = 'none';
-        loadCustomTopics();
-      } else {
-        alert('儲存失敗：' + (res.message || '未知錯誤'));
+      if (text) {
+        formData.append(`cards[${index}][name]`, text);
       }
-    })
-    .catch(err => {
-      console.error('API 錯誤:', err);
-      alert('伺服器錯誤，請稍後再試');
+      if (file) {
+        formData.append('cards', file);
+      }
     });
-});
 
+    fetch('/api/uploadTopic', {
+      method: 'POST',
+      body: formData
+    })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          alert(res.updated ? '主題已更新' : '自訂主題已儲存');
+          modal.style.display = 'none';
+          loadCustomTopics();
+        } else {
+          alert('儲存失敗：' + (res.message || '未知錯誤'));
+        }
+      })
+      .catch(err => {
+        console.error('API 錯誤:', err);
+        alert('伺服器錯誤，請稍後再試');
+      });
+  });
 });
-

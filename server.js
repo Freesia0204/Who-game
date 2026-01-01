@@ -186,24 +186,8 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
-  const exists = await Topic.findOne({ userId, name: topicName });
-
-if (exists) {
-  await Topic.updateOne(
-    { userId, name: topicName },
-    { $set: { cards } }
-  );
-  console.log('✅ 主題已更新:', topicName);
-  return res.json({ success: true, updated: true });
-} else {
-  const topic = await Topic.create({ userId, name: topicName, cards });
-  console.log('✅ 新主題已建立:', topicName);
-  return res.json({ success: true, created: true, topic });
-}
-
-
+  // 建立 cards
   const cards = [];
-
   for (let i = 0; i < 30; i++) {
     const name = parsedBody.cards?.[i]?.name;
     const file = req.files?.[i];
@@ -215,14 +199,25 @@ if (exists) {
     }
   }
 
-  console.log('✅ 儲存卡牌:', cards);
+  // 判斷更新或建立
+  const exists = await Topic.findOne({ userId, name: topicName });
 
-  const topic = await Topic.create({ userId, name: topicName, cards });
-  res.json({ success: true, topic });
+  if (exists) {
+    await Topic.updateOne(
+      { userId, name: topicName },
+      { $set: { cards } }
+    );
+    console.log('✅ 主題已更新:', topicName);
+    return res.json({ success: true, updated: true });
+  } else {
+    const topic = await Topic.create({ userId, name: topicName, cards });
+    console.log('✅ 新主題已建立:', topicName);
+    return res.json({ success: true, created: true, topic });
+  }
 });
 
 
-
+  
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
