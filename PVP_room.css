@@ -451,3 +451,26 @@ body {
 .navbar nav a:hover {
   color: #ffe7ff;
 }
+
+/* 我的主題下拉選單容器 */
+#customTopicSelectContainer {
+  display: none;          /* ✅ 初始隱藏 */
+  margin: 12px 0;         /* 與上下元素留點距離 */
+  text-align: center;     /* 置中顯示 */
+}
+
+/* 下拉選單本體 */
+#customTopicSelect {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+#customTopicSelect:hover {
+  border-color: #8b5cf6;  /* hover 時邊框變紫色 */
+}

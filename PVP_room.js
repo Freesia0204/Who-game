@@ -124,7 +124,8 @@ const topics = [
   { name: '名偵探柯南-紅黑篇', img: 'img-KN/柯南_loge.jpg' },
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
-  { name: 'FREE!', img: 'img-Free/Free_logo.png' }
+  { name: 'FREE!', img: 'img-Free/Free_logo.png' },
+  { name: '我的主題', img: 'img-Custom/my_topic_logo.png', isCustom: true } // ✅ 新增這格
 ];
 
 // === 主題選擇 ===
@@ -144,25 +145,63 @@ function createTopicCells() {
 
     cell.dataset.topicName = topic.name;
 
-    // 綁定一次 click，裡面判斷是否能選
-    cell.addEventListener('click', () => {
-  if (socket.id !== topicSelector) {
-    addMessage('system', '只有房主可以選主題');
-    return;
-  }
-  if (Object.keys(currentPlayers).length < 2) {
-    addMessage('system', '需要至少兩人才能選主題');
-    return;
-  }
-  selectedTopic = cell.dataset.topicName;
-  socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
-});
+    // ✅ 單一 click 事件
+    cell.addEventListener('click', async () => {
+      if (socket.id !== topicSelector) {
+        addMessage('system', '只有房主可以選主題');
+        return;
+      }
+      if (Object.keys(currentPlayers).length < 2) {
+        addMessage('system', '需要至少兩人才能選主題');
+        return;
+      }
 
+      selectedTopic = topic.name;
 
+      if (topic.isCustom) {
+        const userId = localStorage.getItem('playerId');
+        const res = await fetch(`/api/getCustomTopics?userId=${userId}`);
+        const json = await res.json();
+        const customTopics = json.customTopics || [];
+
+        if (!customTopics.length) {
+          addMessage('system', '⚠️ 尚未設定自訂主題卡牌');
+          return;
+        }
+
+        // 顯示下拉選單
+        const container = document.getElementById('customTopicSelectContainer');
+        const select = document.getElementById('customTopicSelect');
+        container.style.display = 'block';
+        select.innerHTML = '';
+
+        customTopics.forEach(t => {
+          const option = document.createElement('option');
+          option.value = t.name;
+          option.textContent = t.name;
+          select.appendChild(option);
+        });
+
+        // ✅ 綁定選擇事件（避免重複綁定，用 onChange 覆蓋）
+        select.onchange = () => {
+          const chosenName = select.value;
+          const chosenTopic = customTopics.find(t => t.name === chosenName);
+          if (chosenTopic) {
+            gridData['我的主題'] = chosenTopic.cards;
+            socket.emit('select_topic', { roomId, topic: '我的主題', playerId: myPlayerId });
+            container.style.display = 'none'; // 選完就隱藏
+          }
+        };
+      } else {
+        socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+      }
+    });
 
     gridArea.appendChild(cell);
   });
 }
+
+
 
 
 // 房間更新時決定房主是否能選主題
