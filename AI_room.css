@@ -101,21 +101,26 @@ body {
 
 /* === 每一個格子 === */
 .cell {
+  position: relative;
   display: flex;
   flex-direction: column; /* 圖片在上、文字在下 */
-  justify-content: center; /* 垂直置中 */
-  align-items: center; /* 水平置中 */
-  background: white; /* 格子白底 */
-  border: 1px solid #aaa; /* 淺灰邊框 */
-  border-radius: 8px; /* 圓角 */
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* 微陰影 */
-  cursor: pointer; /* 滑鼠變手型 */
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  cursor: pointer;
   font-weight: bold;
-  user-select: none; /* 禁止文字選取 */
-  transition: 0.2s; /* 滑鼠滑過動畫 */
+  user-select: none;
+  transition: 0.2s;
   max-width: 190px;
-  height: 220px; /* ✅ 你可以依照圖片比例調整這個數值 */
+  height: 220px; /* ✅ 固定高度 */
+  perspective: 800px; /* ✅ 保留翻格子效果 */
 }
+.grid-area.conan .cell { width: 160px; height: 220px; }
+.grid-area.redblack .cell { width: 190px; height: 260px; }
+
 
 /* 格子內圖片樣式 */
 .cell img {
