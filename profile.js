@@ -9,24 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 登出
   document.getElementById('goLoginBtn').addEventListener('click', () => {
+  if (confirm('確定要登出嗎？')) {
     localStorage.removeItem('playerName');
     localStorage.removeItem('playerId');
     alert('已登出，下次可直接登入');
     window.location.href = 'index.html';
-  });
+  }
+});
+
 
   // 註銷
   document.getElementById('deleteBtn').addEventListener('click', () => {
-    if (!playerName) {
-      alert('目前沒有登入帳號');
-      return;
-    }
+  if (!playerName) {
+    alert('目前沒有登入帳號');
+    return;
+  }
+  if (confirm('⚠️ 確定要註銷帳號嗎？此動作無法復原！')) {
     localStorage.removeItem(`user_${playerName}`);
     localStorage.removeItem('playerName');
     localStorage.removeItem('playerId');
     alert('帳號已註銷，請重新註冊');
     window.location.href = 'index.html';
-  });
+  }
+});
 
   // ===== 自訂主題功能 =====
   const modal = document.getElementById('customTopicModal');
