@@ -186,15 +186,14 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
-  // 新送來的卡牌
-  const newCards = [];
+  const cards = [];
   for (let i = 0; i < 30; i++) {
     const name = parsedBody.cards?.[i]?.name;
-    const file = req.files?.[i];
+    const file = req.files?.find(f => f.fieldname === `cards[${i}][file]`);
     if (name) {
-      newCards.push({
+      cards.push({
         name,
-        img: file ? '/uploads/' + file.filename : null // 用 null 表示沒有更新圖片
+        img: file ? '/uploads/' + file.filename : (parsedBody.cards?.[i]?.img || '')
       });
     }
   }
@@ -202,27 +201,14 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
   const exists = await Topic.findOne({ userId, name: topicName });
 
   if (exists) {
-    // 合併舊卡牌
-    const mergedCards = newCards.map((card, idx) => {
-      const oldCard = exists.cards[idx];
-      return {
-        name: card.name,
-        img: card.img !== null ? card.img : (oldCard?.img || '')
-      };
-    });
-
     await Topic.updateOne(
       { userId, name: topicName },
-      { $set: { cards: mergedCards } }
+      { $set: { cards } }
     );
     console.log('✅ 主題已更新:', topicName);
     return res.json({ success: true, updated: true });
   } else {
-    // 新主題
-    const topic = await Topic.create({ userId, name: topicName, cards: newCards.map(c => ({
-      name: c.name,
-      img: c.img || '' // 沒有圖片就存空字串
-    })) });
+    const topic = await Topic.create({ userId, name: topicName, cards });
     console.log('✅ 新主題已建立:', topicName);
     return res.json({ success: true, created: true, topic });
   }

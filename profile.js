@@ -151,7 +151,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 slot.remove();
               });
+
+               const imageContainer = slot.querySelector('.card-image');
+const fileInput = slot.querySelector('input[type="file"]');
+
+imageContainer.addEventListener('click', (e) => {
+  if (e.target.classList.contains('delete-bar')) return;
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files?.[0];
+  if (!file) return;
+  const preview = document.createElement('img');
+  preview.src = URL.createObjectURL(file);
+  imageContainer.classList.add('has-image');
+  [...imageContainer.children].forEach(child => {
+    if (child.tagName === 'IMG') child.remove();
+  });
+  imageContainer.appendChild(preview);
+});
             });
+
+           
 
             // 更新刪除主題按鈕事件
             deleteTopicBtn.onclick = () => {
@@ -211,8 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append(`cards[${index}][name]`, text);
       }
       if (file) {
-        formData.append('cards', file);
-      }
+  formData.append(`cards[${index}][file]`, file);
+}
     });
 
     fetch('/api/uploadTopic', {
