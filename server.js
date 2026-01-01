@@ -187,16 +187,17 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
   }
 
   const cards = [];
-  for (let i = 0; i < 30; i++) {
-    const name = parsedBody.cards?.[i]?.name;
-    const file = req.files?.find(f => f.fieldname === `cards[${i}][file]`);
-    if (name) {
-      cards.push({
-        name,
-        img: file ? '/uploads/' + file.filename : (parsedBody.cards?.[i]?.img || '')
-      });
-    }
+for (let i = 0; i < 30; i++) {
+  const name = parsedBody.cards?.[i]?.name;
+  const file = req.files?.[i]; // 直接用 index 對齊
+  if (name) {
+    cards.push({
+      name,
+      img: file ? '/uploads/' + file.filename : (parsedBody.cards?.[i]?.img || '')
+    });
   }
+}
+
 
   const exists = await Topic.findOne({ userId, name: topicName });
 

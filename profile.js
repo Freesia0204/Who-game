@@ -228,13 +228,13 @@ fileInput.addEventListener('change', () => {
       const text = slot.querySelector('input[type="text"]').value.trim();
       const fileInput = slot.querySelector('input[type="file"]');
       const file = fileInput?.files?.[0];
-
-      if (text) {
-        formData.append(`cards[${index}][name]`, text);
-      }
-      if (file) {
-  formData.append(`cards[${index}][file]`, file);
+if (text) {
+  formData.append(`cards[${index}][name]`, text);
 }
+if (file) {
+  formData.append('cards', file); // 所有圖片都用同一個 key
+}
+
     });
 
     fetch('/api/uploadTopic', {
