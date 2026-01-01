@@ -122,7 +122,7 @@ body {
 /* 選主題格子（Logo 橫向，較矮） */
 .cell.topic-select {
   width: 160px;
-  height: 120px; /* ✅ 高度降低 */
+  height: 150px; /* ✅ 高度降低 */
 }
 
 /* 主題內卡片（保持原本大小） */
