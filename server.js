@@ -177,7 +177,7 @@ server.listen(PORT, () => {
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
-app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
+app.post('/api/uploadTopic', upload.any(), async (req, res) => {
   const parsedBody = qs.parse(req.body);
   const userId = String(parsedBody.userId || '').trim();
   const topicName = (parsedBody.topicName || '').trim();
@@ -186,26 +186,24 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
-  const cards = [];
-for (let i = 0; i < 30; i++) {
-  const name = parsedBody.cards?.[i]?.name;
-  const file = req.files?.[i]; // 直接用 index 對齊
-  if (name) {
-    cards.push({
-      name,
-      img: file ? '/uploads/' + file.filename : (parsedBody.cards?.[i]?.img || '')
-    });
-  }
-}
-
-
   const exists = await Topic.findOne({ userId, name: topicName });
+  const oldCards = exists ? exists.cards : [];
+
+  const cards = [];
+  for (let i = 0; i < 30; i++) {
+    const name = parsedBody.cards?.[i]?.name;
+    const file = req.files?.find(f => f.fieldname === `cards[${i}][file]`);
+    if (name) {
+      cards.push({
+        name,
+        // ✅ 如果有新檔案 → 用新檔案；沒有 → 保留舊的；舊的也沒有 → 空字串
+        img: file ? '/uploads/' + file.filename : (oldCards[i]?.img || '')
+      });
+    }
+  }
 
   if (exists) {
-    await Topic.updateOne(
-      { userId, name: topicName },
-      { $set: { cards } }
-    );
+    await Topic.updateOne({ userId, name: topicName }, { $set: { cards } });
     console.log('✅ 主題已更新:', topicName);
     return res.json({ success: true, updated: true });
   } else {
@@ -214,6 +212,7 @@ for (let i = 0; i < 30; i++) {
     return res.json({ success: true, created: true, topic });
   }
 });
+
 
   
 

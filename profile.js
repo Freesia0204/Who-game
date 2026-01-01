@@ -155,11 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                const imageContainer = slot.querySelector('.card-image');
 const fileInput = slot.querySelector('input[type="file"]');
 
-imageContainer.addEventListener('click', (e) => {
-  if (e.target.classList.contains('delete-bar')) return;
-  fileInput.click();
-});
-
+imageContainer.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', () => {
   const file = fileInput.files?.[0];
   if (!file) return;
@@ -171,6 +167,8 @@ fileInput.addEventListener('change', () => {
   });
   imageContainer.appendChild(preview);
 });
+
+
             });
 
            
@@ -212,48 +210,47 @@ fileInput.addEventListener('change', () => {
   loadCustomTopics();
 
   // 儲存主題
-  saveTopicBtn.addEventListener('click', () => {
-    const topicName = topicNameInput.value.trim();
-    if (!topicName) {
-      alert('請輸入主題名稱');
-      return;
+saveTopicBtn.addEventListener('click', () => {
+  const topicName = topicNameInput.value.trim();
+  if (!topicName) {
+    alert('請輸入主題名稱');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('userId', myPlayerId);
+  formData.append('topicName', topicName);
+
+  // 把每張卡牌的文字和圖片一起送
+  cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
+    const text = slot.querySelector('input[type="text"]').value.trim();
+    const fileInput = slot.querySelector('input[type="file"]');
+    const file = fileInput?.files?.[0];
+
+    formData.append(`cards[${index}][name]`, text);
+    if (file) {
+      formData.append(`cards[${index}][file]`, file);
     }
+  }); // ✅ 迴圈結束
 
-    const formData = new FormData();
-    formData.append('userId', myPlayerId);
-    formData.append('topicName', topicName);
-
-    // 把每張卡牌的文字和圖片一起送
-    cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
-      const text = slot.querySelector('input[type="text"]').value.trim();
-      const fileInput = slot.querySelector('input[type="file"]');
-      const file = fileInput?.files?.[0];
-if (text) {
-  formData.append(`cards[${index}][name]`, text);
-}
-if (file) {
-  formData.append('cards', file); // 所有圖片都用同一個 key
-}
-
-    });
-
-    fetch('/api/uploadTopic', {
-      method: 'POST',
-      body: formData
+  // ✅ fetch 移到迴圈外
+  fetch('/api/uploadTopic', {
+    method: 'POST',
+    body: formData
+  })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        alert(res.updated ? '主題已更新' : '自訂主題已儲存');
+        modal.style.display = 'none';
+        loadCustomTopics();
+      } else {
+        alert('儲存失敗：' + (res.message || '未知錯誤'));
+      }
     })
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) {
-          alert(res.updated ? '主題已更新' : '自訂主題已儲存');
-          modal.style.display = 'none';
-          loadCustomTopics();
-        } else {
-          alert('儲存失敗：' + (res.message || '未知錯誤'));
-        }
-      })
-      .catch(err => {
-        console.error('API 錯誤:', err);
-        alert('伺服器錯誤，請稍後再試');
-      });
-  });
+    .catch(err => {
+      console.error('API 錯誤:', err);
+      alert('伺服器錯誤，請稍後再試');
+    });
 });
+}); 
