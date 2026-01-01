@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 載入自訂主題名稱列表
 function loadCustomTopics() {
+  
+
   fetch(`/api/getCustomTopics?userId=${myPlayerId}`)
     .then(r => r.json())
     .then(data => {
@@ -129,26 +131,30 @@ function loadCustomTopics() {
         const div = document.createElement('div');
         div.className = 'topic-item';
         div.textContent = topic.name;
+        console.log('卡牌資料:', topic.cards);
 
         // 點擊預覽與修改
         div.addEventListener('click', () => {
           topicNameInput.value = topic.name;
           cardGrid.innerHTML = '';
           topic.cards.forEach(card => {
-            const slot = document.createElement('div');
-            slot.className = 'card-slot';
-            slot.innerHTML = `
-              <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
-              <div class="card-image has-image">
-                <img src="${card.img}" alt="預覽圖片">
-                <input type="file" accept="image/*">
-              </div>
-              <div class="card-text">
-                <input type="text" value="${card.name}">
-              </div>
-            `;
-            cardGrid.appendChild(slot);
-          });
+  const slot = document.createElement('div');
+  slot.className = 'card-slot';
+  slot.innerHTML = `
+    <div class="card-header delete-bar">🗑️ 刪除此卡牌</div>
+    <div class="card-image has-image">
+      <img src="${card.img}" alt="預覽圖片">
+      <input type="file" accept="image/*">
+    </div>
+    <div class="card-text">
+      <input type="text" value="${card.name}">
+    </div>
+  `;
+  cardGrid.appendChild(slot);
+});
+
+
+
           modal.style.display = 'flex';
         });
 
