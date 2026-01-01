@@ -191,16 +191,18 @@ app.post('/api/uploadTopic', upload.any(), async (req, res) => {
 
   const cards = [];
   for (let i = 0; i < 30; i++) {
-    const name = parsedBody.cards?.[i]?.name;
-    const file = req.files?.find(f => f.fieldname === `cards[${i}][file]`);
-    if (name) {
-      cards.push({
-        name,
-        // ✅ 如果有新檔案 → 用新檔案；沒有 → 保留舊的；舊的也沒有 → 空字串
-        img: file ? '/uploads/' + file.filename : (oldCards[i]?.img || '')
-      });
-    }
+  const name = parsedBody.cards?.[i]?.name || ''; // 空字串也保留
+  const file = req.files?.find(f => f.fieldname === `cards[${i}][file]`);
+
+  // ✅ 只要有文字或圖片就存
+  if (name !== '' || file) {
+    cards.push({
+      name,
+      img: file ? '/uploads/' + file.filename : (oldCards[i]?.img || '')
+    });
   }
+}
+
 
   if (exists) {
     await Topic.updateOne({ userId, name: topicName }, { $set: { cards } });
