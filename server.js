@@ -186,7 +186,7 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     return res.json({ success: false, message: '缺少 userId 或 topicName' });
   }
 
-  // 建立新卡牌資料
+  // 新送來的卡牌
   const newCards = [];
   for (let i = 0; i < 30; i++) {
     const name = parsedBody.cards?.[i]?.name;
@@ -194,7 +194,7 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     if (name) {
       newCards.push({
         name,
-        img: file ? '/uploads/' + file.filename : null // 用 null 表示沒更新
+        img: file ? '/uploads/' + file.filename : null // 用 null 表示沒有更新圖片
       });
     }
   }
@@ -219,13 +219,14 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
     return res.json({ success: true, updated: true });
   } else {
     // 新主題
-    const topic = await Topic.create({ userId, name: topicName, cards: newCards });
+    const topic = await Topic.create({ userId, name: topicName, cards: newCards.map(c => ({
+      name: c.name,
+      img: c.img || '' // 沒有圖片就存空字串
+    })) });
     console.log('✅ 新主題已建立:', topicName);
     return res.json({ success: true, created: true, topic });
   }
 });
-
-
 
   
 
