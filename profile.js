@@ -184,15 +184,27 @@ saveTopicBtn.addEventListener('click', () => {
 
   // 把每張卡牌的文字和圖片一起送
   cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
-    const text = slot.querySelector('input[type="text"]').value.trim();
-    const fileInput = slot.querySelector('input[type="file"]');
-    if (text) {
-      formData.append(`cards[${index}][name]`, text);
-    }
-    if (fileInput && fileInput.files[0]) {
-      formData.append('cards', fileInput.files[0]); // ✅ 改成 cards
-    }
-  });
+  const text = slot.querySelector('input[type="text"]').value.trim();
+  const fileInput = slot.querySelector('input[type="file"]');
+  const file = fileInput?.files?.[0];
+
+  // 送文字
+  if (text) {
+    formData.append(`cards[${index}][name]`, text);
+  }
+
+  // 送圖片（只有真的有檔案才送）
+  if (file) {
+    formData.append('cards', file);
+  }
+});
+
+
+
+for (let pair of formData.entries()) {
+  console.log('🧾 formData:', pair[0], pair[1]);
+}
+
 
   fetch('/api/uploadTopic', {
     method: 'POST',
