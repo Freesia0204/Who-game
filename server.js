@@ -190,30 +190,25 @@ app.post('/api/uploadTopic', upload.array('cards', 30), async (req, res) => {
 
   const cards = [];
 
-  // 有圖片的卡牌
-  if (req.files) {
-    req.files.forEach((file, index) => {
-      const name = req.body[`cards[${index}][name]`] || '';
-      cards.push({
-        name,
-        img: '/uploads/' + file.filename
-      });
-    });
-  }
+  // 解析所有文字欄位
+  const cardKeys = Object.keys(req.body).filter(k => k.includes('cards[') && k.includes('][name]'));
+  cardKeys.forEach(key => {
+    const name = req.body[key];
+    const match = key.match(/cards\[(\d+)\]/); // ✅ 修正這裡
+    const index = match ? parseInt(match[1]) : null;
 
-  // 只有文字的卡牌
-  for (let i = 0; i < 30; i++) {
-    const name = req.body[`cards[${i}][name]`];
-    if (name && !cards.find(c => c.name === name)) {
-      cards.push({ name, img: '' });
-    }
-  }
+    const file = index !== null ? req.files?.[index] : null;
+    const img = file ? '/uploads/' + file.filename : '';
 
-  console.log('✅ 儲存卡牌:', cards); // 加這行方便驗證
+    cards.push({ name, img });
+  });
+
+  console.log('✅ 儲存卡牌:', cards);
 
   const topic = await Topic.create({ userId, name: topicName, cards });
   res.json({ success: true, topic });
 });
+
 
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
