@@ -72,17 +72,19 @@ io.on('connection', (socket) => {
   });
 
   // 選主題 → 只有第一人能選
-  socket.on('select_topic', ({ roomId, topic }) => {
-    if (!rooms[roomId]) return;
+  socket.on('select_topic', ({ roomId, topic, cards }) => {
+  if (!rooms[roomId]) return;
 
-    if (rooms[roomId].topicSelector !== socket.id) {
-      io.to(roomId).emit('system_message',
-        `玩家 ${rooms[roomId].players[socket.id]?.name} 嘗試選主題，但不是選題者`);
-      return;
-    }
+  if (rooms[roomId].topicSelector !== socket.id) {
+    io.to(roomId).emit('system_message',
+      `玩家 ${rooms[roomId].players[socket.id]?.name} 嘗試選主題，但不是選題者`);
+    return;
+  }
 
-    io.to(roomId).emit('topic_selected', { topic });
-  });
+  // ✅ 廣播主題與卡牌資料
+  io.to(roomId).emit('topic_selected', { topic, cards });
+});
+
 
  
  

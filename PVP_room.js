@@ -188,7 +188,13 @@ function createTopicCells() {
           const chosenTopic = customTopics.find(t => t.name === chosenName);
           if (chosenTopic) {
             gridData['我的主題'] = chosenTopic.cards;
-            socket.emit('select_topic', { roomId, topic: '我的主題', playerId: myPlayerId });
+            socket.emit('select_topic', {
+  roomId,
+  topic: '我的主題',
+  playerId: myPlayerId,
+  cards: chosenTopic.cards // ✅ 加上卡牌資料
+});
+
             container.style.display = 'none'; // 選完就隱藏
           }
         };
@@ -248,11 +254,18 @@ if (socket.id === topicSelector && Object.keys(players).length >= 2) {
 
 });
 
-socket.on('topic_selected', ({ topic }) => {
+socket.on('topic_selected', ({ topic, cards }) => {
   selectedTopic = topic;
   addMessage('system', `玩家選擇了主題：${topic}`);
-  showCardSelection(); // ✅ 進入卡牌選擇
+
+  // ✅ 如果有卡牌資料（自訂主題），就注入
+  if (cards) {
+    gridData[topic] = cards;
+  }
+
+  showCardSelection();
 });
+
 
 // ===== 卡牌選擇 =====
 function showCardSelection() {

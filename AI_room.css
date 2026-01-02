@@ -154,16 +154,19 @@ body {
 
 /* === 右側：聊天區 === */
 .chat-area {
-  flex: 0.5; 
+  flex: 0.5;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* 改成 flex-start 就不會把內容拉開 */
+  justify-content: flex-start;
   padding: 16px;
-  background: rgba(255,255,255,0.1); 
+  background: rgba(255,255,255,0.1);
   border-radius: 12px;
-  min-height: 600px; 
+  min-height: 600px;
   height: auto;
 }
+
+
+
 
 
 /* 聊天狀態文字（例如"AI先問"） */
@@ -174,16 +177,17 @@ body {
 
 
 /* === 訊息顯示框 === */
+/* 對話框固定填滿 chat-area 剩餘高度 */
 .messages {
-  flex: 1; /* 佔據剩餘空間 */
-  list-style: none; /* 移除列表符號 */
-  overflow-y: auto; /* 超出可滾動 */
+  flex: 1;                /* 撐滿 chat-area 剩餘空間 */
+  overflow-y: auto;        /* 超過高度就滾輪 */
+  max-height: 100%;        /* 限制在 chat-area 高度內 */
+  list-style: none;
   padding: 8px;
   margin: 0 0 8px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background: rgba(255,255,255,0.05); /* 微透明背景 */
-  min-height: 180px; /* 最小高度 */
+  background: rgba(255,255,255,0.05);
 }
 
 /* === 每則訊息樣式 === */
