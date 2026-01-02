@@ -457,7 +457,7 @@
       "isPhantomThief": true,
       "isChild": false,
       "hairNotBlack": true,
-      "hasHat": true,
+      "hasHat": false,
       "hasBeard": true,
       "isFat": false,
       "isLongHair": false,

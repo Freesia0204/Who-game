@@ -701,6 +701,39 @@ if (guessBtnEl) {
     }
   });
 }
+// 啟用猜模式
+const guessBtn = document.getElementById('guessBtn');
+const cancelGuessBtn = document.getElementById('cancelGuessBtn');
+
+if (guessBtn) {
+  guessBtn.addEventListener('click', () => {
+    if (questionsAskedByPlayer >= 3 && questionsAskedByAI >= 3 && playerGuessCooldown === 0 && turn === 'player') {
+      canGuess = true;
+      addMessage('system', '猜模式開啟，請點左邊格子來猜！');
+      showSystemMessage('請在左側點一個格子來猜解藥！');
+      if (gridArea) gridArea.classList.add('guess-mode');
+
+      // ✅ 按鈕切換
+      guessBtn.style.display = 'none';
+      cancelGuessBtn.style.display = 'inline-block';
+    } else {
+      showSystemMessage('目前還不能猜喔，請先問問題～');
+    }
+  });
+}
+
+if (cancelGuessBtn) {
+  cancelGuessBtn.addEventListener('click', () => {
+    canGuess = false;
+    addMessage('system', '已取消猜模式');
+    if (gridArea) gridArea.classList.remove('guess-mode');
+
+    // ✅ 按鈕切換回來
+    guessBtn.style.display = 'inline-block';
+    cancelGuessBtn.style.display = 'none';
+  });
+}
+
 
 // ===== 表單送出（玩家問或回答） =====
 if (chatForm) {

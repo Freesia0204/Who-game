@@ -59,16 +59,20 @@ body {
   display: flex;
   flex-direction: row;
   width: 95vw;
-  min-height: calc(100vh - 60px); /* 不會超出視窗 */
+  min-height: calc(100vh - 60px);
   gap: 12px;
   background: rgba(255,255,255,0.05);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(2,6,23,0.3);
   padding: 12px;
   position: relative;
-  align-items: stretch;
-  margin: 0 auto; /* ✅ 水平置中 */
+  align-items: flex-start; /* ✅ 改成 flex-start，不要 stretch */
 }
+
+
+
+
+
 
 /* === 房號 / 玩家名稱 / 房主IP 區 === */
 .room-info {
@@ -157,16 +161,12 @@ body {
   flex: 0.5;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   padding: 16px;
   background: rgba(255,255,255,0.1);
   border-radius: 12px;
   min-height: 600px;
-  height: auto;
+  /* ✅ 跟 grid-area 一樣高，但內部可滾動 */
 }
-
-
-
 
 
 /* 聊天狀態文字（例如"AI先問"） */
@@ -177,11 +177,10 @@ body {
 
 
 /* === 訊息顯示框 === */
-/* 對話框固定填滿 chat-area 剩餘高度 */
 .messages {
-  flex: 1;                /* 撐滿 chat-area 剩餘空間 */
-  overflow-y: auto;        /* 超過高度就滾輪 */
-  max-height: 100%;        /* 限制在 chat-area 高度內 */
+  flex: 1;
+  overflow-y: auto;   /* ✅ 超過高度就滾輪 */
+  max-height: 100%;   /* ✅ 限制在 chat-area 高度內 */
   list-style: none;
   padding: 8px;
   margin: 0 0 8px 0;

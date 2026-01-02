@@ -134,12 +134,15 @@ function createTopicCells() {
   topics.forEach(topic => {
     const cell = document.createElement('div');
     cell.className = 'cell disabled';
+
     const img = document.createElement('img');
     img.src = topic.img;
     img.alt = topic.name;
+
     const text = document.createElement('div');
     text.textContent = topic.name;
     text.className = 'cell-text';
+
     cell.appendChild(img);
     cell.appendChild(text);
 
@@ -169,7 +172,20 @@ function createTopicCells() {
           return;
         }
 
-        // 顯示下拉選單
+        // ✅ 如果只有一個 → 直接載入並同步
+        if (customTopics.length === 1) {
+          const onlyTopic = customTopics[0];
+          gridData['我的主題'] = onlyTopic.cards;
+          socket.emit('select_topic', {
+            roomId,
+            topic: '我的主題',
+            playerId: myPlayerId,
+            cards: onlyTopic.cards // ✅ 廣播卡牌資料
+          });
+          return;
+        }
+
+        // ✅ 多個 → 顯示下拉選單
         const container = document.getElementById('customTopicSelectContainer');
         const select = document.getElementById('customTopicSelect');
         container.style.display = 'block';
@@ -182,24 +198,28 @@ function createTopicCells() {
           select.appendChild(option);
         });
 
-        // ✅ 綁定選擇事件（避免重複綁定，用 onChange 覆蓋）
+        // 避免重複綁定，用 onChange 覆蓋
         select.onchange = () => {
           const chosenName = select.value;
           const chosenTopic = customTopics.find(t => t.name === chosenName);
           if (chosenTopic) {
             gridData['我的主題'] = chosenTopic.cards;
             socket.emit('select_topic', {
-  roomId,
-  topic: '我的主題',
-  playerId: myPlayerId,
-  cards: chosenTopic.cards // ✅ 加上卡牌資料
-});
-
-            container.style.display = 'none'; // 選完就隱藏
+              roomId,
+              topic: '我的主題',
+              playerId: myPlayerId,
+              cards: chosenTopic.cards // ✅ 廣播卡牌資料
+            });
+            container.style.display = 'none';
           }
         };
       } else {
-        socket.emit('select_topic', { roomId, topic: selectedTopic, playerId: myPlayerId });
+        // ✅ 非自訂主題：直接同步主題名稱
+        socket.emit('select_topic', {
+          roomId,
+          topic: selectedTopic,
+          playerId: myPlayerId
+        });
       }
     });
 
