@@ -330,7 +330,7 @@ const AI_DB = {
 { question: '他有沒有開斑紋？', trait: 'Texture' },
 { question: '他的臉上有沒有傷痕、疤痕？', trait: 'scar' },
 { question: '他有沒有參加無限城決戰？', trait: 'battle ' },
-{ question: '他是不是領袖？', trait: 'leader' },
+{ question: '他是不是鬼或鬼殺隊的領袖？', trait: 'leader' },
 { question: '他是不是鬼？（曾經變鬼算，吃鬼算、無限城不算）', trait: 'ghost' },
 { question: '他是不是人？', trait: 'people' },
 { question: '他是不是自爆而亡的？', trait: 'explode' },
@@ -344,7 +344,7 @@ const AI_DB = {
 { question: '他是上弦嗎？', trait: 'Upper' },
 { question: '他是下弦嗎？', trait: 'lower' },
 { question: '他的臉是不是一般五官？（一雙眼睛一個鼻子一個嘴巴，都在正常位子上）', trait: 'facial' },
-{ question: '他是不是上弦三以上？', trait: 'Mikami' },
+{ question: '他是不是上弦三以上(含上三)？', trait: 'Mikami' },
 { question: '他是不是上弦三以下？', trait: 'ThreeDown' },
 { question: '他會不會使用血鬼術？', trait: 'Blood' },
 { question: '他會使用呼吸法嗎？', trait: 'breathe' },
@@ -694,7 +694,7 @@ if (guessBtnEl) {
       canGuess = true;
       guessBtnEl.style.display = 'inline-block';
       addMessage('system', '「我要猜」功能開啟！');
-      showSystemMessage('請在左側點一個格子來猜解藥！');
+      
       if (gridArea) gridArea.classList.add('guess-mode');
     } else {
       showSystemMessage('目前還不能猜喔，請先問問題～');
@@ -710,7 +710,7 @@ if (guessBtn) {
     if (questionsAskedByPlayer >= 3 && questionsAskedByAI >= 3 && playerGuessCooldown === 0 && turn === 'player') {
       canGuess = true;
       addMessage('system', '猜模式開啟，請點左邊格子來猜！');
-      showSystemMessage('請在左側點一個格子來猜解藥！');
+      
       if (gridArea) gridArea.classList.add('guess-mode');
 
       // ✅ 按鈕切換
@@ -794,7 +794,8 @@ function handlePlayerAnswer(msg) {
 // ===== 控制「我要猜」按鈕顯示狀態 =====
 function updateGuessButtonState() {
   const guessBtn = document.getElementById('guessBtn');
-  if (!guessBtn) return;
+  const cancelGuessBtn = document.getElementById('cancelGuessBtn');
+  if (!guessBtn || !cancelGuessBtn) return;
 
   if (
     turn === 'player' &&
@@ -802,13 +803,17 @@ function updateGuessButtonState() {
     questionsAskedByPlayer >= 3 &&
     questionsAskedByAI >= 3
   ) {
+    // ✅ 玩家回合且符合條件 → 顯示「我要猜」
     guessBtn.style.display = 'inline-block';
     guessBtn.disabled = false;
   } else {
+    // ✅ 其他情況 → 隱藏「我要猜」與「取消猜」
     guessBtn.style.display = 'none';
     guessBtn.disabled = true;
+    cancelGuessBtn.style.display = 'none';
   }
 }
+
 
 // ===== AI 的下一步決策 =====
 function AIGuessOrAsk() {
