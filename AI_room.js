@@ -687,21 +687,6 @@ function updatePossibleCells(question, playerAnswer) {
 
 
 // ===== 玩家點「我要猜」按鈕事件 =====
-const guessBtnEl = document.getElementById('guessBtn');
-if (guessBtnEl) {
-  guessBtnEl.addEventListener('click', () => {
-    if (questionsAskedByPlayer >= 3 && questionsAskedByAI >= 3 && playerGuessCooldown === 0 && turn === 'player') {
-      canGuess = true;
-      guessBtnEl.style.display = 'inline-block';
-      addMessage('system', '「我要猜」功能開啟！');
-      
-      if (gridArea) gridArea.classList.add('guess-mode');
-    } else {
-      showSystemMessage('目前還不能猜喔，請先問問題～');
-    }
-  });
-}
-// 啟用猜模式
 const guessBtn = document.getElementById('guessBtn');
 const cancelGuessBtn = document.getElementById('cancelGuessBtn');
 
@@ -710,7 +695,6 @@ if (guessBtn) {
     if (questionsAskedByPlayer >= 3 && questionsAskedByAI >= 3 && playerGuessCooldown === 0 && turn === 'player') {
       canGuess = true;
       addMessage('system', '猜模式開啟，請點左邊格子來猜！');
-      
       if (gridArea) gridArea.classList.add('guess-mode');
 
       // ✅ 按鈕切換
@@ -733,6 +717,7 @@ if (cancelGuessBtn) {
     cancelGuessBtn.style.display = 'none';
   });
 }
+
 
 
 // ===== 表單送出（玩家問或回答） =====
@@ -803,14 +788,12 @@ function updateGuessButtonState() {
     questionsAskedByPlayer >= 3 &&
     questionsAskedByAI >= 3
   ) {
-    // ✅ 玩家回合且符合條件 → 顯示「我要猜」
     guessBtn.style.display = 'inline-block';
     guessBtn.disabled = false;
   } else {
-    // ✅ 其他情況 → 隱藏「我要猜」與「取消猜」
     guessBtn.style.display = 'none';
     guessBtn.disabled = true;
-    cancelGuessBtn.style.display = 'none';
+    cancelGuessBtn.style.display = 'none'; // ✅ 保證回合結束時也隱藏
   }
 }
 
