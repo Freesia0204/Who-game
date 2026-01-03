@@ -1,0 +1,21 @@
+/* 點擊特效圖片樣式 */
+.click-effect {
+  position: absolute;
+  pointer-events: none; /* 不影響操作 */
+  width: 60px;
+  height: 60px;
+  animation: popFade 0.8s ease-out forwards;
+  z-index: 9999;
+}
+
+/* 放大 + 淡出動畫 */
+@keyframes popFade {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
