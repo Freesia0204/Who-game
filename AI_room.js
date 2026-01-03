@@ -535,7 +535,10 @@ function AIAskQuestion() {
     let randomQ;
     do {
       randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-    } while (askedQuestions.includes(randomQ.question)); // ✅ 避免重複
+    } while (
+      askedQuestions.includes(randomQ.question) ||
+      (randomQ.trait && !hasEliminationPotential(randomQ.trait, dataList)) // ✅ 避免無效題
+    );
 
     if (randomQ && randomQ.question) {
       addMessage('AI', randomQ.question);
@@ -592,6 +595,17 @@ function AIAskQuestion() {
   }
 }
 
+// ✅ 檢查是否有區分度
+function hasEliminationPotential(key, remaining) {
+  let hasTrue = false, hasFalse = false;
+  remaining.forEach(c => {
+    if (c.traits && typeof c.traits[key] === 'boolean') {
+      if (c.traits[key]) hasTrue = true;
+      else hasFalse = true;
+    }
+  });
+  return hasTrue && hasFalse; // 只有同時存在 true/false 才有區分度
+}
 
 
 // ===== AI 回答玩家問題（穩定版） =====

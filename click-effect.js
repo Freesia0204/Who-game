@@ -32,7 +32,24 @@ const clickThemes = {
   'img-chick/柯29.png'
 ],
 
-  Free: ['img/effects/free.png', 'img/effects/makoto.png']
+  Free: [
+  'img-chick/F1.png',
+  'img-chick/F2.png',
+  'img-chick/F3.png',
+  'img-chick/F4.png',
+  'img-chick/F5.png',
+  'img-chick/F6.png',
+  'img-chick/F7.png',
+  'img-chick/F8.png',
+  'img-chick/F9.png',
+  'img-chick/F10.png',
+  'img-chick/F11.png',
+  'img-chick/F12.png',
+  'img-chick/F13.png',
+  'img-chick/F14.png',
+  'img-chick/F15.png'
+]
+
 };
 
 // 讀取玩家選擇的特效主題

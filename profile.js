@@ -257,10 +257,10 @@ const ThemeCatalog = {
     background_rank:   "url('img-background/柯南五稜星.jpeg')"
   },
   "FREE!": {
-    background_profile: "url('img-background/FREE!游泳池.jpg')",
-    background_index:  "url('img-background/FREE!游泳池.jpg')",
-    background_game:   "url('img-background/FREE!游泳池.jpg')",
-    background_rank:   "url('img-background/FREE!游泳池.jpg')"
+    background_profile: "url('images/free-dtl-bg.jpg')",
+    background_index:  "url('images/free-dtl-bg.jpg')",
+    background_game:   "url('images/free-dtl-bg.jpg')",
+    background_rank:   "url('images/free-dtl-bg.jpg')"
   },
  
 };
