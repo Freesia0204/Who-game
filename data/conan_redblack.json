@@ -120,7 +120,7 @@
 
     },
      {
-      "img": "img-KN-red/宮野志保.jpg", "name": "宮野志保/雪莉", "traits":{
+      "img": "img-KN/宮野志保.jpg", "name": "宮野志保/雪莉", "traits":{
 "boy":false,
 "girl":true,
 "isWinery":true,
@@ -1101,7 +1101,7 @@
 }
 },
     {
-"img":"img-KN-red/香堤.jpg",
+"img":"img-KN/香堤.jpg",
 "name":"香堤",
 "traits":{
 "boy":false,
@@ -1141,7 +1141,7 @@
 }
 },
 {
-"img":"img-KN-red/柯倫.jpg",
+"img":"img-KN/柯倫.jpg",
 "name":"柯倫",
 "traits":{
 "boy":true,
