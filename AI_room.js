@@ -276,23 +276,19 @@ const topics = [
   { name: '名偵探柯南', img: 'img-KN/柯南_loge.jpg' },
   { name: '名偵探柯南-紅黑篇', img: 'img-KN/柯南_loge.jpg' },
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
-  { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
-  { name: 'FREE!', img: 'img-Free/Free_logo.png' }
+  { name: 'FREE!', img: 'img-Free/Free_logo.png' },
+  { name: '防風少年', img: 'img-WB/防風少年-logo.png' }
+  
 ];
-
-// 🎲 AI 問題選擇邏輯：合併通用 + 主題題庫
 
 
 // 🧠 AI資料庫（含通用問題與各主題專屬問題）
 const AI_DB = {
-  // 🔹通用問題：所有主題都可能會問
-  common: [
-    { question: '他是不是男的', trait: 'boy' },
-    { question: '他是不是女的', trait: 'girl' },
-  ],
 
   // 🔸專屬題庫：針對特定主題角色
   '名偵探柯南': [
+     { question: '他是不是男的', trait: 'boy' },
+    { question: '他是不是女的', trait: 'girl' },
     { question: '他是不是酒廠的（臥底、曾經是也算）？', trait: 'isWinery' },
     { question: '他有沒有當過臥底？', trait: 'hasBeenUndercover' },
     { question: '他是不是警察？（不包含公安、FBI等，曾經是的不算）', trait: 'isPolice' },
@@ -330,6 +326,8 @@ const AI_DB = {
 
 
 '鬼滅之刃': [
+   { question: '他是不是男的', trait: 'boy' },
+    { question: '他是不是女的', trait: 'girl' },
 { question: '他是不是柱？（曾經也算）', trait: 'column' },
 { question: '他最後是不是死了？', trait: 'die' },
 { question: '他有沒有開斑紋？', trait: 'Texture' },
@@ -358,8 +356,16 @@ const AI_DB = {
 { question: '他是十二鬼月的一員嗎', trait: 'moon' },
 { question: '他是五感組的一員嗎', trait: 'FiveSenses' },
 ],
-
-'防風少年': [
+  'FREE!': [
+     { question: '他是不是男的', trait: 'boy' },
+    { question: '他是不是女的', trait: 'girl' },
+    { question: '他是不是游泳選手' },
+    { question: '他是不是高中生' },
+    { question: '他有沒有紅頭髮' }
+  ],
+  '防風少年': [
+   { question: '他是不是男的', trait: 'boy' },
+    { question: '他是不是女的', trait: 'girl' },
 { question: '他是風鈴的嗎？', trait: 'column' },
 { question: '他很擅長打架嗎？', trait: 'die' },
 { question: '？', trait: 'column' },
@@ -381,13 +387,6 @@ const AI_DB = {
 { question: '他成年了嗎？', trait: 'lower' },
 ],
 
-
-
-  'FREE!': [
-    { question: '他是不是游泳選手' },
-    { question: '他是不是高中生' },
-    { question: '他有沒有紅頭髮' }
-  ],
 
   // 🔹 trait 對照表
   traitMap: {
@@ -462,7 +461,7 @@ const synonyms = {
   twin :['雙胞胎', '雙胞胎兄弟'], 
   Kansai:['關西', '關西的偵探', '關西的人','關西人','關西偵探'],
   Kanto:['關東', '關東的偵探', '關東的人','關東人','關東偵探'],
-  trait: ['長野縣的警察', '長野縣警', '長野縣三人組', '長野' ,'長野縣'],
+  Nagano: ['長野縣的警察', '長野縣警', '長野縣三人組', '長野' ,'長野縣','長野的','長野的人'],
   ponytail:['馬尾'],
   dark:['皮膚是黑色的','皮膚黑','皮膚是黑的','膚色偏黑','皮膚偏黑','黑皮','膚色黑']
 };
@@ -508,24 +507,7 @@ function AIAskQuestion() {
   const dataList = gridData[selectedTopic] || [];
   const remaining = dataList.filter(c => possibleCells.includes(c.name));
 
-  // 第一次先問通用問題
-  if (questionsAskedByAI === 0) {
-    const commonQuestions = AI_DB.common;
-    let chosen;
-    do {
-      chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
-    } while (askedQuestions.includes(chosen.question)); // ✅ 避免重複
-
-    addMessage('AI', chosen.question);
-    aiAwaitingAnswer = true;
-    questionsAskedByAI++;
-    lastAIQuestion = chosen.question;
-    askedQuestions.push(chosen.question); // ✅ 記錄問題
-    if (chosen.trait) askedTraits.push(chosen.trait);
-    turn = 'waitingForAnswer';
-    enableChat();
-    return;
-  }
+  
 
   // 沒剩候選 → 隨機題庫
   if (remaining.length === 0) {
@@ -551,24 +533,40 @@ function AIAskQuestion() {
     return;
   }
 
-  // 🔍 找出目前剩下角色中，哪些 trait 是 true 的
-  const traitTrueCount = {};
+  // 🔍 統計 trait 分布
+  const traitCounts = {};
   remaining.forEach(c => {
     for (const key in c.traits) {
-      if (c.traits[key] === true) {
-        traitTrueCount[key] = (traitTrueCount[key] || 0) + 1;
-      }
+      const val = c.traits[key];
+      if (!traitCounts[key]) traitCounts[key] = { yes: 0, no: 0 };
+      if (val === true) traitCounts[key].yes++;
+      else if (val === false) traitCounts[key].no++;
     }
   });
 
-  // 🔍 篩選出尚未問過、且有排除潛力的 trait
-  const candidateTraits = Object.entries(traitTrueCount)
-    .filter(([key]) => !askedTraits.includes(key) && hasEliminationPotential(key, remaining))
-    .sort((a, b) => b[1] - a[1]); // 依 true 數量排序
+  // 🔍 選出最佳 trait
+  let bestTrait = null;
+  let bestScore = -1;
 
-  // 🔍 選出最有可能排除人的 trait
-  if (candidateTraits.length > 0) {
-    const bestTrait = candidateTraits[0][0];
+  for (const key in traitCounts) {
+    const { yes, no } = traitCounts[key];
+
+    if (askedTraits.includes(key)) continue;
+    if (!hasEliminationPotential(key, remaining)) continue;
+
+    // ✅ 必須有至少一個 true
+    if (yes === 0) continue;
+
+    // ✅ 分布越平均越好 → 能排除最多人
+    const score = Math.min(yes, no);
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestTrait = key;
+    }
+  }
+
+  if (bestTrait) {
     const question = AI_DB.traitMap[bestTrait]
       ? `他有${AI_DB.traitMap[bestTrait]}嗎？`
       : `他有${bestTrait}嗎？`;
@@ -609,6 +607,7 @@ function hasEliminationPotential(key, remaining) {
   });
   return hasTrue && hasFalse; // 只有同時存在 true/false 才有區分度
 }
+
 
 // ===== AI 回答玩家問題（穩定版） =====
 function AIAnswer(playerQuestion) {

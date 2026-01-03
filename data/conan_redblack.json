@@ -1,37 +1,21 @@
 [
     {
-      "img": "img-KN/工藤新一.jpg", "name": "工藤新一", "traits": {
+      "img": "img-KN-red/工藤新一.jpg", "name": "工藤新一", "traits": {
 
       }
     },
     {
-      "img": "img-KN/江戶川柯南.jpg", "name": "江戶川柯南", "traits": {
+      "img": "img-KN -red/江戶川柯南.jpg", "name": "江戶川柯南", "traits": {
 
       }
     },
-    {
-      "img": "img-KN/毛利蘭.jpg", "name": "毛利蘭", "traits": {
+     {
+      "img": "img-KN-red/灰原哀.jpg", "name": "灰原哀", "traits": {
 
       }
     },
-    {
-      "img": "img-KN/毛利小五郎.jpg", "name": "毛利小五郎", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/灰原哀.jpg", "name": "宮野志保/灰原哀/雪莉", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/赤井瑪麗-瑪麗·世良.jpg", "name": "赤井瑪麗/瑪麗·世良", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/世良真純.jpg", "name": "世良真純", "traits": {
-
+     {
+      "img": "img-KN-red/宮野志保.jpg", "name": "宮野志保/雪莉", "traits": {
 
       }
     },
@@ -41,35 +25,36 @@
 
       }
     },
-    {
-      "img": "img-KN/琴酒.jpg", "name": "琴酒", "traits": {
+     {
+      "img": "img-KN/降谷零-安室透.jpg", "name": "降谷零/安室透/波本", "traits": {
 
+      }
+    },
+     {
+      "img": "img-KN/風見裕也.jpg", "name": "風見裕也", "traits": {
+
+      }
+    },
+     {
+      "img": "img-KN-red/赤井瑪麗-瑪麗·世良.jpg", "name": "赤井瑪麗/瑪麗·世良", "traits": {
 
       }
     },
     {
-      "img": "img-KN/苦艾酒.jpg", "name": "苦艾酒", "traits": {
+      "img": "img-KN-red/世良真純.jpg", "name": "世良真純", "traits": {
+
 
       }
     },
-    {
-      "img": "img-KN/工藤優作.jpg", "name": "工藤優作", "traits": {
-        "isWinery": false
+
+     {
+      "img": "img-KN/赤井秀一.jpg", "name": "赤井秀一/黑麥威士忌/", "traits": {
 
       }
     },
-    {
-      "img": "img-KN/水無怜奈.jpg", "name": "基爾/本堂瑛海/水無怜奈", "traits": {
 
-      }
-    },
-    {
-      "img": "img-KN/庫拉索.jpg", "name": "庫拉索", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/宮野明美.jpg", "name": "宮野明美", "traits": {
+     {
+      "img": "img-KN/沖矢昂.jpg", "name": "沖矢昂", "traits": {
 
       }
     },
@@ -89,20 +74,70 @@
       }
     },
     {
-      "img": "img-KN/赤井秀一-沖矢昂.jpg", "name": "赤井秀一/沖矢昂/黑麥威士忌/", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/降谷零-安室透.jpg", "name": "降谷零/安室透/波本", "traits": {
-
-      }
-    },
-    {
       "img": "img-KN/伊達航.jpg", "name": "伊達航", "traits": {
 
       }
     },
+ {
+      "img": "img-KN/茱蒂史坦林.jpg", "name": "茱蒂·史坦林", "traits": {
+
+      }
+    },
+     {
+      "img": "img-KN/水無怜奈.jpg", "name": "基爾/本堂瑛海/水無怜奈", "traits": {
+
+      }
+    },
+     {
+      "img": "img-KN/本堂瑛祐.jpg", "name": "本堂瑛祐", "traits": {
+
+      }
+    },
+    
+    
+    {
+      "img": "img-KN/琴酒.jpg", "name": "琴酒", "traits": {
+
+
+      }
+    },
+      {
+      "img": "img-KN/伏特加.jpg", "name": "伏特加", "traits": {
+
+      }
+    },
+
+    {
+      "img": "img-KN/苦艾酒.jpg", "name": "苦艾酒", "traits": {
+
+      }
+    },
+    {
+      "img": "img-KN-red/香堤.jpg", "name": "香堤", "traits": {
+
+      }
+    },
+     {
+      "img": "img-KN-red/柯倫.jpg", "name": "柯倫", "traits": {
+
+      }
+    },
+      {
+      "img": "img-KN/庫拉索.jpg", "name": "庫拉索", "traits": {
+
+      }
+    },
+
+    {
+      "img": "img-KN-red/毛利小五郎.jpg", "name": "毛利小五郎", "traits": {
+
+      }
+    },
+   
+   
+  
+   
+    
     {
       "img": "img-KN/佐藤美和子.jpg", "name": "佐藤美和子", "traits": {
 
@@ -113,26 +148,8 @@
 
       }
     },
-    {
-      "img": "img-KN/風見裕也.jpg", "name": "風見裕也", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/茱蒂史坦林.jpg", "name": "茱蒂·史坦林", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/黑羽盜一.jpg", "name": "黑羽盜一", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/黑羽快斗-怪盜基德.jpg", "name": "黑羽快斗/怪盜基德", "traits": {
-
-      }
-    },
+   
+   
     {
       "img": "img-KN/阿笠博士.jpg", "name": "阿笠博士", "traits": {
 
@@ -147,16 +164,7 @@
       "img": "img-KN/工藤有希子.jpg", "name": "工藤有希子", "traits": {
 
       }
-    },
-    {
-      "img": "img-KN/本堂瑛祐.jpg", "name": "本堂瑛祐", "traits": {
-
-      }
-    },
-    {
-      "img": "img-KN/伏特加.jpg", "name": "伏特加", "traits": {
-
-      }
     }
-
+   
+  
   ]
