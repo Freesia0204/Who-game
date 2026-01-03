@@ -506,9 +506,6 @@ function getAIQuestion(topic) {
 
 
 
-// ===== AI 問問題 =====
-
-
 function AIAskQuestion() {
   const dataList = gridData[selectedTopic] || [];
   const remaining = dataList.filter(c => possibleCells.includes(c.name));
@@ -516,11 +513,16 @@ function AIAskQuestion() {
   // 第一次先問通用問題
   if (questionsAskedByAI === 0) {
     const commonQuestions = AI_DB.common;
-    const chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
+    let chosen;
+    do {
+      chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
+    } while (askedQuestions.includes(chosen.question)); // ✅ 避免重複
+
     addMessage('AI', chosen.question);
     aiAwaitingAnswer = true;
     questionsAskedByAI++;
     lastAIQuestion = chosen.question;
+    askedQuestions.push(chosen.question); // ✅ 記錄問題
     if (chosen.trait) askedTraits.push(chosen.trait);
     turn = 'waitingForAnswer';
     enableChat();
@@ -530,17 +532,21 @@ function AIAskQuestion() {
   // 沒剩候選 → 隨機問題庫
   if (remaining.length === 0) {
     const allQuestions = [...(AI_DB.common || []), ...(AI_DB[selectedTopic] || [])];
-    const randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+    let randomQ;
+    do {
+      randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+    } while (askedQuestions.includes(randomQ.question)); // ✅ 避免重複
+
     if (randomQ && randomQ.question) {
       addMessage('AI', randomQ.question);
       aiAwaitingAnswer = true;
       questionsAskedByAI++;
       lastAIQuestion = randomQ.question;
+      askedQuestions.push(randomQ.question); // ✅ 記錄問題
       if (randomQ.trait) askedTraits.push(randomQ.trait);
       turn = 'waitingForAnswer';
       enableChat();
     }
-    
     return;
   }
 
@@ -561,8 +567,8 @@ function AIAskQuestion() {
     const { yes, no } = traitCounts[key];
     const total = yes + no;
 
-    if (askedTraits.includes(key)) continue; // 避免重複
-    if (!hasEliminationPotential(key, remaining)) continue; // 沒區分度就跳過
+    if (askedTraits.includes(key)) continue; // ✅ 避免重複 trait
+    if (!hasEliminationPotential(key, remaining)) continue; // ✅ 沒區分度就跳過
 
     if (total > bestCount) {
       bestCount = total;
@@ -574,15 +580,18 @@ function AIAskQuestion() {
     const question = AI_DB.traitMap[bestTrait]
       ? `他有${AI_DB.traitMap[bestTrait]}嗎？`
       : `他有${bestTrait}嗎？`;
+
     addMessage('AI', question);
     aiAwaitingAnswer = true;
     questionsAskedByAI++;
     lastAIQuestion = question;
+    askedQuestions.push(question); // ✅ 記錄問題
     askedTraits.push(bestTrait);
     turn = 'waitingForAnswer';
     enableChat();
   }
 }
+
 
 
 // ===== AI 回答玩家問題（穩定版） =====
@@ -997,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const names = eliminated.map(c => c.name).join('、');
 
       queryResult.innerHTML =
-        `🔍 根據「${question}」，如果回答為否，可排除以下人物：<br><br><span style="color:#d00">${names || '（無）'}</span>`;
+        `🔍 根據「${question}」，如果回答為是，可排除以下人物：<br><br><span style="color:#d00">${names || '（無）'}</span>`;
     });
   }
 });
