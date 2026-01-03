@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
+  <!-- 基本設定 -->
   <meta charset="UTF-8">
   <title>個人檔案</title>
+
+  <!-- 共用樣式 -->
   <link rel="stylesheet" href="index.css">
+  <!-- 個人檔案頁專用樣式 -->
   <link rel="stylesheet" href="profile.css">
 </head>
+
 <body>
+
+  <!-- ================= 導覽列 ================= -->
   <header class="navbar">
     <nav>
       <a href="index.html">首頁</a>
@@ -14,78 +21,97 @@
       <a href="#characters">人物介紹</a>
       <a href="#rules">玩法教學</a>
       <a href="#rank">排行榜</a>
-      
     </nav>
   </header>
 
+  <!-- ================= 個人檔案主版面 ================= -->
   <div class="profile-layout">
-    <!-- 最上方標題 -->
+
+    <!-- 頁面標題 -->
     <h2 class="profile-title">個人檔案</h2>
 
-    <!-- 頭像與玩家資訊 -->
+    <!-- ===== 頭像與玩家資訊 ===== -->
     <div class="profile-header">
       <div class="profile-info">
+
+        <!-- 玩家頭像 -->
         <img src="TS.png" alt="頭像" class="avatar">
+
+        <!-- 玩家基本資料 -->
         <div class="player-meta">
           <p>玩家姓名：<span id="profileName"></span></p>
           <p>玩家 ID：<span id="profileId"></span></p>
         </div>
+
       </div>
     </div>
 
-    <!-- 主題區塊 -->
+    <!-- ===== 我的主題區塊 ===== -->
     <div class="profile-main">
       <h3 class="topic-title">我的主題</h3>
 
-      <div id="customTopicsList"><!-- 主題列表由 JS 插入 --></div>
+      <!-- 自訂主題列表（由 JS 動態插入） -->
+      <div id="customTopicsList"></div>
+
+      <!-- 新增主題按鈕 -->
       <button id="addCustomTopicBtn">新增自訂主題</button>
-     
     </div>
 
-    <!-- 底部操作按鈕 -->
+    <!-- ===== 點擊特效選擇區 ===== -->
+    <div class="profile-effects">
+      <h3 class="effect-title">我的點擊特效</h3>
+
+      <!-- 特效選項（JS 插入，每個為圓形） -->
+      <div id="effectsList" class="effects-grid"></div>
+    </div>
+
+    <!-- ===== 背景選擇區 ===== -->
+    <div class="profile-backgrounds">
+      <h3 class="background-title">我的背景</h3>
+
+      <!-- 背景縮圖列表 -->
+      <div id="backgroundList" class="background-grid"></div>
+    </div>
+
+    <!-- ===== 底部操作按鈕 ===== -->
     <div class="profile-footer">
       <button id="goLoginBtn">登出</button>
       <button id="deleteBtn">註銷</button>
     </div>
+
   </div>
 
-  <!-- 新增主題 Modal -->
+  <!-- ================= 新增／編輯主題 Modal ================= -->
   <div id="customTopicModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-content">
+
       <div id="cardEditor" class="card-editor">
-        <input type="text" id="topicNameInput" placeholder="主題名稱">
+
+        <!-- 主題名稱輸入 -->
+        <input
+          type="text"
+          id="topicNameInput"
+          placeholder="主題名稱"
+        >
+
+        <!-- 卡牌編輯區（JS 動態生成） -->
         <div id="cardGrid" class="card-grid"></div>
+
+        <!-- 編輯器操作按鈕 -->
         <div class="editor-buttons">
           <button id="addCardBtn">＋ 新增卡牌</button>
           <button id="saveTopicBtn">儲存主題</button>
           <button id="closeModalBtn">取消</button>
-         <button id="deleteTopicBtn">🗑️ 刪除主題</button>
+          <button id="deleteTopicBtn">🗑️ 刪除主題</button>
         </div>
+
       </div>
     </div>
-
-    <!-- 點擊特效區塊 -->
-<div class="profile-effects">
-  <h3 class="effect-title">我的點擊特效</h3>
-  <div id="effectsList" class="effects-grid">
-    <!-- JS 插入特效選項，每個是圓圈圈 -->
-  </div>
-</div>
-
-<!-- 背景選擇區塊 -->
-<div class="profile-backgrounds">
-  <h3 class="background-title">我的背景</h3>
-  <div id="backgroundList" class="background-grid"></div>
-</div>
-
-
-
   </div>
 
-  
-
-  <!-- 引入 JS -->
+  <!-- ================= JavaScript ================= -->
   <script src="profile.js"></script>
   <script src="click-effect.js"></script>
+
 </body>
 </html>
