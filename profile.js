@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const effectsData = [
  
   { name: '柯南', img: 'img-KN/柯南頭像.jpg' },
-  { name: 'Free', img: 'img-Free/Free頭像.jpg' }
+  { name: 'Free', img: 'img-Free/free頭像.jpg' }
 ];
 
 const effectsList = document.getElementById('effectsList');
