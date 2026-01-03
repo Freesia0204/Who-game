@@ -323,7 +323,8 @@ const AI_DB = {
     { question: '他是關西人嗎？', trait: 'Kansai' },
     { question: '他是關東人嗎？', trait: 'Kanto' },
     { question: '他是長野縣的警察嗎？', trait: 'Nagano' },
-
+    { question: '他是綁馬尾的嗎?', trait: 'ponytail' },
+    { question: '他是膚色是偏黑/黃的嗎?', trait: 'dark' },
   ],
 
 
@@ -422,6 +423,8 @@ const AI_DB = {
     Kansai:'關西',
     Kanto:'關東',
     Nagano: '長野縣的警察' ,
+   ponytail:'馬尾',
+  dark:'膚色黑',
   }
 };
 
@@ -460,6 +463,8 @@ const synonyms = {
   Kansai:['關西', '關西的偵探', '關西的人','關西人','關西偵探'],
   Kanto:['關東', '關東的偵探', '關東的人','關東人','關東偵探'],
   trait: ['長野縣的警察', '長野縣警', '長野縣三人組', '長野' ,'長野縣'],
+  ponytail:['馬尾'],
+  dark:['皮膚是黑色的','皮膚黑','皮膚是黑的','膚色偏黑','皮膚偏黑','黑皮']
 };
 
 
@@ -502,49 +507,7 @@ function getAIQuestion(topic) {
 
 
 // ===== AI 問問題 =====
-function AIAskQuestion() {
-  const dataList = gridData[selectedTopic] || [];
-  const remaining = dataList.filter(c => possibleCells.includes(c.name));
 
-  if (questionsAskedByAI === 0) {
-    const commonQuestions = AI_DB.common;
-    const chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
-    addMessage('AI', chosen.question);
-    aiAwaitingAnswer = true;
-    questionsAskedByAI++;
-    lastAIQuestion = chosen.question;
-    if (chosen.trait) askedTraits.push(chosen.trait); // ✅ 記錄 trait
-    turn = 'waitingForAnswer';
-    enableChat();
-    return;
-  }
-
-  if (remaining.length === 0) {
-    const allQuestions = [...(AI_DB.common || []), ...(AI_DB[selectedTopic] || [])];
-    const randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-    if (randomQ && randomQ.question) {
-      addMessage('AI', randomQ.question);
-      aiAwaitingAnswer = true;
-      questionsAskedByAI++;
-      lastAIQuestion = randomQ.question;
-      if (randomQ.trait) askedTraits.push(randomQ.trait); // ✅ 記錄 trait
-      turn = 'waitingForAnswer';
-      enableChat();
-    }
-    return;
-  }
-}
-// 檢查某個 trait 是否有排除效果
-function hasEliminationPotential(trait, remaining) {
-  let yesCount = 0, noCount = 0;
-  remaining.forEach(c => {
-    if (c.traits && typeof c.traits[trait] === 'boolean') {
-      if (c.traits[trait]) yesCount++;
-      else noCount++;
-    }
-  });
-  return yesCount > 0 && noCount > 0; // ✅ 有區分度才有意義
-}
 
 function AIAskQuestion() {
   const dataList = gridData[selectedTopic] || [];
@@ -988,47 +951,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-// ===== 人物查詢 Modal =====
-window.addEventListener('DOMContentLoaded', () => {
-  const openQueryModal = document.getElementById('openQueryModal'); // 導覽列的「人物查詢」
-  const characterQueryModal = document.getElementById('characterQueryModal');
-  const closeQueryModal = document.getElementById('closeQueryModal');
-  const queryInput = document.getElementById('queryInput');
+// ===== 人物查詢 Modal 控制 =====
+document.addEventListener('DOMContentLoaded', () => {
+  const queryModal = document.getElementById('characterQueryModal');
+  const openQueryBtn = document.getElementById('openQueryModal');
+  const closeQueryBtn = document.getElementById('closeQueryModal');
   const querySubmitBtn = document.getElementById('querySubmitBtn');
+  const queryInput = document.getElementById('queryInput');
   const queryResult = document.getElementById('queryResult');
 
-  if (openQueryModal) {
-    openQueryModal.addEventListener('click', e => {
-      e.preventDefault();
-      characterQueryModal.style.display = 'flex';
+  // 打開 Modal
+  if (openQueryBtn) {
+    openQueryBtn.addEventListener('click', e => {
+      e.preventDefault(); // 避免跳頁
+      queryModal.style.display = 'flex';
     });
   }
 
-  if (closeQueryModal) {
-    closeQueryModal.addEventListener('click', () => {
-      characterQueryModal.style.display = 'none';
+  // 關閉 Modal
+  if (closeQueryBtn) {
+    closeQueryBtn.addEventListener('click', () => {
+      queryModal.style.display = 'none';
+      queryInput.value = '';
+      queryResult.innerHTML = '';
     });
   }
 
+  // 查詢邏輯
   if (querySubmitBtn) {
     querySubmitBtn.addEventListener('click', () => {
       const question = queryInput.value.trim();
       if (!question) return;
 
-      // 🔍 簡單比對 AI_DB 的 traitMap
-      let matchedKey = null;
-      for (const key in synonyms) {
-        if (synonyms[key].some(word => question.includes(word))) {
-          matchedKey = key;
-          break;
-        }
+      const dataList = gridData[selectedTopic] || [];
+      const matchedKey = Object.keys(synonyms).find(key =>
+        synonyms[key].some(word => question.includes(word))
+      );
+
+      if (!matchedKey) {
+        queryResult.innerHTML = '❓ 無法辨識問題，請換個問法';
+        return;
       }
 
-      if (matchedKey) {
-        queryResult.textContent = `查詢到 trait: ${AI_DB.traitMap[matchedKey] || matchedKey}`;
-      } else {
-        queryResult.textContent = '查無相關 trait';
-      }
+      const eliminated = dataList.filter(c => c.traits?.[matchedKey] === false);
+      const names = eliminated.map(c => c.name).join('、');
+
+      queryResult.innerHTML =
+        `🔍 根據「${question}」，可排除以下人物：<br><span style="color:#d00">${names || '（無）'}</span>`;
     });
   }
 });

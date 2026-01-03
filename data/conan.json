@@ -33,7 +33,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+    "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -71,7 +73,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -109,7 +113,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -147,7 +153,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -185,7 +193,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -223,7 +233,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -261,7 +273,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -299,7 +313,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -337,7 +353,9 @@
        "twin" :false ,
     "Kansai":true,
     "Kanto":false,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":true
     }
   },
   {
@@ -375,7 +393,9 @@
        "twin" :false ,
     "Kansai":true,
     "Kanto":false,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":true,
+  "dark":false
     }
   },
   {
@@ -413,7 +433,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":true
     }
   },
   {
@@ -451,7 +473,9 @@
        "twin" :true ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -489,7 +513,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -527,7 +553,9 @@
        "twin" :true ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -565,7 +593,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -603,7 +633,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -641,7 +673,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -679,7 +713,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -717,7 +753,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -755,7 +793,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -793,7 +833,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -831,7 +873,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -869,7 +913,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":true
     }
   },
   {
@@ -907,7 +953,9 @@
        "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -945,7 +993,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -983,7 +1033,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -1021,7 +1073,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":true,
-    "Nagano": false
+    "Nagano": false,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -1059,7 +1113,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":false,
-    "Nagano": true
+    "Nagano": true,
+     "ponytail":false,
+  "dark":false
     }
   },
   {
@@ -1097,7 +1153,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":false,
-    "Nagano": true
+    "Nagano": true,
+     "ponytail":false,
+  "dark":true
     }
   },
   {
@@ -1135,7 +1193,9 @@
       "twin" :false ,
     "Kansai":false,
     "Kanto":false,
-    "Nagano":true
+    "Nagano":true,
+     "ponytail":false,
+  "dark":false
     }
   }
 ]
