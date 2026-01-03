@@ -208,3 +208,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
+const effectsData = [
+  { name: '星星', img: 'img-KN/柯南_loge.jpg' },
+  { name: '愛心', img: 'img-GM/鬼滅之刃-logo.png' },
+  { name: '柯南', img: 'img/effects/conan.png' },
+  { name: 'Free!', img: 'img/effects/free.png' }
+];
+
+const effectsList = document.getElementById('effectsList');
+
+effectsData.forEach(effect => {
+  const div = document.createElement('div');
+  div.className = 'effect-circle';
+  div.innerHTML = `<img src="${effect.img}" alt="${effect.name}">`;
+  
+  div.addEventListener('click', () => {
+    document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
+    div.classList.add('selected');
+    // ✅ 儲存玩家選擇
+    localStorage.setItem('clickEffect', effect.name);
+  });
+
+  effectsList.appendChild(div);
+});
+
+// 預設載入玩家選擇
+const savedEffect = localStorage.getItem('clickEffect');
+if (savedEffect) {
+  const selected = [...document.querySelectorAll('.effect-circle')]
+    .find(c => c.querySelector('img').alt === savedEffect);
+  if (selected) selected.classList.add('selected');
+}

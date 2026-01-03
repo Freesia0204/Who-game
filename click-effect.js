@@ -1,25 +1,26 @@
-// 你可以把去背圖片放在 img/effects/ 資料夾
-const clickImages = [
-  'AC.jpg',
-  '',
-  '',
-  ''
-];
+// 定義所有特效主題
+const clickThemes = {
+  星星: ['img-KN/工藤有希子.jpg', 'img-KN/本堂瑛祐.jpg'],
+  愛心: ['img-WB/佐狐浩太.png', 'img-GM/愈史郎.jpg'],
+  柯南: ['img/effects/conan.png', 'img/effects/haibara.png'],
+  Free: ['img/effects/free.png', 'img/effects/makoto.png']
+};
+
+// 讀取玩家選擇的特效主題
+function getCurrentTheme() {
+  const saved = localStorage.getItem('clickEffect');
+  return clickThemes[saved] || clickThemes['星星']; // 預設星星
+}
 
 document.addEventListener('click', e => {
-  // 隨機挑一張圖片
+  const images = getCurrentTheme();
   const img = document.createElement('img');
-  img.src = clickImages[Math.floor(Math.random() * clickImages.length)];
+  img.src = images[Math.floor(Math.random() * images.length)];
   img.className = 'click-effect';
 
-  // 放在滑鼠點擊位置
   img.style.left = `${e.pageX - 30}px`;
   img.style.top = `${e.pageY - 30}px`;
-
   document.body.appendChild(img);
 
-  // 動畫結束後移除
-  setTimeout(() => {
-    img.remove();
-  }, 800);
+  setTimeout(() => img.remove(), 800);
 });

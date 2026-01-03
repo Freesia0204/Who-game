@@ -325,3 +325,46 @@
   padding: 20px;
 }
 
+.profile-effects {
+  margin-top: 20px;
+}
+
+.effect-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.effects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.effect-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;       /* ✅ 圓形 */
+  overflow: hidden;         /* ✅ 圖片裁切成圓形 */
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.effect-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.effect-circle:hover {
+  transform: scale(1.1);
+  border-color: #8b5cf6;    /* hover 時紫色邊框 */
+}
+
+.effect-circle.selected {
+  border-color: #f472b6;    /* 選中時粉色邊框 */
+  box-shadow: 0 0 8px #f472b6;
+}
