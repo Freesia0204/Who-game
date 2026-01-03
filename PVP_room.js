@@ -507,3 +507,12 @@ function endGame(resultText) {
     endModal.style.display = 'flex';
   }
 }
+
+// 背景更換
+window.addEventListener("DOMContentLoaded", () => {
+  const pageKey = "background_game"; // 改成對應頁面名稱
+  const savedBg = localStorage.getItem(pageKey);
+  if (savedBg) {
+    document.body.style.background = savedBg;
+  }
+});

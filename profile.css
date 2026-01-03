@@ -368,3 +368,39 @@
   border-color: #f472b6;    /* 選中時粉色邊框 */
   box-shadow: 0 0 8px #f472b6;
 }
+
+/* 背景選擇區塊標題 */
+.profile-backgrounds {
+  margin-top: 20px;
+}
+
+.background-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 80px);
+  gap: 12px;
+}
+
+.bg-option {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-option:hover {
+  transform: scale(1.05);
+  border-color: #8b5cf6;
+}
+
+.bg-option.selected {
+  border-color: #f472b6;
+}

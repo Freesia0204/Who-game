@@ -522,3 +522,22 @@ body {
 #characterQueryModal {
   display: none;
 }
+.bg-option {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+  background-size: cover;   /* ✅ 圖片填滿 */
+  background-position: center;
+}
+
+.bg-option:hover {
+  transform: scale(1.05);
+  border-color: #8b5cf6;
+}
+
+.bg-option.selected {
+  border-color: #f472b6;
+}

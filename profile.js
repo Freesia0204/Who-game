@@ -239,3 +239,56 @@ if (savedEffect) {
     .find(c => c.querySelector('img').alt === savedEffect);
   if (selected) selected.classList.add('selected');
 }
+
+
+// 背景選項清單
+const backgrounds = [
+  { name: "初始背景", key: "default", type: "gradient", style: `linear-gradient(135deg,
+      #fcb1d3,
+      #c2a3ff,
+      #a6c1ee,
+      #ff9a9e,
+      #d18fff)` },
+
+  // 後面改成圖片
+  { name: "海灘", key: "beach", type: "image", style: "url('img-GM/愈史郎.jpg')" },
+  { name: "森林", key: "forest", type: "image", style: "url('背景.jpg')" },
+  { name: "夜空", key: "night", type: "image", style: "url('images/bg-night.jpg')" },
+  { name: "城市", key: "city", type: "image", style: "url('images/bg-city.jpg')" }
+];
+
+const backgroundList = document.getElementById("backgroundList");
+
+// 插入背景選項
+backgrounds.forEach(bg => {
+  const div = document.createElement("div");
+  div.className = "bg-option";
+  div.style.background = bg.style;
+  div.title = bg.name;
+
+  div.addEventListener("click", () => {
+    // 標記選中
+    document.querySelectorAll(".bg-option").forEach(opt => opt.classList.remove("selected"));
+    div.classList.add("selected");
+
+    // 套用背景到 body
+    document.body.style.background = bg.style;
+
+    // 儲存到 localStorage（依頁面 key）
+    localStorage.setItem("background_profile", bg.style);
+    localStorage.setItem("background_index", bg.style);
+    localStorage.setItem("background_game", bg.style);
+    localStorage.setItem("background_rank", bg.style);
+  });
+
+  backgroundList.appendChild(div);
+});
+
+// 背景更換
+window.addEventListener("DOMContentLoaded", () => {
+  const pageKey = "background_profile"; // 改成對應頁面名稱
+  const savedBg = localStorage.getItem(pageKey);
+  if (savedBg) {
+    document.body.style.background = savedBg;
+  }
+});
