@@ -2,18 +2,19 @@
 <html lang="zh-Hant">
 
 <head>
+  <!-- ===== 基本頁面設定 ===== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>猜猜我是誰｜首頁</title>
+
+  <!-- ===== 樣式表 ===== -->
   <link rel="stylesheet" href="index.css" />
   <link rel="stylesheet" href="click-effect.css">
-
 </head>
 
 <body>
 
-
-  <!-- 導覽列 -->
+  <!-- ================= 導覽列 ================= -->
   <header class="navbar">
     <nav>
       <a href="index.html">首頁</a>
@@ -22,113 +23,121 @@
       <a href="index.html#rules">玩法教學</a>
       <a href="index.html#rank">排行榜</a>
       <a href="#" id="loginBtn">登入 / 註冊</a>
-      
     </nav>
   </header>
 
-  
-
+  <!-- ================= 首頁主視覺區 ================= -->
   <section class="hero" id="home">
     <h1>歡迎來到猜猜我是誰</h1>
     <p>從線索、圖片與提示中找出真正的身分 ✨</p>
+
+    <!-- 模式選擇按鈕 -->
     <div class="hero-buttons">
-      <a href="AI_room.html" class="btn ai-btn"> AI模式</a>
+      <a href="AI_room.html" class="btn ai-btn">AI 模式</a>
       <a href="match.html" class="btn pvp-btn">真人模式</a>
     </div>
   </section>
 
-  <!-- 主題卡片 -->
-<section class="topics" id="topics">
-  <h2>主題預覽</h2>
-  
+  <!-- ================= 主題卡片區 ================= -->
+  <section class="topics" id="topics">
+    <h2>主題預覽</h2>
 
-  <div class="topics-grid">
-    <div class="topic-card" data-alt="img-KN/柯南人物.jpg">
-      <img src="img-KN/柯南_loge.jpg" alt="名偵探柯南">
-      <p>名偵探柯南</p>
-    </div>
-    <div class="topic-card" data-alt="img-KN/紅黑人物.jpg">
-      <img src="img-KN/柯南_redblack.jpg" alt="紅黑篇">
-      <p>名偵探柯南-紅黑篇</p>
-    </div>
-    <div class="topic-card" data-img="img-KN/柯南_redblack.jpg">
-      <img src="img-KN/柯南_loge.jpg" alt="紅黑篇">
-      <p>名偵探柯南-紅黑篇</p>
-    </div>
-    <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
-      <img src="img-GM/鬼滅之刃-logo.png" alt="鬼滅之刃">
-      <p>鬼滅之刃</p>
-    </div>
-    <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
-      <img src="img-WB/防風少年-logo.png" alt="鬼滅之刃">
-      <p>防風少年</p>
-    </div>
-    <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
-      <img src="img-Free/Free_logo.png" alt="鬼滅之刃">
-      <p>Free!男子游泳部</p>
-    </div>
+    <!-- 主題卡片格線 -->
+    <div class="topics-grid">
 
-  </div>
+      <!-- 單一主題卡片 -->
+      <div class="topic-card" data-alt="img-KN/柯南人物.jpg">
+        <img src="img-KN/柯南_loge.jpg" alt="名偵探柯南">
+        <p>名偵探柯南</p>
+      </div>
+
+      <div class="topic-card" data-alt="img-KN/紅黑人物.jpg">
+        <img src="img-KN/柯南_redblack.jpg" alt="紅黑篇">
+        <p>名偵探柯南－紅黑篇</p>
+      </div>
+
+      <div class="topic-card" data-img="img-KN/柯南_redblack.jpg">
+        <img src="img-KN/柯南_loge.jpg" alt="紅黑篇">
+        <p>名偵探柯南－紅黑篇</p>
+      </div>
+
+      <div class="topic-card" data-img="img-GM/鬼滅之刃-logo.png">
+        <img src="img-GM/鬼滅之刃-logo.png" alt="鬼滅之刃">
+        <p>鬼滅之刃</p>
+      </div>
+
+      <div class="topic-card" data-img="img-WB/防風少年-logo.png">
+        <img src="img-WB/防風少年-logo.png" alt="防風少年">
+        <p>防風少年</p>
+      </div>
+
+      <div class="topic-card" data-img="img-Free/Free_logo.png">
+        <img src="img-Free/Free_logo.png" alt="Free!男子游泳部">
+        <p>Free! 男子游泳部</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= 圖片放大 Modal ================= -->
   <div id="imgModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modalImg">
-  <div id="caption"></div>
-</div>
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div id="caption"></div>
+  </div>
 
-</section>
-
-<!-- 放大圖片彈窗 -->
-<div id="imgModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modalImg">
-  <div id="caption"></div>
-</div>
-
-
-  <!-- 登入/註冊彈窗 -->
+  <!-- ================= 登入 / 註冊 Modal ================= -->
   <div id="loginModal" class="modal">
     <div class="modal-content">
+
+      <!-- 關閉按鈕 -->
       <span id="closeLogin" class="close">&times;</span>
 
-      <!-- 登入區塊 -->
+      <!-- ===== 登入區 ===== -->
       <div id="loginSection">
         <h2>登入</h2>
         <p class="hint">請輸入帳號與密碼，登入後即可進入個人主頁</p>
+
         <form id="loginForm">
           <label for="username">帳號：</label>
           <input type="text" id="username" placeholder="輸入帳號" required>
+
           <label for="password">密碼：</label>
           <input type="password" id="password" placeholder="輸入密碼" required>
+
           <button type="submit">登入</button>
         </form>
+
         <p class="hint">
           還沒有帳號？<a href="#" id="showRegister">立即註冊</a>
         </p>
       </div>
 
-      <!-- 註冊區塊（預設隱藏） -->
+      <!-- ===== 註冊區（預設隱藏） ===== -->
       <div id="registerSection" style="display:none;">
         <h2>註冊</h2>
+
         <form id="registerForm">
           <label for="newUsername">新帳號：</label>
           <input type="text" id="newUsername" placeholder="建立您的帳號名" required>
+
           <label for="newPassword">新密碼：</label>
-          <input type="password" id="newPassword" placeholder="建立您的4位數密碼" required>
+          <input type="password" id="newPassword" placeholder="建立您的 4 位數密碼" required>
+
           <button type="submit">註冊</button>
         </form>
+
         <p class="hint">
           已有帳號？<a href="#" id="showLogin">返回登入</a>
         </p>
       </div>
+
     </div>
   </div>
 
-
-<script src="click-effect.js"></script>
-
-
+  <!-- ================= JavaScript ================= -->
+  <script src="click-effect.js"></script>
   <script src="index.js"></script>
 
 </body>
-
 </html>
