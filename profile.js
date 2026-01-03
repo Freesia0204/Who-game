@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const effectsData = [
  
   { name: '柯南', img: 'img-KN/柯南_loge.jpg' },
-  { name: 'Free!', img: 'img-GM/鬼滅之刃-logo.png' }
+  { name: 'Free', img: 'img-GM/鬼滅之刃-logo.png' }
 ];
 
 const effectsList = document.getElementById('effectsList');
@@ -251,16 +251,16 @@ const ThemeCatalog = {
     background_rank:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)"
   },
   "名偵探柯南": {
-    background_profile: "url('img-background/柯南五稜星.jpeg')",
-    background_index:  "url('img-background/柯南五稜星.jpeg')",
-    background_game:   "url('img-background/柯南五稜星.jpeg')",
-    background_rank:   "url('img-background/柯南五稜星.jpeg')"
+    background_profile: "url('img-background/柯南背景.png')",
+    background_index:  "url('img-background/柯南背景.png')",
+    background_game:   "url('img-background/柯南背景.png')",
+    background_rank:   "url('img-background/柯南背景.png')"
   },
   "FREE!": {
-    background_profile: "url('images/free-dtl-bg.jpg')",
-    background_index:  "url('images/free-dtl-bg.jpg')",
-    background_game:   "url('images/free-dtl-bg.jpg')",
-    background_rank:   "url('images/free-dtl-bg.jpg')"
+    background_profile: "url('img-background/FREE!游泳池.jpg')",
+    background_index:  "url('img-background/FREE!游泳池.jpg')",
+    background_game:   "url('img-background/FREE!游泳池.jpg')",
+    background_rank:   "url('img-background/FREE!游泳池.jpg')"
   },
  
 };

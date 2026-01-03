@@ -464,7 +464,7 @@ const synonyms = {
   Kanto:['關東', '關東的偵探', '關東的人','關東人','關東偵探'],
   trait: ['長野縣的警察', '長野縣警', '長野縣三人組', '長野' ,'長野縣'],
   ponytail:['馬尾'],
-  dark:['皮膚是黑色的','皮膚黑','皮膚是黑的','膚色偏黑','皮膚偏黑','黑皮']
+  dark:['皮膚是黑色的','皮膚黑','皮膚是黑的','膚色偏黑','皮膚偏黑','黑皮','膚色黑']
 };
 
 
@@ -488,7 +488,7 @@ Promise.all([
 
 
 
-// ===== AI 問題選擇（避免重复） =====
+// ===== AI 問題選擇（避免重複） =====
 function getAIQuestion(topic) {
   const commonQuestions = AI_DB.common || [];
   const topicQuestions = AI_DB[topic] || [];
@@ -503,8 +503,6 @@ function getAIQuestion(topic) {
   if (chosen && chosen.question) askedQuestions.push(chosen.question);
   return chosen;
 }
-
-
 
 function AIAskQuestion() {
   const dataList = gridData[selectedTopic] || [];
@@ -529,7 +527,7 @@ function AIAskQuestion() {
     return;
   }
 
-  // 沒剩候選 → 隨機問題庫
+  // 沒剩候選 → 隨機題庫
   if (remaining.length === 0) {
     const allQuestions = [...(AI_DB.common || []), ...(AI_DB[selectedTopic] || [])];
     let randomQ;
@@ -553,33 +551,24 @@ function AIAskQuestion() {
     return;
   }
 
-  // 統計 trait
-  const traitCounts = {};
+  // 🔍 找出目前剩下角色中，哪些 trait 是 true 的
+  const traitTrueCount = {};
   remaining.forEach(c => {
     for (const key in c.traits) {
-      const val = c.traits[key];
-      if (!traitCounts[key]) traitCounts[key] = { yes: 0, no: 0 };
-      if (val === true) traitCounts[key].yes++;
-      else if (val === false) traitCounts[key].no++;
+      if (c.traits[key] === true) {
+        traitTrueCount[key] = (traitTrueCount[key] || 0) + 1;
+      }
     }
   });
 
-  let bestTrait = null;
-  let bestCount = 0;
-  for (const key in traitCounts) {
-    const { yes, no } = traitCounts[key];
-    const total = yes + no;
+  // 🔍 篩選出尚未問過、且有排除潛力的 trait
+  const candidateTraits = Object.entries(traitTrueCount)
+    .filter(([key]) => !askedTraits.includes(key) && hasEliminationPotential(key, remaining))
+    .sort((a, b) => b[1] - a[1]); // 依 true 數量排序
 
-    if (askedTraits.includes(key)) continue; // ✅ 避免重複 trait
-    if (!hasEliminationPotential(key, remaining)) continue; // ✅ 沒區分度就跳過
-
-    if (total > bestCount) {
-      bestCount = total;
-      bestTrait = key;
-    }
-  }
-
-  if (bestTrait) {
+  // 🔍 選出最有可能排除人的 trait
+  if (candidateTraits.length > 0) {
+    const bestTrait = candidateTraits[0][0];
     const question = AI_DB.traitMap[bestTrait]
       ? `他有${AI_DB.traitMap[bestTrait]}嗎？`
       : `他有${bestTrait}嗎？`;
@@ -588,8 +577,22 @@ function AIAskQuestion() {
     aiAwaitingAnswer = true;
     questionsAskedByAI++;
     lastAIQuestion = question;
-    askedQuestions.push(question); // ✅ 記錄問題
+    askedQuestions.push(question);
     askedTraits.push(bestTrait);
+    turn = 'waitingForAnswer';
+    enableChat();
+    return;
+  }
+
+  // 如果沒有合適的 trait，就退回到隨機題庫
+  const fallbackQ = getAIQuestion(selectedTopic);
+  if (fallbackQ && fallbackQ.question) {
+    addMessage('AI', fallbackQ.question);
+    aiAwaitingAnswer = true;
+    questionsAskedByAI++;
+    lastAIQuestion = fallbackQ.question;
+    askedQuestions.push(fallbackQ.question);
+    if (fallbackQ.trait) askedTraits.push(fallbackQ.trait);
     turn = 'waitingForAnswer';
     enableChat();
   }
@@ -606,7 +609,6 @@ function hasEliminationPotential(key, remaining) {
   });
   return hasTrue && hasFalse; // 只有同時存在 true/false 才有區分度
 }
-
 
 // ===== AI 回答玩家問題（穩定版） =====
 function AIAnswer(playerQuestion) {
