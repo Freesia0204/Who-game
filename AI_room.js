@@ -969,36 +969,66 @@ function onPlayerGuess(cellName, isCorrect) {
   }
 }
 
-// 開啟查詢視窗
-document.getElementById('openCharacterQueryBtn').addEventListener('click', () => {
-  document.getElementById('characterQueryModal').style.display = 'flex';
-});
 
-// 關閉查詢視窗
-document.getElementById('closeQueryModal').addEventListener('click', () => {
-  document.getElementById('characterQueryModal').style.display = 'none';
-  document.getElementById('queryInput').value = '';
-  document.getElementById('queryResult').innerHTML = '';
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const openQueryModal = document.getElementById('openQueryModal');
+  const characterQueryModal = document.getElementById('characterQueryModal');
+  const closeQueryModal = document.getElementById('closeQueryModal');
 
-// 查詢邏輯
-document.getElementById('querySubmitBtn').addEventListener('click', () => {
-  const question = document.getElementById('queryInput').value.trim();
-  if (!question) return;
-
-  const dataList = gridData[selectedTopic] || [];
-  const matchedKey = Object.keys(synonyms).find(key =>
-    synonyms[key].some(word => question.includes(word))
-  );
-
-  if (!matchedKey) {
-    document.getElementById('queryResult').innerHTML = '❓ 無法辨識問題，請換個問法';
-    return;
+  if (openQueryModal) {
+    openQueryModal.addEventListener('click', e => {
+      e.preventDefault();
+      characterQueryModal.style.display = 'flex';
+    });
   }
 
-  const eliminated = dataList.filter(c => c.traits?.[matchedKey] === false);
-  const names = eliminated.map(c => c.name).join('、');
+  if (closeQueryModal) {
+    closeQueryModal.addEventListener('click', () => {
+      characterQueryModal.style.display = 'none';
+    });
+  }
+});
+// ===== 人物查詢 Modal =====
+window.addEventListener('DOMContentLoaded', () => {
+  const openQueryModal = document.getElementById('openQueryModal'); // 導覽列的「人物查詢」
+  const characterQueryModal = document.getElementById('characterQueryModal');
+  const closeQueryModal = document.getElementById('closeQueryModal');
+  const queryInput = document.getElementById('queryInput');
+  const querySubmitBtn = document.getElementById('querySubmitBtn');
+  const queryResult = document.getElementById('queryResult');
 
-  document.getElementById('queryResult').innerHTML =
-    `🔍 根據「${question}」，可排除以下人物：<br><span style="color:#d00">${names || '（無）'}</span>`;
+  if (openQueryModal) {
+    openQueryModal.addEventListener('click', e => {
+      e.preventDefault();
+      characterQueryModal.style.display = 'flex';
+    });
+  }
+
+  if (closeQueryModal) {
+    closeQueryModal.addEventListener('click', () => {
+      characterQueryModal.style.display = 'none';
+    });
+  }
+
+  if (querySubmitBtn) {
+    querySubmitBtn.addEventListener('click', () => {
+      const question = queryInput.value.trim();
+      if (!question) return;
+
+      // 🔍 簡單比對 AI_DB 的 traitMap
+      let matchedKey = null;
+      for (const key in synonyms) {
+        if (synonyms[key].some(word => question.includes(word))) {
+          matchedKey = key;
+          break;
+        }
+      }
+
+      if (matchedKey) {
+        queryResult.textContent = `查詢到 trait: ${AI_DB.traitMap[matchedKey] || matchedKey}`;
+      } else {
+        queryResult.textContent = '查無相關 trait';
+      }
+    });
+  }
 });
