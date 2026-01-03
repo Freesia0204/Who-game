@@ -241,54 +241,58 @@ if (savedEffect) {
 }
 
 
-// 背景選項清單
-const backgrounds = [
-  { name: "初始背景", key: "default", type: "gradient", style: `linear-gradient(135deg,
-      #fcb1d3,
-      #c2a3ff,
-      #a6c1ee,
-      #ff9a9e,
-      #d18fff)` },
 
-  // 後面改成圖片
-  { name: "海灘", key: "beach", type: "image", style: "url('img-GM/愈史郎.jpg')" },
-  { name: "森林", key: "forest", type: "image", style: "url('背景.jpg')" },
-  { name: "夜空", key: "night", type: "image", style: "url('images/bg-night.jpg')" },
-  { name: "城市", key: "city", type: "image", style: "url('images/bg-city.jpg')" }
-];
-
+// 主題清單：每個主題都提供各頁背景（示例用圖片）
+const ThemeCatalog = {
+  "主題A": {
+    background_profile: "url('背景.jpg')",
+    background_index:  "url('img-GM/竈門炭治郎.jpg')",
+    background_game:   "url('images/themeA/game.jpg')",
+    background_rank:   "url('images/themeA/rank.jpg')"
+  },
+  "主題B": {
+    background_profile: "url('images/themeB/profile.jpg')",
+    background_index:  "url('images/themeB/index.jpg')",
+    background_game:   "url('images/themeB/game.jpg')",
+    background_rank:   "url('images/themeB/rank.jpg')"
+  },
+  "初始": {
+    // 初始可用你既有的漸層或對應圖片
+    background_profile: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+    background_index:  "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+    background_game:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+    background_rank:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)"
+  }
+};
+// 產生主題方格
 const backgroundList = document.getElementById("backgroundList");
+const themes = Object.keys(ThemeCatalog);
 
-// 插入背景選項
-backgrounds.forEach(bg => {
+// 每個主題用其 profile 頁的背景作為預覽縮圖
+themes.forEach(themeName => {
+  const preview = ThemeCatalog[themeName].background_profile;
   const div = document.createElement("div");
   div.className = "bg-option";
-  div.style.background = bg.style;
-  div.title = bg.name;
+  div.style.background = preview;
+  div.title = themeName;
 
   div.addEventListener("click", () => {
     // 標記選中
-    document.querySelectorAll(".bg-option").forEach(opt => opt.classList.remove("selected"));
+    document.querySelectorAll(".bg-option").forEach(o => o.classList.remove("selected"));
     div.classList.add("selected");
 
-    // 套用背景到 body
-    document.body.style.background = bg.style;
+    // 存主題名稱（方便跨頁讀取）
+    localStorage.setItem("selectedTheme", themeName);
 
-    // 儲存到 localStorage（依頁面 key）
-    localStorage.setItem("background_profile", bg.style);
-    localStorage.setItem("background_index", bg.style);
-    localStorage.setItem("background_game", bg.style);
-    localStorage.setItem("background_rank", bg.style);
+    // 也可展開存各頁背景（若你希望每頁直接讀 key，而不是讀主題名）
+    const pack = ThemeCatalog[themeName];
+    Object.entries(pack).forEach(([pageKey, bgStyle]) => {
+      localStorage.setItem(pageKey, bgStyle);
+    });
+
+    // 立即套用當前頁（profile）
+    document.body.style.background = pack.background_profile;
   });
 
   backgroundList.appendChild(div);
-});
-
-// 背景更換
-window.addEventListener("DOMContentLoaded", () => {
-  const pageKey = "background_profile"; // 改成對應頁面名稱
-  const savedBg = localStorage.getItem(pageKey);
-  if (savedBg) {
-    document.body.style.background = savedBg;
-  }
 });
