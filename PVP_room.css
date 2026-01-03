@@ -19,14 +19,7 @@ body {
   padding-top: 60px; /* 導覽列高度，避免內容被遮住 */
 }
 
-/* ✨ 動態漸層動畫 ✨ */
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  25% { background-position: 50% 100%; }
-  50% { background-position: 100% 50%; }
-  75% { background-position: 50% 0%; }
-  100% { background-position: 0% 50%; }
-}
+
 
 
 /* === 主容器設定 === */
