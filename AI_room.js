@@ -997,7 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const names = eliminated.map(c => c.name).join('、');
 
       queryResult.innerHTML =
-        `🔍 根據「${question}」，可排除以下人物：<br><span style="color:#d00">${names || '（無）'}</span>`;
+        `🔍 根據「${question}」，如果回答為否，可排除以下人物：<br><br><span style="color:#d00">${names || '（無）'}</span>`;
     });
   }
 });

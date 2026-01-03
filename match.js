@@ -66,11 +66,7 @@ if (createRoomBtn) {
   document.getElementById('backBtn').addEventListener('click', () => {
     window.location.href = 'index.html'; // 直接回首頁
   });
-
-}
-
-
-// 背景更換
+  // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
   const pageKey = "background_match"; // 改成對應頁面名稱
   const savedBg = localStorage.getItem(pageKey);
@@ -78,3 +74,8 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.style.background = savedBg;
   }
 });
+
+}
+
+
+

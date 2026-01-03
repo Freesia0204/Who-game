@@ -7,21 +7,12 @@ body {
   margin: 0;
   padding-top: 60px;
   /* 導覽列高度，避免內容被遮住 */
+   background-repeat: no-repeat;         /* ✅ 不重複貼圖 */
+background-size: cover;               /* ✅ 自動放大填滿 */
+background-attachment: fixed;
 }
 
-@keyframes bgFlow {
-  0% {
-    background-position: left top;
-  }
 
-  50% {
-    background-position: right bottom;
-  }
-
-  100% {
-    background-position: left top;
-  }
-}
 
 
 /* 導覽列統一樣式 */

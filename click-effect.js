@@ -1,8 +1,6 @@
 // 定義所有特效主題
 const clickThemes = {
-  星星: ['img-KN/工藤有希子.jpg', 'img-KN/本堂瑛祐.jpg'],
-  愛心: ['img-WB/佐狐浩太.png', 'img-GM/愈史郎.jpg'],
-  柯南: ['img/effects/conan.png', 'img/effects/haibara.png'],
+  柯南: ['img-chick/柯1.png', 'img-chick/柯2.png','img-chick/柯1.png'],
   Free: ['img/effects/free.png', 'img/effects/makoto.png']
 };
 

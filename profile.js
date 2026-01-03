@@ -209,10 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 const effectsData = [
-  { name: '星星', img: 'img-KN/柯南_loge.jpg' },
-  { name: '愛心', img: 'img-GM/鬼滅之刃-logo.png' },
-  { name: '柯南', img: 'img/effects/conan.png' },
-  { name: 'Free!', img: 'img/effects/free.png' }
+ 
+  { name: '柯南', img: 'img-KN/柯南_loge.jpg' },
+  { name: 'Free!', img: 'img-GM/鬼滅之刃-logo.png' }
 ];
 
 const effectsList = document.getElementById('effectsList');

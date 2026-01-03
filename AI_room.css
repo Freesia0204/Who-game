@@ -24,6 +24,10 @@ body {
   
   padding-top: 60px;
   /* 導覽列高度，避免內容被遮住 */
+  background-repeat: no-repeat;         /* ✅ 不重複貼圖 */
+background-size: cover;               /* ✅ 自動放大填滿 */
+background-attachment: fixed;
+
 }
 
 /* ✨ 動態漸層動畫 ✨ */
