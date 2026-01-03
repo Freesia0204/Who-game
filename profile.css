@@ -63,6 +63,7 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   transition: all 0.3s ease;
+  display: block; /* 置中需要 block */ margin: 16px auto; /* 水平置中 */
 }
 #addCustomTopicBtn:hover {
   background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
@@ -325,9 +326,12 @@
   padding: 20px;
 }
 
-.profile-effects {
-  margin-top: 20px;
-}
+.profile-effects { 
+  margin-top: 20px; 
+  display: flex;
+   flex-direction: column; 
+   align-items: flex-start; /* 整區塊靠左 */
+   }
 
 .effect-title {
   font-size: 1.2rem;
@@ -338,6 +342,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  justify-content: flex-start; /* 靠左 */
 }
 
 .effect-circle {
@@ -371,10 +376,12 @@
 
 /* 背景選擇區塊標題 */
 .background-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 80px);
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+  justify-content: flex-start; /* 靠左排列 */
 }
+
 .bg-option {
   width: 80px;
   height: 80px; /* 正方形 */
@@ -387,3 +394,21 @@
 }
 .bg-option:hover { transform: scale(1.05); border-color: #8b5cf6; }
 .bg-option.selected { border-color: #f472b6; }
+#customTopicsList { 
+  width: 100%; /* 拉滿行寬，避免被容器置中影響對齊 */ 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 12px; 
+  justify-content: flex-start; /* 靠左 */ 
+} 
+/* 主題卡片（沿用你現有 #customTopicsList div 樣式，不改 class） */ 
+#customTopicsList div { 
+  background: rgba(255,255,255,0.1); 
+  padding: 8px 12px; 
+  border-radius: 6px; 
+  color: #fff; 
+  font-weight: bold; 
+  cursor: pointer; 
+  white-space: nowrap; 
+  transition: background 0.2s ease; 
+}

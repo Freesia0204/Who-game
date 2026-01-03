@@ -244,25 +244,26 @@ if (savedEffect) {
 
 // 主題清單：每個主題都提供各頁背景（示例用圖片）
 const ThemeCatalog = {
-  "主題A": {
-    background_profile: "url('背景.jpg')",
-    background_index:  "url('img-GM/竈門炭治郎.jpg')",
-    background_game:   "url('images/themeA/game.jpg')",
-    background_rank:   "url('images/themeA/rank.jpg')"
-  },
-  "主題B": {
-    background_profile: "url('images/themeB/profile.jpg')",
-    background_index:  "url('images/themeB/index.jpg')",
-    background_game:   "url('images/themeB/game.jpg')",
-    background_rank:   "url('images/themeB/rank.jpg')"
-  },
-  "初始": {
+   "初始": {
     // 初始可用你既有的漸層或對應圖片
     background_profile: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
     background_index:  "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
     background_game:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
     background_rank:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)"
-  }
+  },
+  "名偵探柯南": {
+    background_profile: "url('img-background/柯南五稜星.jpeg')",
+    background_index:  "url('img-background/柯南五稜星.jpeg')",
+    background_game:   "url('img-background/柯南五稜星.jpeg')",
+    background_rank:   "url('img-background/柯南五稜星.jpeg')"
+  },
+  "FREE!": {
+    background_profile: "url('img-background/FREE!游泳池.jpg')",
+    background_index:  "url('img-background/FREE!游泳池.jpg')",
+    background_game:   "url('img-background/FREE!游泳池.jpg')",
+    background_rank:   "url('img-background/FREE!游泳池.jpg')"
+  },
+ 
 };
 // 產生主題方格
 const backgroundList = document.getElementById("backgroundList");

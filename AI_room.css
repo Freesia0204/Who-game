@@ -21,11 +21,7 @@ body {
       #d18fff
       /* 夢幻紫 */
     );
-  background-size: 500% 500%;
-  /* 放大背景以利動畫 */
-  animation: gradientFlow 18s ease infinite;
-  /* 動態漸層動畫 */
-
+  
   padding-top: 60px;
   /* 導覽列高度，避免內容被遮住 */
 }

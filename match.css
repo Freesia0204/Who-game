@@ -4,8 +4,6 @@ body {
   font-family: "微軟正黑體", sans-serif;
   background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4);
   /* 柔和漸層 */
-  background-size: 300% 300%;
-  animation: bgFlow 12s ease-in-out infinite;
   display: flex;
   justify-content: center;
   align-items: center;

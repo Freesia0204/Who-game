@@ -4,9 +4,6 @@ body {
   font-family: "微軟正黑體", sans-serif;
   color: #fff;
   background: linear-gradient(135deg, #a8c0ff, #fbc2eb, #fad0c4);
-  background-size: 300% 300%;
-  animation: bgFlow 12s ease-in-out infinite;
-  background-image: url('/img-Free/free背景.jpg');
   margin: 0;
   padding-top: 60px;
   /* 導覽列高度，避免內容被遮住 */
