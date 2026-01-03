@@ -272,28 +272,47 @@ const themes = Object.keys(ThemeCatalog);
 // 每個主題用其 profile 頁的背景作為預覽縮圖
 themes.forEach(themeName => {
   const preview = ThemeCatalog[themeName].background_profile;
+
+  // 外層容器
+  const wrapper = document.createElement("div");
+  wrapper.className = "bg-wrapper";
+
+  // 背景方塊
   const div = document.createElement("div");
   div.className = "bg-option";
   div.style.background = preview;
-  div.title = themeName;
 
+  // 名稱文字
+  const label = document.createElement("span");
+  label.className = "bg-label";
+  label.textContent = themeName;
+
+  // 點擊事件
   div.addEventListener("click", () => {
-    // 標記選中
     document.querySelectorAll(".bg-option").forEach(o => o.classList.remove("selected"));
     div.classList.add("selected");
 
-    // 存主題名稱（方便跨頁讀取）
     localStorage.setItem("selectedTheme", themeName);
 
-    // 也可展開存各頁背景（若你希望每頁直接讀 key，而不是讀主題名）
     const pack = ThemeCatalog[themeName];
     Object.entries(pack).forEach(([pageKey, bgStyle]) => {
       localStorage.setItem(pageKey, bgStyle);
     });
 
-    // 立即套用當前頁（profile）
     document.body.style.background = pack.background_profile;
   });
 
-  backgroundList.appendChild(div);
+  // 組合並插入
+  wrapper.appendChild(div);
+  wrapper.appendChild(label);
+  backgroundList.appendChild(wrapper);
+});
+
+// 背景更換
+window.addEventListener("DOMContentLoaded", () => {
+  const pageKey = "background_profile"; // 改成對應頁面名稱
+  const savedBg = localStorage.getItem(pageKey);
+  if (savedBg) {
+    document.body.style.background = savedBg;
+  }
 });

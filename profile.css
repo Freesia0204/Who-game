@@ -412,3 +412,102 @@
   white-space: nowrap; 
   transition: background 0.2s ease; 
 }
+
+/* 主題卡片容器（例如 .card-slot 或 .topic-item） */
+.card-slot,
+.topic-item {
+  background: rgba(0, 0, 0, 0.3);       /* 深灰半透明底 */
+  color: #fff;                          /* 白字清晰 */
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* 微陰影提升層次 */
+}
+
+/* 點擊特效圓形 */
+.effect-circle {
+  background-color: rgba(0, 0, 0, 0.2); /* 深一點底色 */
+  border: 2px solid #fff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+}
+
+/* 背景選項方塊 */
+.bg-option {
+  background-color: rgba(0, 0, 0, 0.2); /* 增加底色 */
+  border: 2px solid #fff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+}
+
+/* 整個卡片區塊外層加遮罩（可套用在 .card-grid、.effects-grid、.background-grid） */
+.card-grid,
+.effects-grid,
+.background-grid {
+  background: rgba(255,255,255,0.2);    /* 淺白遮罩 */
+  backdrop-filter: blur(4px);           /* 模糊背景 */
+  border-radius: 12px;
+  padding: 12px;
+}
+.bg-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ✅ 文字置中 */
+  gap: 6px;              /* 方塊與文字間距 */
+}
+
+.bg-label {
+  font-size: 0.8rem;
+  color: #fff;           /* 白字在深背景上清晰 */
+  text-align: center;
+}
+/* 我的主題、點擊特效、背景區塊統一靠左 */
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* ✅ 所有區塊靠左 */
+  width: 100%;
+}
+
+/* 區塊標題靠左 */
+.topic-title,
+.effect-title,
+.background-title {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+/* 主題列表靠左排列 */
+#customTopicsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start; /* ✅ 靠左排列 */
+  width: 100%;
+}
+
+/* 點擊特效列表靠左排列 */
+.effects-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start; /* ✅ 靠左排列 */
+  width: 100%;
+}
+
+/* 背景選項列表靠左排列 */
+.background-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start; /* ✅ 靠左排列 */
+  width: 100%;
+}
+.profile-effects,
+.profile-backgrounds {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}

@@ -515,9 +515,7 @@ body {
   transform: translateY(-2px); /* 上浮效果 */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
-#characterQueryModal {
-  display: none;
-}
+
 .bg-option {
   width: 80px;
   height: 80px;
@@ -536,4 +534,79 @@ body {
 
 .bg-option.selected {
   border-color: #f472b6;
+}
+/* 人物查詢 Modal 外層 */
+#characterQueryModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal 內容框 */
+#characterQueryModal .modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  text-align: left; /* ✅ 文字靠左 */
+}
+
+/* ❌ 關閉按鈕固定右上角 */
+#characterQueryModal .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* 標題 */
+#characterQueryModal h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+
+/* 查詢輸入區 */
+#characterQueryModal input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 查詢按鈕 */
+#characterQueryModal #querySubmitBtn {
+  padding: 8px 16px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* 查詢結果區塊 */
+#characterQueryModal .query-result {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+  text-align: left;         /* ✅ 靠左對齊 */
+  white-space: pre-line;    /* ✅ 保留換行 */
 }
