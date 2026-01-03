@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 const effectsData = [
  
-  { name: '柯南', img: 'img-KN/柯南_loge.jpg' },
-  { name: 'Free', img: 'img-GM/鬼滅之刃-logo.png' }
+  { name: '柯南', img: 'img-KN/柯南頭像.jpg' },
+  { name: 'Free', img: 'img-Free/Free頭像.jpg' }
 ];
 
 const effectsList = document.getElementById('effectsList');
@@ -254,13 +254,13 @@ const ThemeCatalog = {
     background_profile: "url('img-background/柯南背景.png')",
     background_index:  "url('img-background/柯南背景.png')",
     background_game:   "url('img-background/柯南背景.png')",
-    background_rank:   "url('img-background/柯南背景.png')"
+    background_match:   "url('img-background/柯南背景.png')"
   },
   "FREE!": {
     background_profile: "url('img-background/FREE!游泳池.jpg')",
     background_index:  "url('img-background/FREE!游泳池.jpg')",
     background_game:   "url('img-background/FREE!游泳池.jpg')",
-    background_rank:   "url('img-background/FREE!游泳池.jpg')"
+    background_match:   "url('img-background/FREE!游泳池.jpg')"
   },
  
 };

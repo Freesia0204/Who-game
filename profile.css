@@ -271,6 +271,9 @@
   font-weight: bold;
   color: #fff;
   margin-bottom: 12px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
+  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
+  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
 }
 
 
@@ -336,6 +339,9 @@
 .effect-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
+  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
+  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
 }
 
 .effects-grid {
@@ -477,6 +483,11 @@
   margin-bottom: 8px;
 }
 
+.background-title{
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
+  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
+  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
+}
 /* 主題列表靠左排列 */
 #customTopicsList {
   display: flex;
@@ -510,4 +521,12 @@
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+}
+
+.white-text {
+  color: white;
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.6),   /* 中心陰影 */
+    1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */
+    -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
 }
