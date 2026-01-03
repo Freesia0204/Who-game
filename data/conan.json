@@ -29,7 +29,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -63,7 +67,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -97,7 +105,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -131,7 +143,11 @@
       "parents": true,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -165,7 +181,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -199,7 +219,11 @@
       "parents": false,
       "actor": false,
       "magic": true,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -233,7 +257,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -267,7 +295,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -301,7 +333,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":true,
+    "Kanto":false,
+    "Nagano": false
     }
   },
   {
@@ -335,7 +371,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":true,
+    "Kanto":false,
+    "Nagano": false
     }
   },
   {
@@ -369,7 +409,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -403,7 +447,11 @@
       "parents": true,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :true ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -437,7 +485,11 @@
       "parents": true,
       "actor": true,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -471,7 +523,11 @@
       "parents": true,
       "actor": false,
       "magic": true,
-      "adult": true
+      "adult": true,
+       "twin" :true ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -505,7 +561,11 @@
       "parents": true,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -539,7 +599,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -573,7 +637,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -607,7 +675,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -641,7 +713,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -675,7 +751,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -709,7 +789,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -743,7 +827,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -777,7 +865,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -811,7 +903,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+       "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -845,7 +941,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -879,7 +979,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": false
+      "adult": false,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -913,7 +1017,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":true,
+    "Nagano": false
     }
   },
   {
@@ -947,7 +1055,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":false,
+    "Nagano": true
     }
   },
   {
@@ -981,7 +1093,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":false,
+    "Nagano": true
     }
   },
   {
@@ -1015,7 +1131,11 @@
       "parents": false,
       "actor": false,
       "magic": false,
-      "adult": true
+      "adult": true,
+      "twin" :false ,
+    "Kansai":false,
+    "Kanto":false,
+    "Nagano":true
     }
   }
 ]

@@ -318,7 +318,11 @@ const AI_DB = {
     { question: '他是誰的父母嗎？', trait: 'parents' },
     { question: '他是演員嗎？', trait: 'actor' },
     { question: '他是魔術師嗎？', trait: 'magic' },
-    { question: '他成年人嗎？', trait: 'adult' },
+    { question: '他是成年人嗎？', trait: 'adult' },
+    { question: '他有沒有雙胞胎兄弟？', trait: 'twin' },
+    { question: '他是關西人嗎？', trait: 'Kansai' },
+    { question: '他是關東人嗎？', trait: 'Kanto' },
+    { question: '他是長野縣的警察嗎？', trait: 'Nagano' },
 
   ],
 
@@ -413,7 +417,11 @@ const AI_DB = {
     parents: '父母',
     actor: '演員',
     magic: '魔術師',
-    adult: '成年人'
+    adult: '成年人',
+    twin :'雙胞胎', 
+    Kansai:'關西',
+    Kanto:'關東',
+    Nagano: '長野縣的警察' ,
   }
 };
 
@@ -442,13 +450,16 @@ const synonyms = {
   hasGlasses: ['眼鏡'],
   karate: ['空手道'],
   Disguise: ['易容'],
-  family: ['兄弟姊妹', '哥哥', '弟弟', '姊姊', '姐姐', '妹妹'],
+  family: ['兄弟姊妹', '哥哥', '弟弟', '姊姊', '姐姐', '妹妹','兄弟','姊妹'],
   highschool: ['高中生', '高中', '小學'],
   parents: ['父母', '爸爸', '媽媽', '父親', '母親'],
   actor: ['演員'],
   magic: ['魔術師', '魔術'],
-  adult: ['成年人', '成年', '大人',]
-
+  adult: ['成年人', '成年', '大人'],
+  twin :['雙胞胎', '雙胞胎兄弟'], 
+  Kansai:['關西', '關西的偵探', '關西的人','關西人','關西偵探'],
+  Kanto:['關東', '關東的偵探', '關東的人','關東人','關東偵探'],
+  trait: ['長野縣的警察', '長野縣警', '長野縣三人組', '長野' ,'長野縣'],
 };
 
 
@@ -522,7 +533,55 @@ function AIAskQuestion() {
     }
     return;
   }
+}
+// 檢查某個 trait 是否有排除效果
+function hasEliminationPotential(trait, remaining) {
+  let yesCount = 0, noCount = 0;
+  remaining.forEach(c => {
+    if (c.traits && typeof c.traits[trait] === 'boolean') {
+      if (c.traits[trait]) yesCount++;
+      else noCount++;
+    }
+  });
+  return yesCount > 0 && noCount > 0; // ✅ 有區分度才有意義
+}
 
+function AIAskQuestion() {
+  const dataList = gridData[selectedTopic] || [];
+  const remaining = dataList.filter(c => possibleCells.includes(c.name));
+
+  // 第一次先問通用問題
+  if (questionsAskedByAI === 0) {
+    const commonQuestions = AI_DB.common;
+    const chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
+    addMessage('AI', chosen.question);
+    aiAwaitingAnswer = true;
+    questionsAskedByAI++;
+    lastAIQuestion = chosen.question;
+    if (chosen.trait) askedTraits.push(chosen.trait);
+    turn = 'waitingForAnswer';
+    enableChat();
+    return;
+  }
+
+  // 沒剩候選 → 隨機問題庫
+  if (remaining.length === 0) {
+    const allQuestions = [...(AI_DB.common || []), ...(AI_DB[selectedTopic] || [])];
+    const randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+    if (randomQ && randomQ.question) {
+      addMessage('AI', randomQ.question);
+      aiAwaitingAnswer = true;
+      questionsAskedByAI++;
+      lastAIQuestion = randomQ.question;
+      if (randomQ.trait) askedTraits.push(randomQ.trait);
+      turn = 'waitingForAnswer';
+      enableChat();
+    }
+    
+    return;
+  }
+
+  // 統計 trait
   const traitCounts = {};
   remaining.forEach(c => {
     for (const key in c.traits) {
@@ -539,20 +598,14 @@ function AIAskQuestion() {
     const { yes, no } = traitCounts[key];
     const total = yes + no;
 
-    if (askedTraits.includes(key)) continue;
-    if (yes === 0 || no === 0) continue; // 沒區分度
-    const existsInRemaining = remaining.some(c => c.traits[key] === true) &&
-      remaining.some(c => c.traits[key] === false);
-    if (!existsInRemaining) continue;
-
-
+    if (askedTraits.includes(key)) continue; // 避免重複
+    if (!hasEliminationPotential(key, remaining)) continue; // 沒區分度就跳過
 
     if (total > bestCount) {
       bestCount = total;
       bestTrait = key;
     }
   }
-
 
   if (bestTrait) {
     const question = AI_DB.traitMap[bestTrait]
@@ -562,14 +615,11 @@ function AIAskQuestion() {
     aiAwaitingAnswer = true;
     questionsAskedByAI++;
     lastAIQuestion = question;
-    askedTraits.push(bestTrait);             // ✅ 記錄 trait
+    askedTraits.push(bestTrait);
     turn = 'waitingForAnswer';
     enableChat();
   }
 }
-
-
-
 
 
 // ===== AI 回答玩家問題（穩定版） =====
@@ -918,3 +968,37 @@ function onPlayerGuess(cellName, isCorrect) {
     endGame('玩家猜對了！');
   }
 }
+
+// 開啟查詢視窗
+document.getElementById('openCharacterQueryBtn').addEventListener('click', () => {
+  document.getElementById('characterQueryModal').style.display = 'flex';
+});
+
+// 關閉查詢視窗
+document.getElementById('closeQueryModal').addEventListener('click', () => {
+  document.getElementById('characterQueryModal').style.display = 'none';
+  document.getElementById('queryInput').value = '';
+  document.getElementById('queryResult').innerHTML = '';
+});
+
+// 查詢邏輯
+document.getElementById('querySubmitBtn').addEventListener('click', () => {
+  const question = document.getElementById('queryInput').value.trim();
+  if (!question) return;
+
+  const dataList = gridData[selectedTopic] || [];
+  const matchedKey = Object.keys(synonyms).find(key =>
+    synonyms[key].some(word => question.includes(word))
+  );
+
+  if (!matchedKey) {
+    document.getElementById('queryResult').innerHTML = '❓ 無法辨識問題，請換個問法';
+    return;
+  }
+
+  const eliminated = dataList.filter(c => c.traits?.[matchedKey] === false);
+  const names = eliminated.map(c => c.name).join('、');
+
+  document.getElementById('queryResult').innerHTML =
+    `🔍 根據「${question}」，可排除以下人物：<br><span style="color:#d00">${names || '（無）'}</span>`;
+});
