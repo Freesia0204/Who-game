@@ -676,4 +676,9 @@
   object-fit: cover;
   border-radius: 50%;
   display: block;
+  position: relative; 
+  z-index: 1; /* 確保圖片在上層 */
 }
+.avatar-overlay {
+   z-index: 2; /* 遮罩在圖片上，但只有 hover 時才顯示 */ 
+  }
