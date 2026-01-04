@@ -86,6 +86,24 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== 開始遊戲 =====
+function startGame(topic) {
+  // --- 新增：針對防風少年的特殊判斷 ---
+  if (topic === '防風少年') {
+    alert("📢 此主題尚未建立完成，敬請期待！");
+    return; // 直接中斷函式，不進入遊戲
+  }
+  // ----------------------------------
+
+  selectedTopic = topic;
+  const dataList = gridData[topic];
+
+  if (!dataList || dataList.length === 0) {
+    console.warn('selected topic has no data', topic);
+    return;
+  }
+  
+  // ... 後面原本的程式碼保持不變
+}
 function startGame() {
   if (rulesModal) rulesModal.style.display = 'none';
   createTopicCells();
@@ -705,11 +723,11 @@ const synonyms = {
 // ===== 每個主題對應的30格資料（圖片+文字） =====
 
 Promise.all([
-  fetch('data/conan.json').then(res => { if(!res.ok) throw new Error('找不到 conan.json'); return res.json(); }),
-  fetch('data/conan_redblack.json').then(res => { if(!res.ok) throw new Error('找不到 conan_redblack.json'); return res.json(); }),
-  fetch('data/ghost.json').then(res => { if(!res.ok) throw new Error('找不到 ghost.json'); return res.json(); }),
-  fetch('data/wind_breaker.json').then(res => { if(!res.ok) throw new Error('找不到 wind_breaker.json'); return res.json(); }),
-  fetch('data/free.json').then(res => { if(!res.ok) throw new Error('找不到 free.json'); return res.json(); })
+  fetch('data/conan.json').then(r => r.json()),
+  fetch('data/conan_redblack.json').then(r => r.json()),
+  fetch('data/ghost.json').then(r => r.json()),
+  fetch('data/wind_breaker.json').then(r => r.json()),
+  fetch('data/free.json').then(r => r.json())
 ])
 .then(([conan, conanRed, ghost, wind, free]) => {
   gridData['名偵探柯南'] = conan;
@@ -717,12 +735,8 @@ Promise.all([
   gridData['鬼滅之刃'] = ghost;
   gridData['防風少年'] = wind;
   gridData['FREE!'] = free;
-  console.log('✅ 所有資料載入成功:', gridData);
-})
-.catch(err => {
-  console.error('❌ 資料載入失敗，請檢查檔案路徑:', err.message);
+  console.log('角色資料載入完成');
 });
-
 
 
 // ===== AI 問題選擇（避免重複） =====
@@ -1292,4 +1306,3 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.style.background = savedBg;
   }
 });
-
