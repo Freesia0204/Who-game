@@ -614,3 +614,16 @@ background-attachment: fixed;
   text-align: left;         /* ✅ 靠左對齊 */
   white-space: pre-line;    /* ✅ 保留換行 */
 }
+/* 叉叉按鈕固定右上角 */ 
+.modal-content .close { 
+  position: absolute;
+   top: 10px; /* 距離上方 */ 
+   right: 15px; /* 距離右邊 */
+   font-size: 24px;
+   font-weight: bold;
+    color: #333; 
+    cursor: pointer;
+   }
+ .modal-content .close:hover { 
+  color: #d00; /* 滑過時變紅色 */
+}

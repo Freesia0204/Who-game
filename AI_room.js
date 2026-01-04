@@ -277,7 +277,7 @@ const topics = [
   { name: '名偵探柯南-紅黑篇', img: 'img-KN/柯南_loge.jpg' },
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: 'FREE!', img: 'img-Free/Free_logo.png' },
-  { name: '防風少年', img: 'img-WB/防風少年-logo.png' }
+  { name: '防風少年', img: 'img/敬請期待.jpg' }
   
 ];
 
@@ -413,7 +413,7 @@ const AI_DB = {
  { question: '他是不是黃髮？', trait: 'yellow' },
 
   ],
-  '防風少年': [
+  /*'防風少年': [
    { question: '他是不是男的', trait: 'boy' },
     { question: '他是不是女的', trait: 'girl' },
 { question: '他是風鈴的嗎？', trait: 'column' },
@@ -435,7 +435,7 @@ const AI_DB = {
 { question: '他是黑髮嗎？（半邊也算）', trait: 'blackhair' },
 { question: '他有戴耳環嗎？', trait: 'Upper' },
 { question: '他成年了嗎？', trait: 'lower' },
-],
+],*/
 
 
   // 🔹 trait 對照表

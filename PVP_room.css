@@ -467,3 +467,16 @@ background-attachment: fixed;
 #customTopicSelect:hover {
   border-color: #8b5cf6;  /* hover 時邊框變紫色 */
 }
+/* 叉叉按鈕固定右上角 */ 
+.modal-content .close { 
+  position: absolute;
+   top: 10px; /* 距離上方 */ 
+   right: 15px; /* 距離右邊 */
+   font-size: 24px;
+   font-weight: bold;
+    color: #333; 
+    cursor: pointer;
+   }
+ .modal-content .close:hover { 
+  color: #d00; /* 滑過時變紅色 */
+}

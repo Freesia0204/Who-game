@@ -19,11 +19,22 @@
     <nav>
       <a href="index.html">首頁</a>
       <a href="index.html#topics">主題預覽</a>
-      <a href="index.html#rules">玩法教學</a>
+      <a href="#" id="openRules2">遊戲玩法</a>
       <a href="#" id="loginBtn">登入 / 註冊</a>
     </nav>
   </header>
-
+<div class="modal" id="rulesModal2" style="display:none;">
+  <div class="modal-content">
+    <span class="close" id="closeRules2">&times;</span>
+    <h3>遊戲玩法 </h3>
+    <p>1. 開始遊戲後請點擊格子選擇主題和自己的卡牌。</p>
+        <p>2. 選擇好卡牌後，系統將自動猜拳決定先手，贏的可以先問問題。</p>
+        <p>3. 玩法為互相提問，猜對方所選中的卡牌。</p>
+        <p>4. 需要先問三個問題後，才能猜對方的卡牌；猜錯則需再問一個問題才能再猜。</p>
+        <p>5. 人物形象以圖片為主。</p>
+        <p>6. 卡牌選擇完後，點擊左邊格子可產生遮罩，以供排除。</p>
+  </div>
+</div>
   <!-- ================= 首頁主視覺區 ================= -->
   <section class="hero" id="home">
     <h1 class="white-text">歡迎來到猜猜我是誰</h1>
@@ -63,7 +74,7 @@
         <p>Free! 男子游泳部</p>
       </div>
 
-      <div class="topic-card" data-alt="img-WB/防風少年-logo.png">
+      <div class="topic-card" data-alt="img/敬請期待.jpg">
         <img src="img-WB/防風少年-logo.png" alt="防風少年">
         <p>防風少年</p>
       </div>
