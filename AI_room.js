@@ -1255,54 +1255,75 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // 顯示動態題庫
-function openQuestionBank() {
+function showQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
-  const listContainer = document.getElementById('question-list');
-  const title = document.getElementById('bank-title');
+  const title = document.getElementById('question-bank-title');
+  const listContainer = document.getElementById('question-list-container');
 
-  listContainer.innerHTML = ''; // 先清空
+  if (!modal || !listContainer) {
+    console.error("找不到題庫彈窗元素！");
+    return;
+  }
+
+  listContainer.innerHTML = ''; // 清空舊內容
 
   if (!selectedTopic) {
-    listContainer.innerHTML = '<p style="color:red; padding:20px;">請先選擇主題並開始遊戲後再查看題庫。</p>';
+    title.innerText = "請先選擇主題並開始遊戲";
+    listContainer.innerHTML = '<p style="text-align:center; padding:20px;">遊戲尚未開始，請先點擊「開始遊戲」並選擇主題。</p>';
   } else {
     title.innerText = `【${selectedTopic}】可用提問`;
     
-    // 從你的 synonyms 變數中抓取「問題描述」
-    // 假設你的 synonyms 結構是 { '名偵探柯南': { 'boy': ['男', '男生'], ... } }
-    const topicQuestions = synonyms[selectedTopic]; 
+    // 這裡確保 synonyms 存在且有該主題資料
+    const topicQuestions = (typeof synonyms !== 'undefined') ? synonyms[selectedTopic] : null; 
     
     if (topicQuestions) {
       Object.keys(topicQuestions).forEach(traitKey => {
-        // 取得該特徵的第一個關鍵字來組成問題
         const keyword = topicQuestions[traitKey][0];
         const fullQuestion = `他是不是${keyword}？`;
 
         const item = document.createElement('div');
         item.className = 'question-item';
-        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f9f9f9; display:inline-block;";
-        item.innerText = fullQuestion;
+        // 套用簡單樣式
+        Object.assign(item.style, {
+          cursor: 'pointer',
+          padding: '12px',
+          border: '1px solid #eee',
+          margin: '8px 0',
+          borderRadius: '8px',
+          background: '#f8f9fa',
+          transition: 'background 0.2s'
+        });
         
+        item.innerText = fullQuestion;
+        item.onmouseover = () => item.style.background = '#e9ecef';
+        item.onmouseout = () => item.style.background = '#f8f9fa';
+
         // 點擊複製
         item.onclick = () => {
-          navigator.clipboard.writeText(fullQuestion);
-          showCopyToast(fullQuestion);
+          navigator.clipboard.writeText(fullQuestion).then(() => {
+            showCopyToast();
+          });
         };
         listContainer.appendChild(item);
       });
+    } else {
+      listContainer.innerHTML = '<p>此主題暫無題庫資料。</p>';
     }
   }
   modal.style.display = 'flex';
 }
 
 function closeQuestionBank() {
-  document.getElementById('question-bank-modal').style.display = 'none';
+  const modal = document.getElementById('question-bank-modal');
+  if (modal) modal.style.display = 'none';
 }
 
-// 複製成功的小提示
-function showCopyToast(text) {
-  const toast = document.createElement('div');
-  toast.innerText = `已複製：${text}`;
-  toast.style = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:white; padding:10px 20px; border-radius:20px; z-index:9999;";
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 1500);
+function showCopyToast() {
+  const toast = document.getElementById('copy-toast');
+  if (toast) {
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 2000);
+  }
 }
