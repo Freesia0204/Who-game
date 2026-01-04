@@ -276,7 +276,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":true
+"Shinichi":false
 }
 },
 {
@@ -316,7 +316,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":true
+"Shinichi":false
 }
 },
 
@@ -357,7 +357,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":true
+"Shinichi":false
 }
 },
 
@@ -478,7 +478,7 @@
 "twin":false,
 "Kansai":false,
 "Kanto":true,
-"adie":false,
+"adie":true,
 "boom":false,
 "CarAccident":false,
 "dark":true,
@@ -519,7 +519,7 @@
 "twin":false,
 "Kansai":false,
 "Kanto":true,
-"adie":false,
+"adie":true,
 "boom":false,
 "CarAccident":false,
 "dark":true,
@@ -560,7 +560,7 @@
 "twin":false,
 "Kansai":false,
 "Kanto":true,
-"adie":false,
+"adie":true,
 "boom":false,
 "CarAccident":false,
 "dark":true,
@@ -601,7 +601,7 @@
 "twin":false,
 "Kansai":false,
 "Kanto":true,
-"adie":false,
+"adie":true,
 "boom":false,
 "CarAccident":false,
 "dark":true,
@@ -728,7 +728,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 },
 
@@ -852,7 +852,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 },
 
@@ -934,7 +934,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 },
 {
@@ -974,7 +974,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 },
 
@@ -1097,7 +1097,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 },
     {
@@ -1218,7 +1218,7 @@
 "boom":false,
 "CarAccident":false,
 "dark":false,
-"Shinichi":false
+"Shinichi":true
 }
 }
 
