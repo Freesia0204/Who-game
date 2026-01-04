@@ -333,22 +333,86 @@ themes.forEach(themeName => {
   backgroundList.appendChild(wrapper);
 });
 document.addEventListener('DOMContentLoaded', () => {
-  const rulesModal2 = document.getElementById('rulesModal2');
-  const openRules2 = document.getElementById('openRules2');
-  const closeRules2 = document.getElementById('closeRules2');
+    // --- 基礎資訊初始化 ---
+    const playerName = localStorage.getItem('playerName') || '玩家';
+    const playerId = localStorage.getItem('playerId') || 'Guest';
 
-  if (openRules2) {
-    openRules2.addEventListener('click', e => {
-      e.preventDefault();
-      rulesModal2.style.display = 'flex';
-    });
-  }
+    const profileNameEl = document.getElementById('profileName');
+    const profileIdEl = document.getElementById('profileId');
+    if (profileNameEl) profileNameEl.textContent = playerName;
+    if (profileIdEl) profileIdEl.textContent = playerId;
 
-  if (closeRules2) {
-    closeRules2.addEventListener('click', () => {
-      rulesModal2.style.display = 'none';
-    });
-  }
+    // --- 頭像功能變數 ---
+    const avatarDisplay = document.getElementById('avatarDisplay');
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarContainer = document.getElementById('avatarContainer');
+
+    /**
+     * 初始化頭像：判斷顯示圖片或名字首字
+     */
+    function initAvatar() {
+        if (!avatarDisplay) return;
+
+        const savedAvatar = localStorage.getItem(`avatar_${playerName}`);
+        
+        if (savedAvatar) {
+            // 模式 A: 顯示存儲的圖片
+            avatarDisplay.innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+            avatarDisplay.style.backgroundColor = 'transparent';
+            avatarDisplay.innerText = ''; // 清除文字
+        } else {
+            // 模式 B: 顯示隨機顏色 + 名字首字
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            avatarDisplay.innerHTML = ''; // 清除舊圖片
+            avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+            avatarDisplay.style.backgroundColor = randomColor;
+            
+            // 強制確保居中樣式
+            Object.assign(avatarDisplay.style, {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: '30px',
+                fontWeight: 'bold'
+            });
+        }
+    }
+
+    // --- 事件監聽 ---
+    if (avatarContainer && avatarInput) {
+        // 點擊容器觸發隱藏的檔案選取
+        avatarContainer.addEventListener('click', () => {
+            avatarInput.click();
+        });
+
+        // 當使用者選取檔案後
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // 檢查檔案大小 (建議限制在 2MB 以內，避免 localStorage 爆滿)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('圖片太大囉！請選擇小於 2MB 的圖片。');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const base64Image = event.target.result;
+                    // 存入 localStorage (以姓名作為 Key)
+                    localStorage.setItem(`avatar_${playerName}`, base64Image);
+                    // 立即更新畫面
+                    initAvatar();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // 執行初始化
+    initAvatar();
 });
 // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
