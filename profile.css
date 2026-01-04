@@ -448,7 +448,6 @@
 /* 整個卡片區塊外層加遮罩（可套用在 .card-grid、.effects-grid、.background-grid） */
 .card-grid,
 .effects-grid,
-.topic-title,
 .background-grid {
   background: rgba(255,255,255,0.2);    /* 淺白遮罩 */
   backdrop-filter: blur(4px);           /* 模糊背景 */

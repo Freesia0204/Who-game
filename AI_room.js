@@ -33,8 +33,14 @@ let playerQuestion = null;
 let aiAnswer = null;
 let guessInfo = null;
 let askedTraits = []; // 🔹 新增：AI 已問過的 trait key
-let gridData = {};
 
+let gridData = {
+  '名偵探柯南': [],
+  '名偵探柯南-紅黑篇': [],
+  '鬼滅之刃': [],
+  'FREE!': [],
+  '防風少年': []
+};
 
 // ===== 工具函式 =====
 function markGuessWrong(cellName) {
@@ -697,12 +703,13 @@ const synonyms = {
 
 
 // ===== 每個主題對應的30格資料（圖片+文字） =====
+
 Promise.all([
-  fetch('data/conan.json').then(r => r.json()),
-  fetch('data/conan_redblack.json').then(r => r.json()),
-  fetch('data/ghost.json').then(r => r.json()),
-  fetch('data/wind_breaker.json').then(r => r.json()),
-  fetch('data/free.json').then(r => r.json())
+  fetch('data/conan.json').then(res => { if(!res.ok) throw new Error('找不到 conan.json'); return res.json(); }),
+  fetch('data/conan_redblack.json').then(res => { if(!res.ok) throw new Error('找不到 conan_redblack.json'); return res.json(); }),
+  fetch('data/ghost.json').then(res => { if(!res.ok) throw new Error('找不到 ghost.json'); return res.json(); }),
+  fetch('data/wind_breaker.json').then(res => { if(!res.ok) throw new Error('找不到 wind_breaker.json'); return res.json(); }),
+  fetch('data/free.json').then(res => { if(!res.ok) throw new Error('找不到 free.json'); return res.json(); })
 ])
 .then(([conan, conanRed, ghost, wind, free]) => {
   gridData['名偵探柯南'] = conan;
@@ -710,8 +717,10 @@ Promise.all([
   gridData['鬼滅之刃'] = ghost;
   gridData['防風少年'] = wind;
   gridData['FREE!'] = free;
-
-  console.log('角色資料載入完成');
+  console.log('✅ 所有資料載入成功:', gridData);
+})
+.catch(err => {
+  console.error('❌ 資料載入失敗，請檢查檔案路徑:', err.message);
 });
 
 
