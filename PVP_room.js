@@ -494,9 +494,17 @@ cancelGuessBtn.addEventListener('click', () => {
   guessBtn.style.display = 'inline-block'; // ✅ 顯示「我要猜」
   cancelGuessBtn.style.display = 'none'; // ✅ 隱藏「取消猜」
 });
-function endGame(resultText) {
+function endGame(resultText, myCard, opponentCard) {
   addMessage('system', '遊戲結束');
 
+  const payload = { resultText, myCard, opponentCard };
+  // 🔹 廣播給另一位玩家
+  if (socket) socket.emit('gameOver', payload);
+
+  showEndModal(payload);
+}
+
+function showEndModal({ resultText, myCard, opponentCard }) {
   const endModal = document.getElementById('endModal');
   const resultEl = document.getElementById('endResultText');
   const choicesEl = document.getElementById('endChoicesText');
@@ -507,6 +515,14 @@ function endGame(resultText) {
     endModal.style.display = 'flex';
   }
 }
+
+// 🔹 另一位玩家收到事件時也顯示
+if (socket) {
+  socket.on('gameOver', payload => {
+    showEndModal(payload);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const rulesModal2 = document.getElementById('rulesModal2');
   const openRules2 = document.getElementById('openRules2');
