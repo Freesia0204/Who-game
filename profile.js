@@ -353,41 +353,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function initAvatar() {
   if (!avatarDisplay) return;
 
-  const savedAvatar = localStorage.getItem('avatar'); // ✅ 固定 key
-  console.log('savedAvatar:', savedAvatar);
-
-  if (savedAvatar) {
-    avatarDisplay.innerHTML = `<img src="${savedAvatar}" 
-      style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-    avatarDisplay.style.backgroundColor = 'transparent';
-    avatarDisplay.innerText = '';
-  } else {
-    // 顯示首字母
-    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    avatarDisplay.innerHTML = '';
-    avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
-    avatarDisplay.style.backgroundColor = randomColor;
-    Object.assign(avatarDisplay.style, {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      fontSize: '30px',
-      fontWeight: 'bold'
+  // 先問後端有沒有存過頭像
+  fetch(`/api/getAvatar?playerId=${playerId}`)
+    .then(r => r.json())
+    .then(res => {
+      if (res.success && res.avatar) {
+        avatarDisplay.innerHTML = `<img src="${res.avatar}" 
+          style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      } else {
+        // 沒有 → 顯示首字母
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        avatarDisplay.innerHTML = '';
+        avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+        avatarDisplay.style.backgroundColor = randomColor;
+        Object.assign(avatarDisplay.style, {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '30px',
+          fontWeight: 'bold'
+        });
+      }
     });
-  }
 }
 
-    // --- 事件監聽 ---
-    if (avatarContainer && avatarInput) {
-        // 點擊容器觸發隱藏的檔案選取
-        avatarContainer.addEventListener('click', () => {
-            avatarInput.click();
-        });
-
-        // 當使用者選取檔案後
-        avatarInput.addEventListener('change', (e) => {
+// 上傳事件
+avatarInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
@@ -401,20 +394,35 @@ document.addEventListener('DOMContentLoaded', () => {
   avatarDisplay.innerHTML = '';
   avatarDisplay.appendChild(preview);
 
-  // 同時存到 localStorage
+  // 存到 localStorage
   const reader = new FileReader();
   reader.onload = (event) => {
-    localStorage.setItem('avatar', event.target.result); // ✅ 固定 key
+    localStorage.setItem('avatar', event.target.result);
   };
   reader.readAsDataURL(file);
+
+  // 同步到後端
+  const formData = new FormData();
+  formData.append('playerId', playerId);
+  formData.append('avatar', file);
+
+  fetch('/api/uploadAvatar', {
+    method: 'POST',
+    body: formData
+  })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        avatarDisplay.innerHTML = `<img src="${res.avatar}" 
+          style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      }
+    });
 });
 
-
-    }
-
-    // 執行初始化
-    initAvatar();
+// 頁面載入時執行
+initAvatar();
 });
+
 // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
   const pageKey = "background_profile"; // 改成對應頁面名稱

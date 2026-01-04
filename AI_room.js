@@ -1255,64 +1255,239 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// --- 題庫功能 ---
+// ===== 題庫功能 (恢復原始版樣式) =====
 function showQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
-  const listContainer = document.getElementById('question-list-container');
+  const listContainer = document.getElementById('question-list');
   const title = document.getElementById('question-bank-title');
 
+  listContainer.innerHTML = '';
+
   if (!selectedTopic) {
-    listContainer.innerHTML = '<p style="color:white; text-align:center;">請先選擇主題並開始遊戲。</p>';
+    title.innerText = '請先選擇主題';
+    listContainer.innerHTML = '<p>選擇主題後，這裡會顯示推薦問題。</p>';
   } else {
     title.innerText = `【${selectedTopic}】可用提問`;
+    
+    // 恢復原始 synonyms 抓取邏輯
     const topicQuestions = synonyms[selectedTopic]; 
-    listContainer.innerHTML = ''; 
-
+    
     if (topicQuestions) {
       Object.keys(topicQuestions).forEach(traitKey => {
         const keyword = topicQuestions[traitKey][0];
         const fullQuestion = `他是不是${keyword}？`;
+
         const item = document.createElement('div');
         item.className = 'question-item';
-        item.style = "cursor:pointer; padding:10px; border:1px solid #555; margin:5px; border-radius:5px; background:#333; color:white; display:inline-block;";
+        // 恢復你原始的白色系簡潔樣式
+        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f9f9f9; display:inline-block; color:#333;";
         item.innerText = fullQuestion;
-
+        
         item.onclick = () => {
-          navigator.clipboard.writeText(fullQuestion).then(() => {
-            if (typeof showCopyToast === "function") showCopyToast(fullQuestion);
-          });
+          navigator.clipboard.writeText(fullQuestion);
+          if (typeof showCopyToast === "function") showCopyToast(fullQuestion);
         };
         listContainer.appendChild(item);
       });
+    } else {
+      listContainer.innerHTML = '<p>此主題暫無題庫。</p>';
     }
   }
   modal.style.display = 'flex';
-} // <--- 確保這一個大括號在這裡關閉函數
-
-// --- 以下內容必須放在函數外面 (Global Scope) ---
+}
 
 function closeQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
   if (modal) modal.style.display = 'none';
 }
 
+// ===== 人物查詢功能 (修復 AI 問答掛掉的問題) =====
+function searchCharacter() {
+  const input = document.getElementById('queryInput');
+  const resultDiv = document.getElementById('queryResult');
+  const name = input.value.trim();
+
+  if (!name) {
+    resultDiv.innerHTML = '請輸入名稱';
+    return;
+  }
+
+  // 確保從正確的語料庫查找
+  const data = characterData[name];
+  if (data) {
+    let html = `<h4>${name}</h4><ul>`;
+    for (const key in data) {
+      html += `<li><strong>${key}:</strong> ${data[key]}</li>`;
+    }
+    html += '</ul>';
+    resultDiv.innerHTML = html;
+  } else {
+    resultDiv.innerHTML = '查無此人物資料。';
+  }
+}
+
+// ===== 統一事件綁定 (確保 DOM 加載後執行) =====
 document.addEventListener('DOMContentLoaded', () => {
-  // 綁定人物查詢關閉按鈕
+  // 綁定人物查詢叉叉
   const closeQueryBtn = document.getElementById('closeQueryModal');
   if (closeQueryBtn) {
-    closeQueryBtn.onclick = function() {
+    closeQueryBtn.onclick = () => {
       document.getElementById('characterQueryModal').style.display = 'none';
+    };
+  }
+
+  // 綁定導覽列的人物查詢連結
+  const openQueryBtn = document.getElementById('openQueryModal');
+  if (openQueryBtn) {
+    openQueryBtn.onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('characterQueryModal').style.display = 'flex';
     };
   }
 });
 
-// 全域點擊事件：點擊彈窗外面關閉
+// 點擊彈窗外部關閉
 window.onclick = function(event) {
   const queryModal = document.getElementById('characterQueryModal');
   const bankModal = document.getElementById('question-bank-modal');
-  const rulesModal = document.getElementById('rulesModal');
-
   if (event.target == queryModal) queryModal.style.display = 'none';
   if (event.target == bankModal) bankModal.style.display = 'none';
-  if (event.target == rulesModal) rulesModal.style.display = 'none';
+};
+
+function showQuestionBank() {
+  const modal = document.getElementById('question-bank-modal');
+  const listContainer = document.getElementById('question-list');
+  const title = document.getElementById('question-bank-title');
+
+  if (!listContainer) return;
+  listContainer.innerHTML = '';
+
+  if (!selectedTopic) {
+    title.innerText = '請先選擇主題';
+    listContainer.innerHTML = '<p style="color:#666; text-align:center;">選擇主題後，這裡會顯示推薦問題。</p>';
+  } else {
+    title.innerText = `【${selectedTopic}】可用提問`;
+    const topicQuestions = synonyms[selectedTopic]; 
+    if (topicQuestions) {
+      Object.keys(topicQuestions).forEach(traitKey => {
+        const keyword = topicQuestions[traitKey][0];
+        const fullQuestion = `他是不是${keyword}？`;
+
+        const item = document.createElement('div');
+        item.className = 'question-item';
+        // 恢復你原始的白色系樣式
+        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f9f9f9; display:inline-block; color:#333; font-size:14px;";
+        item.innerText = fullQuestion;
+        
+        item.onclick = () => {
+          if(navigator.clipboard) {
+            navigator.clipboard.writeText(fullQuestion);
+            alert("已複製: " + fullQuestion);
+          }
+        };
+        listContainer.appendChild(item);
+      });
+    }
+  }
+  modal.style.display = 'flex';
+}
+
+function closeQuestionBank() {
+  const modal = document.getElementById('question-bank-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+// ===== 3. AI 提問核心邏輯 (修復 ReferenceError) =====
+function AIAskQuestion() {
+  if (typeof gridData === 'undefined' || !selectedTopic) return;
+  
+  const dataList = gridData[selectedTopic] || [];
+  const remaining = dataList.filter(c => possibleCells.includes(c.name));
+
+  // 第一題：從常用題庫挑選
+  if (questionsAskedByAI === 0) {
+    const commonQuestions = AI_DB.common;
+    const chosen = commonQuestions[Math.floor(Math.random() * commonQuestions.length)];
+    addMessage('AI', chosen.question);
+    aiAwaitingAnswer = true;
+    questionsAskedByAI++;
+    lastAIQuestion = chosen.question;
+    if (chosen.trait) askedTraits.push(chosen.trait);
+    turn = 'waitingForAnswer';
+    return;
+  }
+
+  // 統計特徵區分度
+  const traitCounts = {};
+  remaining.forEach(c => {
+    for (const key in c.traits) {
+      const val = c.traits[key];
+      if (!traitCounts[key]) traitCounts[key] = { yes: 0, no: 0 };
+      if (val === true) traitCounts[key].yes++;
+      else if (val === false) traitCounts[key].no++;
+    }
+  });
+
+  let bestTrait = null;
+  let bestCount = 0;
+  for (const key in traitCounts) {
+    const { yes, no } = traitCounts[key];
+    const total = yes + no;
+    if (askedTraits.includes(key)) continue;
+    if (yes === 0 || no === 0) continue; 
+
+    if (total > bestCount) {
+      bestCount = total;
+      bestTrait = key;
+    }
+  }
+
+  if (bestTrait) {
+    const question = AI_DB.traitMap[bestTrait] ? `他有${AI_DB.traitMap[bestTrait]}嗎？` : `他有${bestTrait}嗎？`;
+    addMessage('AI', question);
+    aiAwaitingAnswer = true;
+    questionsAskedByAI++;
+    lastAIQuestion = question;
+    askedTraits.push(bestTrait);
+    turn = 'waitingForAnswer';
+  } else {
+    addMessage('AI', '我想想... 我快猜到是誰了。');
+  }
+}
+
+// 輔助顯示訊息
+function addMessage(sender, text) {
+  const li = document.createElement('li');
+  li.className = `message ${sender.toLowerCase()}`;
+  li.innerText = `${sender}: ${text}`;
+  messagesEl.appendChild(li);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+// ===== 4. 視窗與關閉邏輯 (獨立於函數外) =====
+document.addEventListener('DOMContentLoaded', () => {
+  // 綁定人物查詢關閉按鈕
+  const closeQuery = document.getElementById('closeQueryModal');
+  if (closeQuery) {
+    closeQuery.onclick = () => {
+      document.getElementById('characterQueryModal').style.display = 'none';
+    };
+  }
+
+  // 綁定人物查詢打開按鈕
+  const openQuery = document.getElementById('openQueryModal');
+  if (openQuery) {
+    openQuery.onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('characterQueryModal').style.display = 'flex';
+    };
+  }
+});
+
+// 點擊彈窗外部關閉
+window.onclick = function(event) {
+  const queryModal = document.getElementById('characterQueryModal');
+  const bankModal = document.getElementById('question-bank-modal');
+  if (event.target == queryModal) queryModal.style.display = 'none';
+  if (event.target == bankModal) bankModal.style.display = 'none';
 };

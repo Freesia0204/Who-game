@@ -260,3 +260,33 @@ app.post('/api/deleteCustomTopic', async (req, res) => {
   res.json({ success: true, customTopics: topics });
 });
 
+const PlayerSchema = new mongoose.Schema({
+  playerId: { type: String, index: true },
+  name: String,
+  avatar: String // 存圖片路徑
+}, { timestamps: true });
+
+const Player = mongoose.model('Player', PlayerSchema);
+app.post('/api/uploadAvatar', upload.single('avatar'), async (req, res) => {
+  const { playerId } = req.body;
+  if (!playerId || !req.file) {
+    return res.json({ success: false, message: '缺少 playerId 或檔案' });
+  }
+
+  const avatarPath = '/uploads/' + req.file.filename;
+
+  await Player.updateOne(
+    { playerId },
+    { $set: { avatar: avatarPath } },
+    { upsert: true }
+  );
+
+  res.json({ success: true, avatar: avatarPath });
+});
+app.get('/api/getAvatar', async (req, res) => {
+  const { playerId } = req.query;
+  if (!playerId) return res.json({ success: false });
+
+  const player = await Player.findOne({ playerId }).lean();
+  res.json({ success: true, avatar: player?.avatar || '' });
+});
