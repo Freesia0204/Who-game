@@ -35,90 +35,211 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===== 頭像功能 =====
-  const avatarDisplay = document.getElementById('avatarDisplay');
-  const avatarInput = document.getElementById('avatarInput');
+const avatarDisplay = document.getElementById('avatarDisplay');
+const avatarInput = document.getElementById('avatarInput');
+const avatarContainer = document.getElementById('avatarContainer');
 
-  /**
-   * 初始化頭像：判斷顯示圖片或名字首字
-   */
-  function initAvatar() {
-    if (!avatarDisplay) return;
+/**
+ * 初始化頭像：判斷顯示圖片或名字首字
+ */
+function initAvatar() {
+  if (!avatarDisplay) {
+    console.warn('avatarDisplay 元素不存在');
+    return;
+  }
+  
+  console.log('初始化頭像...', { playerName, playerId });
 
-    // 先檢查 localStorage
-    const localAvatar = localStorage.getItem('avatar');
-    if (localAvatar) {
-      avatarDisplay.innerHTML = `<img src="${localAvatar}" 
-        style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-      return;
-    }
+  // 先檢查 localStorage
+  const localAvatar = localStorage.getItem('avatar');
+  console.log('localStorage 頭像:', localAvatar ? '有' : '無');
+  
+  if (localAvatar) {
+    // 確保 avatarDisplay 的樣式正確
+    avatarDisplay.innerHTML = '';
+    avatarDisplay.style.background = 'none';
+    avatarDisplay.style.borderRadius = '50%';
+    avatarDisplay.style.overflow = 'hidden';
+    
+    const img = document.createElement('img');
+    img.src = localAvatar;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.borderRadius = '50%';
+    avatarDisplay.appendChild(img);
+    return;
+  }
 
-    // 再問後端
-    fetch(`/api/getAvatar?playerId=${playerId}`)
-      .then(r => r.json())
+  // 如果有上傳過的頭像檔案
+  const savedAvatarUrl = localStorage.getItem('avatarUrl');
+  if (savedAvatarUrl) {
+    avatarDisplay.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = savedAvatarUrl;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    img.style.borderRadius = '50%';
+    avatarDisplay.appendChild(img);
+    return;
+  }
+
+  // 都沒有 → 顯示首字母
+  displayInitialAvatar();
+}
+
+/**
+ * 顯示首字母頭像
+ */
+function displayInitialAvatar() {
+  if (!avatarDisplay) return;
+  
+  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  avatarDisplay.innerHTML = '';
+  avatarDisplay.textContent = playerName.charAt(0).toUpperCase();
+  avatarDisplay.style.backgroundColor = randomColor;
+  avatarDisplay.style.color = 'white';
+  avatarDisplay.style.display = 'flex';
+  avatarDisplay.style.alignItems = 'center';
+  avatarDisplay.style.justifyContent = 'center';
+  avatarDisplay.style.fontSize = '30px';
+  avatarDisplay.style.fontWeight = 'bold';
+  avatarDisplay.style.borderRadius = '50%';
+  avatarDisplay.style.width = '100%';
+  avatarDisplay.style.height = '100%';
+}
+
+/**
+ * 處理頭像上傳
+ */
+function handleAvatarUpload(file) {
+  if (!file || !avatarDisplay) return;
+  
+  console.log('上傳頭像檔案:', file.name, file.type);
+  
+  // 即時預覽
+  const previewUrl = URL.createObjectURL(file);
+  
+  // 清除之前的內容
+  avatarDisplay.innerHTML = '';
+  avatarDisplay.style.background = 'none';
+  
+  // 創建圖片元素
+  const img = document.createElement('img');
+  img.src = previewUrl;
+  img.style.width = '100%';
+  img.style.height = '100%';
+  img.style.objectFit = 'cover';
+  img.style.borderRadius = '50%';
+  avatarDisplay.appendChild(img);
+  
+  // 存到 localStorage (base64)
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const base64Data = event.target.result;
+    localStorage.setItem('avatar', base64Data);
+    localStorage.setItem('avatarUrl', previewUrl); // 也存 URL
+    console.log('頭像已存到 localStorage');
+  };
+  reader.readAsDataURL(file);
+  
+  // 同步到後端 (如果後端 API 可用)
+  if (playerId && playerId !== 'Guest') {
+    const formData = new FormData();
+    formData.append('playerId', playerId);
+    formData.append('avatar', file);
+    
+    fetch('/api/uploadAvatar', {
+      method: 'POST',
+      body: formData
+    })
+      .then(r => {
+        if (!r.ok) throw new Error('API 回應錯誤');
+        return r.json();
+      })
       .then(res => {
-        if (res.success && res.avatar) {
-          avatarDisplay.innerHTML = `<img src="${res.avatar}" 
-            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        if (res.success) {
+          console.log('後端頭像上傳成功:', res);
         } else {
-          // 沒有 → 顯示首字母
-          const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
-          const randomColor = colors[Math.floor(Math.random() * colors.length)];
-          avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
-          avatarDisplay.style.backgroundColor = randomColor;
-          Object.assign(avatarDisplay.style, {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontSize: '30px',
-            fontWeight: 'bold',
-            borderRadius: '50%'
-          });
+          console.warn('後端上傳失敗:', res.message);
         }
       })
       .catch(err => {
-        console.error('載入頭像失敗:', err);
-        // 失敗時顯示首字母
-        avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+        console.error('後端上傳錯誤:', err);
+        // 本地存儲已成功，所以可以繼續
       });
   }
+}
 
-  // 上傳頭像
-  if (avatarInput) {
-    avatarInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+// 綁定頭像點擊事件
+if (avatarContainer) {
+  avatarContainer.addEventListener('click', () => {
+    console.log('點擊頭像區域');
+    if (avatarInput) {
+      avatarInput.click();
+    }
+  });
+}
 
-      // 即時預覽
-      const previewUrl = URL.createObjectURL(file);
-      avatarDisplay.innerHTML = `<img src="${previewUrl}" 
-        style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+// 綁定檔案選擇事件
+if (avatarInput) {
+  avatarInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      console.log('未選擇檔案');
+      return;
+    }
+    
+    // 檢查檔案類型
+    if (!file.type.startsWith('image/')) {
+      alert('請選擇圖片檔案');
+      return;
+    }
+    
+    // 檢查檔案大小 (限制 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('圖片大小不能超過 5MB');
+      return;
+    }
+    
+    handleAvatarUpload(file);
+    
+    // 重置 input，讓可以再次選擇相同檔案
+    avatarInput.value = '';
+  });
+}
 
-      // 存到 localStorage
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        localStorage.setItem('avatar', event.target.result);
-      };
-      reader.readAsDataURL(file);
+// 如果有上傳頭像的按鈕，也綁定事件
+const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
+if (uploadAvatarBtn) {
+  uploadAvatarBtn.addEventListener('click', () => {
+    if (avatarInput) {
+      avatarInput.click();
+    }
+  });
+}
 
-      // 同步到後端
-      const formData = new FormData();
-      formData.append('playerId', playerId);
-      formData.append('avatar', file);
 
-      fetch('/api/uploadAvatar', {
-        method: 'POST',
-        body: formData
-      })
-        .then(r => r.json())
-        .then(res => {
-          if (!res.success) {
-            console.error('上傳頭像失敗:', res.message);
-          }
-        })
-        .catch(err => console.error('上傳錯誤:', err));
-    });
+
+// ===== 頁面載入時初始化頭像 =====
+document.addEventListener('DOMContentLoaded', () => {
+  // 確保 DOM 完全載入後才初始化
+  setTimeout(() => {
+    console.log('DOM 載入完成，初始化頭像...');
+    initAvatar();
+  }, 100);
+});
+
+// ===== 新增：監聽 storage 變化，當其他頁面上傳頭像時自動更新 =====
+window.addEventListener('storage', (e) => {
+  if (e.key === 'avatar') {
+    console.log('偵測到頭像更新，重新載入...');
+    setTimeout(initAvatar, 100);
   }
+});
 
   // ===== 自訂主題功能 =====
   const modal = document.getElementById('customTopicModal');
