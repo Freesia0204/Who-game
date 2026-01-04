@@ -474,10 +474,12 @@ const AI_DB = {
     Nagano: '長野縣的警察' ,
    ponytail:'馬尾',
   dark:'膚色黑',
+  //紅黑篇
  adie:'死了' ,
      boom:'爆炸死亡' ,
    CarAccident:'車禍死亡' ,
    Shinichi:'柯南就是新一',
+   //鬼滅
     column: '柱',
   die: '死亡',
   Texture: '斑紋',
@@ -505,6 +507,7 @@ const AI_DB = {
   mask: '面具',
   moon: '十二鬼月',
   FiveSenses: '五感組',
+  //FREE
    swimmer: '游泳社成員',
   iwatobi: '岩鳶高校學生',
   samezuka: '鮫柄學園學生',
@@ -566,6 +569,7 @@ const synonyms = {
    boom:['被炸死','拆彈時死亡','因爆炸死亡','爆炸死亡'] ,
    CarAccident:['被撞死','遇到車禍','因車禍死亡','車禍死亡'] ,
    Shinichi:['江戶川柯南就是工藤新一','柯南的真實身分',,'柯南就是新一'],
+   //鬼滅
     column: ['柱', '柱級', '柱之一'],
   die: ['死亡', '死了', '去世', '死掉','死'],
   Texture: ['斑紋'],
