@@ -658,3 +658,27 @@ background-attachment: fixed;
   border-color: #2196f3 !important;
   color: #1976d2;
 }
+/* 確保彈窗內容容器有相對定位 */
+.modal-content {
+  position: relative; /* 這是定位基準 */
+  padding: 30px 20px 20px 20px; /* 給頂部留一點空間，避免標題撞到叉叉 */
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* 針對關閉叉叉的絕對定位優化 */
+.modal-content .close {
+  position: absolute; /* 絕對定位 */
+  top: 5px;          /* 距離頂部 5 像素 */
+  right: 10px;       /* 距離右邊 10 像素 */
+  font-size: 28px;
+  line-height: 1;
+  z-index: 1001;     /* 確保在最上層 */
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s;
+}
+
+.modal-content .close:hover {
+  color: #ff4d4d;    /* 鼠標移上去變紅色 */
+}

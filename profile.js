@@ -391,25 +391,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 當使用者選取檔案後
         avatarInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                // 檢查檔案大小 (建議限制在 2MB 以內，避免 localStorage 爆滿)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('圖片太大囉！請選擇小於 2MB 的圖片。');
-                    return;
-                }
+  const file = e.target.files[0];
+  if (!file) return;
 
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const base64Image = event.target.result;
-                    // 存入 localStorage (以姓名作為 Key)
-                    localStorage.setItem('avatar', base64Image);
-                    // 立即更新畫面
-                    initAvatar();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+  // 即時顯示預覽（像自訂主題）
+  const preview = document.createElement('img');
+  preview.src = URL.createObjectURL(file);
+  preview.style.width = '100%';
+  preview.style.height = '100%';
+  preview.style.objectFit = 'cover';
+  preview.style.borderRadius = '50%';
+
+  avatarDisplay.innerHTML = ''; // 清掉舊內容
+  avatarDisplay.appendChild(preview);
+
+  // 同時存到 localStorage（方便下次載入）
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    localStorage.setItem('avatar', event.target.result);
+  };
+  reader.readAsDataURL(file);
+});
+
     }
 
     // 執行初始化

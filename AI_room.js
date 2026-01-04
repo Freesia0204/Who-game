@@ -1254,94 +1254,65 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 顯示動態題庫
+// --- 題庫功能 ---
+// --- 題庫功能 ---
 function showQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
-  const title = document.getElementById('question-bank-title');
   const listContainer = document.getElementById('question-list-container');
-
-  if (!modal || !listContainer) {
-    console.error("找不到題庫彈窗元素！");
-    return;
-  }
-
-  listContainer.innerHTML = ''; // 清空舊內容
+  const title = document.getElementById('question-bank-title');
 
   if (!selectedTopic) {
-    title.innerText = "請先選擇主題並開始遊戲";
-    listContainer.innerHTML = '<p style="text-align:center; padding:20px;">遊戲尚未開始，請先點擊「開始遊戲」並選擇主題。</p>';
+    listContainer.innerHTML = '<p>請先選擇主題並開始遊戲。</p>';
   } else {
     title.innerText = `【${selectedTopic}】可用提問`;
-    
-    // 這裡確保 synonyms 存在且有該主題資料
-    const topicQuestions = (typeof synonyms !== 'undefined') ? synonyms[selectedTopic] : null; 
-    
+    const topicQuestions = synonyms[selectedTopic]; 
+    listContainer.innerHTML = ''; 
+
     if (topicQuestions) {
       Object.keys(topicQuestions).forEach(traitKey => {
         const keyword = topicQuestions[traitKey][0];
         const fullQuestion = `他是不是${keyword}？`;
-
         const item = document.createElement('div');
         item.className = 'question-item';
-        // 套用簡單樣式
-        Object.assign(item.style, {
-          cursor: 'pointer',
-          padding: '12px',
-          border: '1px solid #eee',
-          margin: '8px 0',
-          borderRadius: '8px',
-          background: '#f8f9fa',
-          transition: 'background 0.2s'
-        });
-        
+        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f8f9fa; display:inline-block;";
         item.innerText = fullQuestion;
-        item.onmouseover = () => item.style.background = '#e9ecef';
-        item.onmouseout = () => item.style.background = '#f8f9fa';
 
-        // 點擊複製
         item.onclick = () => {
           navigator.clipboard.writeText(fullQuestion).then(() => {
-            showCopyToast();
+            if (typeof showCopyToast === "function") showCopyToast(fullQuestion);
           });
         };
         listContainer.appendChild(item);
       });
-    } else {
-      listContainer.innerHTML = '<p>此主題暫無題庫資料。</p>';
     }
   }
   modal.style.display = 'flex';
-  // 在你的 DOMContentLoaded 事件內加入
-document.getElementById('closeQueryModal').onclick = function() {
-  document.getElementById('characterQueryModal').style.display = 'none';
-};
-
-// 題庫專用的關閉函數
-function closeQuestionBank() {
-  const qModal = document.getElementById('question-bank-modal');
-  if (qModal) qModal.style.display = 'none';
 }
 
-// 點擊彈窗外部也可以關閉 (選配)
-window.onclick = function(event) {
-  const queryModal = document.getElementById('characterQueryModal');
-  const bankModal = document.getElementById('question-bank-modal');
-  if (event.target == queryModal) queryModal.style.display = 'none';
-  if (event.target == bankModal) bankModal.style.display = 'none';
-};
-}
+// --- 關閉邏輯：請確保這些函數在最外層 (Global Scope) ---
 
 function closeQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
   if (modal) modal.style.display = 'none';
 }
 
-function showCopyToast() {
-  const toast = document.getElementById('copy-toast');
-  if (toast) {
-    toast.style.display = 'block';
-    setTimeout(() => {
-      toast.style.display = 'none';
-    }, 2000);
+// 監聽人物查詢的關閉按鈕
+document.addEventListener('DOMContentLoaded', () => {
+  const closeQueryBtn = document.getElementById('closeQueryModal');
+  if (closeQueryBtn) {
+    closeQueryBtn.onclick = function() {
+      document.getElementById('characterQueryModal').style.display = 'none';
+    };
   }
-}
+});
+
+// 點擊彈窗外部區域關閉
+window.onclick = function(event) {
+  const queryModal = document.getElementById('characterQueryModal');
+  const bankModal = document.getElementById('question-bank-modal');
+  const rulesModal = document.getElementById('rulesModal'); // 玩法彈窗
+
+  if (event.target == queryModal) queryModal.style.display = 'none';
+  if (event.target == bankModal) bankModal.style.display = 'none';
+  if (event.target == rulesModal) rulesModal.style.display = 'none';
+};
