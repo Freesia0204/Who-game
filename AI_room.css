@@ -627,3 +627,19 @@ background-attachment: fixed;
  .modal-content .close:hover { 
   color: #d00; /* 滑過時變紅色 */
 }
+#rulesModal2 .modal-content {
+  position: relative; /* 讓 close 可以定位在右上角 */
+}
+
+#rulesModal2 .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+#rulesModal2 .close:hover {
+  color: #d00;
+}

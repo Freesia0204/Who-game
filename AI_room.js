@@ -1196,7 +1196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeQueryModal.addEventListener('click', () => {
       characterQueryModal.style.display = 'none';
     });
-  }
+ }
 });
 // ===== 人物查詢 Modal 控制 =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -1274,11 +1274,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
 // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
-  const pageKey = "background_game"; // 改成對應頁面名稱
+  const pageKey = "background_game"; 
   const savedBg = localStorage.getItem(pageKey);
   if (savedBg) {
     document.body.style.background = savedBg;
   }
 });
+
