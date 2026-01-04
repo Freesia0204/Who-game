@@ -125,7 +125,7 @@ const topics = [
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
   { name: 'FREE!', img: 'img-Free/Free_logo.png' },
-  { name: '我的主題', img: 'img-Custom/my_topic_logo.png', isCustom: true } // ✅ 新增這格
+  { name: '我的主題', isCustom: true } // ✅ 新增這格
 ];
 
 // === 主題選擇 ===
