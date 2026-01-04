@@ -395,7 +395,7 @@ const AI_DB = {
     { question: '他是因為爆炸死的嗎?', trait: 'boom' },
     { question: '他是因為車禍死的嗎?', trait: 'CarAccident' },
     { question: '他是膚色是偏黑/黃的嗎?', trait: 'dark' },
-    { question: '他知道柯南就是新一嗎?', trait: 'Shinichi' },
+    { question: '他是不是知道柯南就是新一?', trait: 'Shinichi' },
   ],
 
   '鬼滅之刃': [
@@ -1073,7 +1073,7 @@ function handlePlayerAsk_forSubmit(msg) {
     return;
   }
 
-  addMessage('player', msg);
+ 
   
   // 增加玩家提問計數
   questionsAskedByPlayer++;
@@ -1136,50 +1136,49 @@ if (cancelGuessBtn) {
 
 
 // ===== 修正表單提交處理（解決重複問題） =====
-if (chatForm) {
-  // 先移除所有可能的舊事件監聽器
-  const newChatForm = chatForm.cloneNode(true);
-  chatForm.parentNode.replaceChild(newChatForm, chatForm);
+// ===== 處理玩家發問（玩家問 AI） =====
+function handlePlayerAsk_forSubmit(msg) {
+  console.log('[Player] 玩家問問題:', msg, '當前回合:', turn);
   
-  // 重新獲取元素
-  const chatFormFixed = document.getElementById('chatForm');
-  const chatInputFixed = document.getElementById('chatInput');
-  
-  if (chatFormFixed) {
-    chatFormFixed.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const msg = chatInputFixed.value.trim();
-      if (!msg) return;
-      
-      console.log('[Chat] 玩家輸入:', msg, '當前回合:', turn);
-      
-      // 清除輸入並暫時禁用
-      chatInputFixed.value = '';
-      disableChat();
-      
-      // 根據不同狀態處理
-      if (turn === 'player') {
-        // 玩家回合：問問題
-        addMessage('player', msg);
-        setTimeout(() => {
-          handlePlayerAsk_forSubmit(msg);
-        }, 100);
-      } else if (turn === 'waitingForAnswer') {
-        // 等待回答：回答AI問題
-        addMessage('player', msg);
-        setTimeout(() => {
-          handlePlayerAnswer(msg);
-        }, 100);
-      } else {
-        // 其他狀態：恢復聊天，但不處理為遊戲動作
-        addMessage('player', msg);
-        setTimeout(() => {
-          addMessage('system', '現在不是你的回合喔～');
-          if (turn === 'player') enableChat();
-        }, 500);
-      }
-    });
+  // 若進入猜題階段，阻止用聊天再問
+  if (canGuess) {
+    showSystemMessage('目前為猜題階段，請使用「我要猜」，或先略過猜題再提問。');
+    enableChat();
+    return;
   }
+
+  // 確保當前是玩家回合
+  if (turn !== 'player') {
+    addMessage('system', '現在不是你的回合喔');
+    enableChat(); // 讓玩家可以繼續輸入
+    return;
+  }
+
+  // ⚠️ 刪除這行！因為已經在表單提交時顯示過了
+  // addMessage('player', msg); // <-- 刪除這行！
+  
+  // 增加玩家提問計數
+  questionsAskedByPlayer++;
+  playerTurns++;
+  
+  if (playerGuessCooldown > 0) playerGuessCooldown--;
+  
+  console.log('[Player] 玩家問問題後計數:', { 
+    questionsAskedByPlayer, 
+    questionsAskedByAI,
+    playerGuessCooldown 
+  });
+  
+  // 延遲讓玩家看到訊息
+  setTimeout(() => { 
+    AIAnswer(msg); 
+  }, 700);
+  
+  // 切換回合
+  turn = 'AI';
+  disableChat();
+  
+  updateGuessButtonState();
 }
 
 // ===== 玩家回答 AI 的問題 =====
@@ -1317,7 +1316,7 @@ function aiTryGuess() {
   canGuess = false;
   enableChat();
   updateGuessButtonState();
-  addMessage('system', '換你問我囉～');
+  
 }
 
 // ===== 顯示系統訊息（短） =====
@@ -1605,18 +1604,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ===== 修正題庫功能（HTML中是直接onclick調用） =====
-// 定義全局函數，讓HTML可以直接調用
+// ===== 修正題庫功能 =====
 window.showQuestionBank = function() {
   const modal = document.getElementById('question-bank-modal');
-  const listContainer = document.getElementById('question-list');
+  // 注意：HTML中是 question-list-container，不是 question-list
+  const listContainer = document.getElementById('question-list-container');
   const title = document.getElementById('question-bank-title');
 
   if (!modal || !listContainer) {
-    console.error('題庫Modal元素不存在');
+    console.error('題庫Modal元素不存在', { modal, listContainer });
     return;
   }
   
+  // 清除之前的內容
   listContainer.innerHTML = '';
 
   if (!selectedTopic) {
@@ -1650,7 +1650,7 @@ window.showQuestionBank = function() {
           box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         `;
         
-        item.innerText = `${index + 1}. ${q.question}`;
+        item.textContent = `${index + 1}. ${q.question}`;
         
         // 滑鼠懸停效果
         item.addEventListener('mouseover', () => {
@@ -1682,7 +1682,7 @@ window.showQuestionBank = function() {
             setTimeout(() => {
               item.style.background = 'white';
               item.style.borderColor = '#ddd';
-              item.innerHTML = `${index + 1}. ${q.question}`;
+              item.textContent = `${index + 1}. ${q.question}`;
             }, 2000);
           } catch (err) {
             showToast('複製失敗，請手動選取文字複製');
@@ -1716,69 +1716,19 @@ window.showQuestionBank = function() {
   modal.style.display = 'flex';
 };
 
-// 添加顯示提示的函數
-function showToast(message) {
-  const toast = document.getElementById('copy-toast');
-  if (toast) {
-    toast.textContent = message;
-    toast.style.display = 'block';
-    setTimeout(() => {
-      toast.style.display = 'none';
-    }, 2000);
-  } else {
-    // 如果沒有toast元素，創建一個
-    const toastDiv = document.createElement('div');
-    toastDiv.textContent = message;
-    toastDiv.style.cssText = `
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 24px;
-      z-index: 10000;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      animation: fadeInOut 2s ease-in-out;
-    `;
-    
-    // 添加動畫樣式
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fadeInOut {
-        0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-        15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(toastDiv);
-    setTimeout(() => {
-      if (toastDiv.parentNode) {
-        toastDiv.parentNode.removeChild(toastDiv);
-      }
-    }, 2000);
-  }
+// ===== 添加調試功能，檢查題庫元素是否存在 =====
+function debugQuestionBank() {
+  console.log('=== 題庫元素檢查 ===');
+  console.log('modal:', document.getElementById('question-bank-modal'));
+  console.log('listContainer:', document.getElementById('question-list-container'));
+  console.log('title:', document.getElementById('question-bank-title'));
+  console.log('selectedTopic:', selectedTopic);
+  console.log('AI_DB:', AI_DB);
+  console.log('====================');
 }
 
-window.closeQuestionBank = function() {
-  const modal = document.getElementById('question-bank-modal');
-  if (modal) {
-    modal.style.display = 'none';
-    
-    // 重置所有問題項目樣式
-    const items = document.querySelectorAll('.question-item');
-    items.forEach(item => {
-      item.style.background = 'white';
-      item.style.borderColor = '#ddd';
-      item.style.transform = 'translateY(0)';
-    });
-  }
-};
+// 在控制台可以調用 debugQuestionBank() 來檢查
+
 
 // ===== 點擊外部關閉彈窗 =====
 document.addEventListener('DOMContentLoaded', () => {

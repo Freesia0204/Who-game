@@ -133,8 +133,8 @@ function createTopicCells() {
   gridArea.innerHTML = '';
   topics.forEach(topic => {
     const cell = document.createElement('div');
-    cell.className = 'cell disabled';
-
+    
+cell.className = 'cell topic-select';
     const img = document.createElement('img');
     img.src = topic.img;
     img.alt = topic.name;

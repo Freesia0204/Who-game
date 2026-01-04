@@ -25,45 +25,43 @@ body {
   padding-top: 60px;
   /* 導覽列高度，避免內容被遮住 */
   background-repeat: no-repeat;         /* ✅ 不重複貼圖 */
-background-size: cover;               /* ✅ 自動放大填滿 */
-background-attachment: fixed;
-
+  background-size: cover;               /* ✅ 自動放大填滿 */
+  background-attachment: fixed;         /* ✅ 背景固定不隨捲動移動 */
 }
 
 /* ✨ 動態漸層動畫 ✨ */
 @keyframes gradientFlow {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 50%;  /* 起始位置：左上方 */
   }
 
   25% {
-    background-position: 50% 100%;
+    background-position: 50% 100%; /* 移動到中間下方 */
   }
 
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 50%; /* 移動到右側中間 */
   }
 
   75% {
-    background-position: 50% 0%;
+    background-position: 50% 0%;  /* 移動到中間上方 */
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: 0% 50%;  /* 回到起始位置 */
   }
 }
-
 
 /* === 主容器設定 === */
 .container {
   display: flex;
   flex-direction: row;
   width: 95vw;
-  min-height: calc(100vh - 60px); /* 不會超出視窗 */
+  min-height: calc(100vh - 60px); /* 扣除導覽列高度，不會超出視窗 */
   gap: 12px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.05); /* 半透明白色背景 */
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.3);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.3); /* 陰影效果 */
   padding: 12px;
   position: relative;
   align-items: stretch;
@@ -77,16 +75,15 @@ background-attachment: fixed;
   right: 16px; /* 距離右側 */
   font-size: 0.9rem;
   color: #fff;
-  text-align: right; /* 文字靠右 */
+  text-align: right; /* 文字靠右對齊 */
   line-height: 1.2rem;
 }
-
 
 /* === 左側：格子區 === */
 .grid-area {
   flex: 1.5; /* 左邊占比約 60% */
   display: grid; /* 網格布局 */
-  grid-template-columns: repeat(5, 1fr); /* 6欄平均分配 */
+  grid-template-columns: repeat(5, 1fr); /* 5欄平均分配 */
   grid-template-rows: repeat(5, 1fr); /* 5列平均分配 */
   gap: 8px; /* 格子間距 */
   padding: 16px;
@@ -94,10 +91,7 @@ background-attachment: fixed;
   background: rgba(255,255,255,0.1); /* 微透明背景 */
   min-height: 600px; 
   height: auto;
- 
 }
-
-
 
 /* === 每一個格子 === */
 .cell {
@@ -112,11 +106,11 @@ background-attachment: fixed;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
   cursor: pointer;
   font-weight: bold;
-  user-select: none;
-  transition: 0.2s;
+  user-select: none; /* 防止文字被選取 */
+  transition: 0.2s; /* 過渡動畫 */
   max-width: 190px;
   height: 220px; /* ✅ 固定高度 */
-  perspective: 800px; /* ✅ 保留翻格子效果 */
+  perspective: 800px; /* ✅ 保留翻格子效果（3D視角） */
 }
 
 /* 選主題格子（Logo 橫向，較矮） */
@@ -130,7 +124,6 @@ background-attachment: fixed;
   width: 160px;
   height: 220px; /* ✅ 保持原本高度 */
 }
-
 
 /* 格子內圖片樣式 */
 .cell img {
@@ -151,20 +144,18 @@ background-attachment: fixed;
   background: #ffe0f0; /* 粉紅亮底 */
 }
 
-
 /* === 右側：聊天區 === */
 .chat-area {
-  flex: 0.5; 
+  flex: 0.5; /* 右邊占比約 40% */
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* 改成 flex-start 就不會把內容拉開 */
   padding: 16px;
-  background: rgba(255,255,255,0.1); 
+  background: rgba(255,255,255,0.1); /* 半透明白色背景 */
   border-radius: 12px;
   min-height: 600px; 
   height: auto;
 }
-
 
 /* 聊天狀態文字（例如"AI先問"） */
 .status {
@@ -172,19 +163,17 @@ background-attachment: fixed;
   margin-bottom: 8px;
 }
 
-
 /* === 訊息顯示框 === */
 .messages {
   height: 1300px;          /* ✅ 固定高度，依你喜歡的大小 */
-  overflow-y: auto;       /* 超過高度就出現滾輪 */
-  list-style: none;
+  overflow-y: auto;       /* 超過高度就出現垂直滾輪 */
+  list-style: none;      /* 移除列表點 */
   padding: 8px;
   margin: 0 0 8px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.05); /* 半透明白色背景 */
 }
-
 
 /* === 每則訊息樣式 === */
 .message {
@@ -197,30 +186,30 @@ background-attachment: fixed;
 
 /* 系統訊息 */
 .message.system {
-  align-self: center; /* 居中 */
+  align-self: center; /* 居中對齊 */
   background: #e0f2fe; /* 淡藍灰底 */
-  border-left: 4px solid #38bdf8; /* 藍色左條 */
+  border-left: 4px solid #38bdf8; /* 藍色左邊條 */
   color: #0c4a6e;
   font-weight: 500;
-  max-width: 70%;
+  max-width: 70%; /* 最大寬度限制 */
 }
 
 /* AI 訊息 */
 .message.AI {
   align-self: flex-start; /* 左對齊 */
   background: #fff3c4; /* 淡黃底 */
-  border-left: 4px solid #facc15; /* 黃色左條 */
+  border-left: 4px solid #facc15; /* 黃色左邊條 */
   color: #713f12;
-  max-width: 70%;
+  max-width: 70%; /* 最大寬度限制 */
 }
 
 /* 玩家訊息 */
 .message.player {
   align-self: flex-end; /* 右對齊 */
   background: #fce7f3; /* 淡粉底 */
-  border-left: 4px solid #f472b6; /* 粉色左條 */
+  border-left: 4px solid #f472b6; /* 粉色左邊條 */
   color: #831843;
-  max-width: 70%;
+  max-width: 70%; /* 最大寬度限制 */
 }
 
 /* 訊息內 meta（名字/系統標籤） */
@@ -229,8 +218,8 @@ background-attachment: fixed;
   font-weight: bold;
   color: #555;
   margin-bottom: 4px;
-  text-align: left; /* 靠左 */
-  opacity: 0.8;
+  text-align: left; /* 靠左對齊 */
+  opacity: 0.8; /* 半透明效果 */
 }
 
 /* meta 不同顏色 */
@@ -238,11 +227,10 @@ background-attachment: fixed;
 .message.AI .meta { color: #1a1919; } /* AI 橙黃 */
 .message.system .meta { color: #010f16; } /* 系統天藍 */
 
-
 /* === 聊天輸入區 === */
 .chat-form {
   display: flex;
-  gap: 6px;
+  gap: 6px; /* 輸入框和按鈕間距 */
   margin-bottom: 8px; /* 保留空間給「我要猜」按鈕 */
 }
 
@@ -267,24 +255,22 @@ background-attachment: fixed;
 
 /* 滑鼠懸停效果 */
 .chat-form button:hover {
-  background: #7c3aed;
+  background: #7c3aed; /* 深紫色 */
 }
-
-
 
 /* === 規則彈窗 === */
 .modal {
   position: fixed; /* 固定位置 */
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5); /* 半透明黑底 */
+  background: rgba(0,0,0,0.5); /* 半透明黑底遮罩 */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* 水平置中 */
+  align-items: center; /* 垂直置中 */
 }
 
 .modal-content p {
-  text-align: left; /* 文字靠左 */
+  text-align: left; /* 文字靠左對齊 */
   margin-bottom: 8px; /* 段落間距 */
 }
 
@@ -294,14 +280,14 @@ background-attachment: fixed;
   color: #333;
   padding: 24px;
   border-radius: 12px;
-  text-align: left; /* 預設文字靠左 */
+  text-align: left; /* 預設文字靠左對齊 */
 }
 
 /* 彈窗內按鈕 */
 .modal-content button {
   margin-top: 12px;
   padding: 8px 16px;
-  background: #8b5cf6;
+  background: #8b5cf6; /* 紫色 */
   color: white;
   border: none;
   border-radius: 6px;
@@ -310,74 +296,65 @@ background-attachment: fixed;
 
 /* 按鈕懸停效果 */
 .modal-content button:hover {
-  background: #7c3aed;
+  background: #7c3aed; /* 深紫色 */
 }
 
 .modal.hidden {
-  display: none !important;
+  display: none !important; /* 隱藏彈窗 */
 }
+
 /* ===== 「我要猜」按鈕區塊 ===== */
 .guess-container {
-  height: 60px;
-  /* 保留空間 */
+  height: 60px; /* 保留固定空間 */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* 垂直置中 */
+  justify-content: center; /* 水平置中 */
 }
 
 /* 「我要猜」按鈕樣式 */
 #guessBtn {
-  display: none;
-  /* 初始隱藏 */
+  display: none; /* 初始隱藏 */
   padding: 10px 60px;
-  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-  /* 淡紫→粉玫瑰 */
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 淡紫→粉玫瑰漸層 */
   color: #fff;
   font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: 30px; /* 圓角按鈕 */
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 陰影效果 */
+  transition: all 0.3s ease; /* 過渡動畫 */
 }
 
 /* 滑鼠懸停效果 */
 #guessBtn:hover {
-  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
-  /* 漸層反轉 */
-  transform: translateY(-2px);
-  /* 上浮效果 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* 漸層反轉 */
+  transform: translateY(-2px); /* 上浮效果 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* 加深陰影 */
 }
-
 
 /* === 翻格子效果 === */
 .cell {
   position: relative;
   cursor: pointer;
-  perspective: 800px;
-  /* 3D翻轉效果深度 */
+  perspective: 800px; /* 3D翻轉效果深度 */
 }
 
 .cell::before {
   content: '';
   position: absolute;
-  inset: 0;
-  /* 撐滿格子 */
+  inset: 0; /* 撐滿整個格子 */
   background: rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  transform-origin: center;
-  transition: transform 0.6s ease, background-color 0.3s ease, filter 0.3s ease;
-  z-index: 0;
+  transform-origin: center; /* 旋轉中心點 */
+  transition: transform 0.6s ease, background-color 0.3s ease, filter 0.3s ease; /* 過渡動畫 */
+  z-index: 0; /* 在底層 */
 }
 
 .cell.flipped::before {
-  transform: rotateY(180deg);
-  /* 完整翻面 */
-  filter: grayscale(100%) brightness(0.6);
-  /* 灰階+暗化 */
-  background-color: #ccc;
+  transform: rotateY(180deg); /* 完整翻面 */
+  filter: grayscale(100%) brightness(0.6); /* 灰階+暗化效果 */
+  background-color: #ccc; /* 灰色背景 */
   width: 100%;
   height: 100%;
 }
@@ -386,29 +363,27 @@ background-attachment: fixed;
 .cell img,
 .cell .cell-text {
   position: relative;
-  z-index: 1;
-  /* 保持在上層 */
-  transition: opacity 0.3s ease, color 0.3s ease, filter 0.3s ease;
+  z-index: 1; /* 保持在上層 */
+  transition: opacity 0.3s ease, color 0.3s ease, filter 0.3s ease; /* 過渡動畫 */
 }
 
 /* 翻轉後淡化效果 */
 .cell.flipped img {
-  opacity: 0.4;
-  filter: grayscale(100%);
+  opacity: 0.4; /* 半透明 */
+  filter: grayscale(100%); /* 灰階效果 */
 }
 
 .cell.flipped .cell-text {
-  color: #666;
-  opacity: 0.8;
+  color: #666; /* 深灰色文字 */
+  opacity: 0.8; /* 半透明 */
 }
-
 
 /* === 遊戲結束彈窗 === */
 .modal {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.6); /* 半透明黑色遮罩 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -426,128 +401,126 @@ background-attachment: fixed;
 /* 彈窗按鈕群 */
 .modal-buttons { 
   margin-top: 20px;
-   display: flex; 
-   justify-content: space-around; 
-  } 
-.modal-buttons .btn { 
-  padding: 10px 20px; background:
-   #007bff; color: white; 
-   text-decoration: none; 
-   border-radius: 5px; 
-  } 
-.modal-buttons .btn:hover { 
-  background: #0056b3;
- }
+  display: flex; 
+  justify-content: space-around; /* 按鈕均勻分布 */
+} 
 
+.modal-buttons .btn { 
+  padding: 10px 20px; 
+  background: #007bff; /* 藍色按鈕 */
+  color: white; 
+  text-decoration: none; /* 移除底線 */
+  border-radius: 5px; 
+} 
+
+.modal-buttons .btn:hover { 
+  background: #0056b3; /* 深藍色懸停效果 */
+}
 
 /* === 玩家解藥特效框 === */
 .cell.selected-antidote {
-  border: 2px solid #FFD700;
-  /* 金色邊框 */
-  box-shadow: 0 0 10px #FFA500;
-  /* 橙色光暈 */
+  border: 2px solid #FFD700; /* 金色邊框 */
+  box-shadow: 0 0 10px #FFA500; /* 橙色光暈 */
   position: relative;
 }
 
 .cell.selected-antidote::after {
-  content: "🍀";
-  /* 標記圖示 */
+  content: "🍀"; /* 標記圖示：四葉草 */
   position: absolute;
   top: 2px;
   right: 6px;
   font-size: 1.2rem;
-  z-index: 10;
-  /* 確保在最上層 */
-  pointer-events: none;
-  /* 不影響點擊 */
+  z-index: 10; /* 確保在最上層 */
+  pointer-events: none; /* 不影響點擊事件 */
 }
 
 /* === 猜模式格子輪廓 === */
 .grid-area.guess-mode .cell {
-  outline: 2px dashed #ff9800;
-  /* 橙色虛線輪廓 */
+  outline: 2px dashed #ff9800; /* 橙色虛線輪廓 */
 }
 
 /* 導覽列統一樣式 */
 .navbar {
-  position: fixed;
+  position: fixed; /* 固定位置 */
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(135deg, rgba(168, 192, 255, 0.85), rgba(251, 194, 235, 0.85));
-  backdrop-filter: blur(8px);
-  z-index: 1000;
+  background: linear-gradient(135deg, rgba(168, 192, 255, 0.85), rgba(251, 194, 235, 0.85)); /* 半透明漸層 */
+  backdrop-filter: blur(8px); /* 毛玻璃效果 */
+  z-index: 1000; /* 確保在最上層 */
 }
 
 .navbar nav {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* 左右分開對齊 */
+  align-items: center; /* 垂直置中 */
   padding: 10px 20px;
 }
 
 .navbar nav a {
   color: #fff;
-  text-decoration: none;
-  margin: 0 15px;
+  text-decoration: none; /* 移除底線 */
+  margin: 0 15px; /* 左右間距 */
   font-weight: bold;
-  transition: color 0.3s;
+  transition: color 0.3s; /* 顏色過渡動畫 */
 }
 
 .navbar nav a:hover {
-  color: #ffe7ff;
+  color: #ffe7ff; /* 懸停時變淺粉色 */
 }
 
 /* 「取消猜」按鈕樣式 */
 #cancelGuessBtn {
   display: none; /* 初始隱藏 */
   padding: 10px 60px;
-  background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 淡紫→粉玫瑰 */
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb); /* 淡紫→粉玫瑰漸層 */
   color: #fff;
   font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: 30px; /* 圓角按鈕 */
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 陰影效果 */
+  transition: all 0.3s ease; /* 過渡動畫 */
 }
 
 /* 滑鼠懸停效果 */
 #cancelGuessBtn:hover {
   background: linear-gradient(135deg, #fbc2eb, #a6c1ee); /* 漸層反轉 */
   transform: translateY(-2px); /* 上浮效果 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* 加深陰影 */
 }
 
+/* 背景選擇選項 */
 .bg-option {
   width: 80px;
   height: 80px;
   border-radius: 8px;
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: transform 0.2s, border-color 0.2s;
+  border: 2px solid transparent; /* 透明邊框 */
+  transition: transform 0.2s, border-color 0.2s; /* 過渡動畫 */
   background-size: cover;   /* ✅ 圖片填滿 */
-  background-position: center;
+  background-position: center; /* 背景置中 */
 }
 
 .bg-option:hover {
-  transform: scale(1.05);
-  border-color: #8b5cf6;
+  transform: scale(1.05); /* 懸停時放大 */
+  border-color: #8b5cf6; /* 紫色邊框 */
 }
 
 .bg-option.selected {
-  border-color: #f472b6;
+  border-color: #f472b6; /* 選中時粉色邊框 */
 }
+
 /* 人物查詢 Modal 外層 */
 #characterQueryModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  position: fixed; /* 固定位置 */
+  inset: 0; /* 撐滿整個視窗 */
+  background: rgba(0,0,0,0.5); /* 半透明黑色遮罩 */
+  display: none; /* 初始隱藏 */
+  justify-content: center; /* 水平置中 */
+  align-items: center; /* 垂直置中 */
+  z-index: 1000; /* 在最上層 */
 }
 
 /* Modal 內容框 */
@@ -555,11 +528,11 @@ background-attachment: fixed;
   position: relative;
   width: 90%;
   max-width: 600px;
-  background: #fff;
+  background: #fff; /* 白色背景 */
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  text-align: left; /* ✅ 文字靠左 */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* 陰影效果 */
+  text-align: left; /* ✅ 文字靠左對齊 */
 }
 
 /* ❌ 關閉按鈕固定右上角 */
@@ -572,32 +545,32 @@ background-attachment: fixed;
   color: #555;
   cursor: pointer;
   border: none;
-  background: none;
+  background: none; /* 透明背景 */
 }
 
 /* 標題 */
 #characterQueryModal h3 {
-  margin-top: 0;
+  margin-top: 0; /* 移除上邊距 */
   font-size: 20px;
   font-weight: bold;
   color: #333;
-  text-align: left;
+  text-align: left; /* 靠左對齊 */
 }
 
 /* 查詢輸入區 */
 #characterQueryModal input[type="text"] {
-  width: 100%;
+  width: 100%; /* 滿寬度 */
   padding: 8px;
   margin: 12px 0;
   border-radius: 6px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
+  box-sizing: border-box; /* 包含邊框在內 */
 }
 
 /* 查詢按鈕 */
 #characterQueryModal #querySubmitBtn {
   padding: 8px 16px;
-  background: #8b5cf6;
+  background: #8b5cf6; /* 紫色 */
   color: white;
   border: none;
   border-radius: 6px;
@@ -610,23 +583,26 @@ background-attachment: fixed;
   margin-top: 16px;
   font-size: 14px;
   color: #444;
-  line-height: 1.6;
+  line-height: 1.6; /* 行高 */
   text-align: left;         /* ✅ 靠左對齊 */
   white-space: pre-line;    /* ✅ 保留換行 */
 }
+
 /* 叉叉按鈕固定右上角 */ 
 .modal-content .close { 
-  position: absolute;
-   top: 10px; /* 距離上方 */ 
-   right: 15px; /* 距離右邊 */
-   font-size: 24px;
-   font-weight: bold;
-    color: #333; 
-    cursor: pointer;
-   }
- .modal-content .close:hover { 
+  position: absolute; /* 絕對定位 */
+  top: 10px; /* 距離上方 */ 
+  right: 15px; /* 距離右邊 */
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; 
+  cursor: pointer; /* 手指游標 */
+}
+
+.modal-content .close:hover { 
   color: #d00; /* 滑過時變紅色 */
 }
+
 #rulesModal2 .modal-content {
   position: relative; /* 讓 close 可以定位在右上角 */
 }
@@ -640,30 +616,35 @@ background-attachment: fixed;
   color: #555;
   cursor: pointer;
 }
+
 #rulesModal2 .close:hover {
-  color: #d00;
+  color: #d00; /* 紅色懸停效果 */
 }
+
+/* 題庫網格布局 */
 .question-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  max-height: 300px;
-  overflow-y: auto;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 自適應網格 */
+  gap: 10px; /* 網格間距 */
+  max-height: 300px; /* 最大高度限制 */
+  overflow-y: auto; /* 垂直滾動條 */
   margin-top: 15px;
   padding: 10px;
 }
 
+/* 題庫項目懸停效果 */
 .question-item:hover {
-  background-color: #e3f2fd !important;
-  border-color: #2196f3 !important;
-  color: #1976d2;
+  background-color: #e3f2fd !important; /* 淡藍色背景 */
+  border-color: #2196f3 !important; /* 藍色邊框 */
+  color: #1976d2; /* 藍色文字 */
 }
+
 /* 確保彈窗內容容器有相對定位 */
 .modal-content {
   position: relative; /* 這是定位基準 */
   padding: 30px 20px 20px 20px; /* 給頂部留一點空間，避免標題撞到叉叉 */
-  max-height: 85vh;
-  overflow-y: auto;
+  max-height: 85vh; /* 最大高度為視窗的85% */
+  overflow-y: auto; /* 垂直滾動條 */
 }
 
 /* 針對關閉叉叉的絕對定位優化 */
@@ -672,11 +653,11 @@ background-attachment: fixed;
   top: 5px;          /* 距離頂部 5 像素 */
   right: 10px;       /* 距離右邊 10 像素 */
   font-size: 28px;
-  line-height: 1;
+  line-height: 1; /* 單行高度 */
   z-index: 1001;     /* 確保在最上層 */
-  cursor: pointer;
-  color: #aaa;
-  transition: color 0.2s;
+  cursor: pointer; /* 手指游標 */
+  color: #aaa; /* 淺灰色 */
+  transition: color 0.2s; /* 顏色過渡動畫 */
 }
 
 .modal-content .close:hover {

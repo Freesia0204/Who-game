@@ -496,3 +496,8 @@ background-attachment: fixed;
 #rulesModal2 .close:hover {
   color: #d00;
 }
+/* 選主題格子（Logo 橫向，較矮） */
+.cell.topic-select {
+  width: 160px;
+  height: 150px; /* ✅ 高度降低 */
+}
