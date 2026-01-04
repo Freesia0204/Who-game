@@ -851,31 +851,33 @@ function AIAnswer(playerQuestion) {
   }
 
   let matchedKey = null;
+  const topicSynonyms = synonyms[selectedTopic] || {};
 
-  // 🔹 先跑同義詞表
-  for (const key in synonyms) {
-    if (synonyms[key].some(word => playerQuestion.includes(word))) {
+  // 🔹 先跑同義詞表（只用當前主題）
+  for (const key in topicSynonyms) {
+    if (topicSynonyms[key].some(word => playerQuestion.includes(word))) {
       matchedKey = key;
       break;
     }
   }
 
-  // 🔹 如果找到 trait → 回答是/不是
   let answer = '不重要';
   if (matchedKey) {
-  // 標準化 key：去掉空格、轉小寫
-  const normalizedKey = matchedKey.trim().toLowerCase();
+    const normalizedKey = matchedKey.trim().toLowerCase();
 
-  // 嘗試從角色 traits 找值
-  const val = antidote.traits[normalizedKey];
+    // 標準化角色 traits
+    const traits = {};
+    for (const k in antidote.traits) {
+      traits[k.trim().toLowerCase()] = antidote.traits[k];
+    }
 
-  if (typeof val === 'boolean') {
-    answer = val ? '是' : '不是';
-  } else {
-    answer = '這個問題無法判斷';
+    const val = traits[normalizedKey];
+    if (typeof val === 'boolean') {
+      answer = val ? '是' : '不是';
+    } else {
+      answer = '這個問題無法判斷';
+    }
   }
-}
-
 
   addMessage('AI', answer);
   updatePossibleCells(playerQuestion, answer);
@@ -903,57 +905,42 @@ function handlePlayerAsk_forSubmit(msg) {
 
 // ===== 更新 AI 可能解藥清單（排除法） =====
 function updatePossibleCells(question, playerAnswer) {
-  const before = possibleCells.map(c => c.name); // 排除前
+  const before = possibleCells.map(c => c.name);
 
-  // 🚫 如果這次的 question 是玩家問的，就不要進行排除
-  if (turn === 'player') {
-    return;
-  }
+  if (turn === 'player') return;
 
   possibleCells = possibleCells.filter(cell => {
     const traits = cell.traits || {};
+    const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
 
-    // 不再用 guessedWrongCells 來排除
-    // if (guessedWrongCells.includes(cell.name)) return false;
-
-    for (const key in AI_DB.traitMap) {
-      const keyword = AI_DB.traitMap[key];
+    for (const key in topicTraitMap) {
+      const keyword = topicTraitMap[key];
       if (question.includes(keyword)) {
         const val = traits[key];
         if (val === undefined) return true;
         if (typeof val === 'boolean') {
           if (playerAnswer === '是' || playerAnswer === '有') return val === true;
           else if (playerAnswer === '不是' || playerAnswer === '沒有') return val === false;
-        } else if (typeof val === 'string') {
-          return playerAnswer === val;
         }
       }
     }
-
     return true;
   });
 
-  const after = possibleCells.map(c => c.name); // 排除後
+  const after = possibleCells.map(c => c.name);
   const eliminated = before.filter(name => !after.includes(name));
 
-  // 保留原本的紀錄
-  if (question && playerAnswer) {
-    window.AIDebugLog = window.AIDebugLog || [];
-    window.AIDebugLog.push({
-      round: currentRound,
-      aiQuestion: question,
-      playerAnswer: playerAnswer,
-      playerQuestion: playerQuestion || null,
-      aiAnswer: aiAnswer || null,
-      eliminated: eliminated || [],
-      remaining: after || [],
-      guess: guessInfo || null
-    });
-  }
+  window.AIDebugLog.push({
+    round: currentRound,
+    aiQuestion: question,
+    playerAnswer,
+    eliminated,
+    remaining: after
+  });
 
-  console.log('[DebugLog] 推理紀錄更新', window.AIDebugLog);
-  console.log('🧩 AI 可能解藥剩下：', after);
+  console.log('🧩 AI 排除後剩下：', after);
 }
+
 
 
 
@@ -1238,26 +1225,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 查詢邏輯
-  if (querySubmitBtn) {
-    querySubmitBtn.addEventListener('click', () => {
-      const question = queryInput.value.trim();
-      if (!question) return;
+if (querySubmitBtn) {
+  querySubmitBtn.addEventListener('click', () => {
+    const question = queryInput.value.trim();
+    if (!question) return;
 
-      const dataList = gridData[selectedTopic] || [];
-      const matchedKey = Object.keys(synonyms).find(key =>
-        synonyms[key].some(word => question.includes(word))
-      );
+    const dataList = gridData[selectedTopic] || [];
+    const topicSynonyms = synonyms[selectedTopic] || {}; // 🔹 只抓當前主題的同義詞
 
-      if (!matchedKey) {
-        queryResult.innerHTML = '❓ 無法辨識問題，請換個問法';
-        return;
+    let matchedKey = null;
+    for (const key in topicSynonyms) {
+      if (topicSynonyms[key].some(word => question.includes(word))) {
+        matchedKey = key;
+        break;
       }
+    }
 
-      const eliminated = dataList.filter(c => c.traits?.[matchedKey] === false);
-      const names = eliminated.map(c => c.name).join('、');
+    if (!matchedKey) {
+      queryResult.innerHTML = '❓ 無法辨識問題，請換個問法';
+      return;
+    }
 
-      queryResult.innerHTML =
-        `🔍 根據「${question}」，如果回答為是，可排除以下人物：<br><br><span style="color:#d00">${names || '（無）'}</span>`;
+    const eliminated = dataList.filter(c => c.traits?.[matchedKey] === false);
+    const names = eliminated.map(c => c.name).join('、');
+
+    queryResult.innerHTML =
+      `🔍 根據「${question}」，如果回答為是，可排除以下人物：<br><br><span style="color:#d00">${names || '（無）'}</span>`;
+  });
+}
+
+
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const rulesModal2 = document.getElementById('rulesModal2');
+  const openRules2 = document.getElementById('openRules2');
+  const closeRules2 = document.getElementById('closeRules2');
+
+  if (openRules2) {
+    openRules2.addEventListener('click', e => {
+      e.preventDefault();
+      rulesModal2.style.display = 'flex';
+    });
+  }
+
+  if (closeRules2) {
+    closeRules2.addEventListener('click', () => {
+      rulesModal2.style.display = 'none';
     });
   }
 });

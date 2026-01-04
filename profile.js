@@ -306,7 +306,24 @@ themes.forEach(themeName => {
   wrapper.appendChild(label);
   backgroundList.appendChild(wrapper);
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const rulesModal2 = document.getElementById('rulesModal2');
+  const openRules2 = document.getElementById('openRules2');
+  const closeRules2 = document.getElementById('closeRules2');
 
+  if (openRules2) {
+    openRules2.addEventListener('click', e => {
+      e.preventDefault();
+      rulesModal2.style.display = 'flex';
+    });
+  }
+
+  if (closeRules2) {
+    closeRules2.addEventListener('click', () => {
+      rulesModal2.style.display = 'none';
+    });
+  }
+});
 // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
   const pageKey = "background_profile"; // 改成對應頁面名稱

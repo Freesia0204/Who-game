@@ -125,7 +125,7 @@ const topics = [
   { name: '鬼滅之刃', img: 'img-GM/鬼滅之刃-logo.png' },
   { name: '防風少年', img: 'img-WB/防風少年-logo.png' },
   { name: 'FREE!', img: 'img-Free/Free_logo.png' },
-  { name: '我的主題', isCustom: true } // ✅ 新增這格
+  { name: '我的主題',img: 'img/我的主題.jpg', isCustom: true } // ✅ 新增這格
 ];
 
 // === 主題選擇 ===
@@ -507,6 +507,24 @@ function endGame(resultText) {
     endModal.style.display = 'flex';
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+  const rulesModal2 = document.getElementById('rulesModal2');
+  const openRules2 = document.getElementById('openRules2');
+  const closeRules2 = document.getElementById('closeRules2');
+
+  if (openRules2) {
+    openRules2.addEventListener('click', e => {
+      e.preventDefault();
+      rulesModal2.style.display = 'flex';
+    });
+  }
+
+  if (closeRules2) {
+    closeRules2.addEventListener('click', () => {
+      rulesModal2.style.display = 'none';
+    });
+  }
+});
 
 // 背景更換
 window.addEventListener("DOMContentLoaded", () => {
