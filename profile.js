@@ -208,38 +208,64 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 });
+// ===== 點擊特效選擇功能 =====
+const effectsList = document.getElementById('effectsList');
+
+// 1. 定義特效資料（包含「無」與其他主題）
 const effectsData = [
- 
+  { name: '無', img: null }, // img 為 null 表示純色
   { name: '柯南', img: 'img-KN/柯南頭像.jpg' },
   { name: 'Free', img: 'img-Free/free頭像.jpg' }
 ];
 
-const effectsList = document.getElementById('effectsList');
+// 清空舊清單（防止重複生成）
+if (effectsList) {
+  effectsList.innerHTML = '';
 
-effectsData.forEach(effect => {
-  const div = document.createElement('div');
-  div.className = 'effect-circle';
-  div.innerHTML = `<img src="${effect.img}" alt="${effect.name}">`;
-  
-  div.addEventListener('click', () => {
-    document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
-    div.classList.add('selected');
-    // ✅ 儲存玩家選擇
-    localStorage.setItem('clickEffect', effect.name);
+  effectsData.forEach(effect => {
+    const div = document.createElement('div');
+    div.className = 'effect-circle';
+    
+    // 2. 判斷是否為「無」
+    if (effect.name === '無') {
+      // 使用淺灰色填滿，並放一個叉叉符號
+      div.style.backgroundColor = '#d3d3d3'; 
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';
+      div.style.justifyContent = 'center';
+      div.innerHTML = '<span style="color: white; font-size: 24px; font-weight: bold;">✕</span>';
+    } else {
+      // 正常主題顯示圖片
+      div.innerHTML = `<img src="${effect.img}" alt="${effect.name}">`;
+    }
+
+    // 3. 檢查目前 localStorage 儲存的設定（用於預設選取）
+    const savedEffect = localStorage.getItem('clickEffectTheme');
+    if (savedEffect === effect.name || (!savedEffect && effect.name === '無')) {
+      div.classList.add('selected');
+    }
+
+    // 4. 點擊事件
+    div.addEventListener('click', () => {
+      // 移除其他人的選中狀態
+      document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
+      // 自己加上選中狀態
+      div.classList.add('selected');
+      
+      // 儲存選擇到 localStorage (統一 key 名稱為 clickEffectTheme)
+      localStorage.setItem('clickEffectTheme', effect.name);
+      
+      // 小提示彈窗（選用）
+      if (effect.name === '無') {
+        alert('點擊特效已關閉');
+      } else {
+        alert(`點擊特效已設定為：${effect.name}`);
+      }
+    });
+
+    effectsList.appendChild(div);
   });
-
-  effectsList.appendChild(div);
-});
-
-// 預設載入玩家選擇
-const savedEffect = localStorage.getItem('clickEffect');
-if (savedEffect) {
-  const selected = [...document.querySelectorAll('.effect-circle')]
-    .find(c => c.querySelector('img').alt === savedEffect);
-  if (selected) selected.classList.add('selected');
 }
-
-
 
 // 主題清單：每個主題都提供各頁背景（示例用圖片）
 const ThemeCatalog = {

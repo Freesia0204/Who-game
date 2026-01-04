@@ -1226,22 +1226,96 @@ if (querySubmitBtn) {
 
 });
 document.addEventListener('DOMContentLoaded', () => {
-  const rulesModal2 = document.getElementById('rulesModal2');
-  const openRules2 = document.getElementById('openRules2');
-  const closeRules2 = document.getElementById('closeRules2');
+  const playerName = localStorage.getItem('playerName') || '未登入';
+  const playerId = localStorage.getItem('playerId') || '---';
 
-  if (openRules2) {
-    openRules2.addEventListener('click', e => {
-      e.preventDefault();
-      rulesModal2.style.display = 'flex';
+  // 顯示基礎資訊
+  document.getElementById('profileName').textContent = playerName;
+  document.getElementById('profileId').textContent = playerId;
+
+  // ================= 1. 頭像系統 =================
+  const avatarDisplay = document.getElementById('avatarDisplay');
+  const avatarInput = document.getElementById('avatarInput');
+  const avatarContainer = document.getElementById('avatarContainer');
+
+  function getRandomColor() {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#6C5CE7'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function initAvatar() {
+    const savedAvatar = localStorage.getItem(`avatar_${playerName}`);
+    if (savedAvatar) {
+      avatarDisplay.innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover;">`;
+      avatarDisplay.style.backgroundColor = 'transparent';
+    } else {
+      avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+      avatarDisplay.style.backgroundColor = getRandomColor();
+      avatarDisplay.style.display = 'flex';
+      avatarDisplay.style.alignItems = 'center';
+      avatarDisplay.style.justifyContent = 'center';
+      avatarDisplay.style.color = 'white';
+      avatarDisplay.style.fontSize = '28px';
+      avatarDisplay.style.fontWeight = 'bold';
+    }
+  }
+
+  avatarContainer.onclick = () => avatarInput.click();
+  avatarInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        localStorage.setItem(`avatar_${playerName}`, event.target.result);
+        initAvatar();
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  initAvatar();
+
+  // ================= 2. 點擊特效選擇 (含「無」) =================
+  const effectsList = document.getElementById('effectsList');
+  const clickThemes = {
+    '柯南': 'img-KN/柯南頭像.jpg',
+    'Free': 'img-Free/free頭像.jpg'
+  };
+
+  const themeKeys = ["無", ...Object.keys(clickThemes)];
+  
+  if (effectsList) {
+    effectsList.innerHTML = '';
+    themeKeys.forEach(themeName => {
+      const div = document.createElement("div");
+      div.className = "effect-circle"; // 統一用你的圓形類別
+      
+      if (themeName === "無") {
+        div.style.background = "#d3d3d3";
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.justifyContent = "center";
+        div.innerHTML = '<span style="color:white; font-size:20px;">✕</span>';
+      } else {
+        div.innerHTML = `<img src="${clickThemes[themeName]}" alt="${themeName}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      }
+
+      // 預設選中狀態
+      if (localStorage.getItem("clickEffectTheme") === themeName || 
+         (!localStorage.getItem("clickEffectTheme") && themeName === "無")) {
+        div.classList.add("selected");
+      }
+
+      div.onclick = () => {
+        document.querySelectorAll(".effect-circle").forEach(el => el.classList.remove("selected"));
+        div.classList.add("selected");
+        localStorage.setItem("clickEffectTheme", themeName);
+        alert(`點擊特效已設定為：${themeName}`);
+      };
+      effectsList.appendChild(div);
     });
   }
 
-  if (closeRules2) {
-    closeRules2.addEventListener('click', () => {
-      rulesModal2.style.display = 'none';
-    });
-  }
+  // ... 這裡保留你原本的「自訂主題功能」與「背景選擇」代碼 ...
 });
 
 // 背景更換

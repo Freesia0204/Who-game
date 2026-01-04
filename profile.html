@@ -43,17 +43,17 @@
     <h2 class="profile-title">個人檔案</h2>
 
     <!-- ===== 頭像與玩家資訊 ===== -->
-    <div class="profile-header">
-      <div class="profile-info">
-
-        <!-- 玩家基本資料 -->
-        <div class="player-meta">
-          <p class="white-text">玩家姓名：<span id="profileName"></span></p>
-          <p class="white-text">玩家 ID：<span id="profileId"></span></p>
-        </div>
-
-      </div>
-    </div>
+    <div class="profile-info">
+  <div id="avatarContainer" class="avatar-wrapper">
+    <div id="avatarDisplay" class="avatar-circle"></div>
+    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+    <div class="avatar-overlay">更換</div>
+  </div>
+  <div class="player-meta">
+    <p>玩家姓名：<span id="profileName"></span></p>
+    <p>玩家 ID：<span id="profileId"></span></p>
+  </div>
+</div>
 
     <!-- ===== 我的主題區塊 ===== -->
     <div class="profile-main">
