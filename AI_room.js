@@ -12,7 +12,6 @@ const guessedWrongCells = []; // 玩家已猜錯的解藥名稱
 
 
 // ===== 遊戲資料 =====
-let playerName = '大小姐';
 let playerChoice = null;
 let AIChoice = null;
 let turn = null; // 'player' 或 'AI' 或 'waitingForAnswer'

@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const playerName = localStorage.getItem('playerName');
-  const playerId = localStorage.getItem('playerId');
+  // ===== 基礎初始化 =====
+  const playerName = localStorage.getItem('playerName') || '玩家';
+  const playerId = localStorage.getItem('playerId') || 'Guest';
   const myPlayerId = playerId;
 
   // 顯示玩家資訊
-  document.getElementById('profileName').textContent = playerName || '未登入';
-  document.getElementById('profileId').textContent = playerId || '未登入';
+  document.getElementById('profileName').textContent = playerName;
+  document.getElementById('profileId').textContent = playerId;
 
-  // 登出
+  // ===== 登出功能 =====
   document.getElementById('goLoginBtn').addEventListener('click', () => {
     if (confirm('確定要登出嗎？')) {
       localStorage.removeItem('playerName');
@@ -17,9 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 註銷
+  // ===== 註銷功能 =====
   document.getElementById('deleteBtn').addEventListener('click', () => {
-    if (!playerName) {
+    if (!playerName || playerName === '玩家') {
       alert('目前沒有登入帳號');
       return;
     }
@@ -27,10 +28,97 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem(`user_${playerName}`);
       localStorage.removeItem('playerName');
       localStorage.removeItem('playerId');
+      localStorage.removeItem('avatar'); // 清除頭像
       alert('帳號已註銷，請重新註冊');
       window.location.href = 'index.html';
     }
   });
+
+  // ===== 頭像功能 =====
+  const avatarDisplay = document.getElementById('avatarDisplay');
+  const avatarInput = document.getElementById('avatarInput');
+
+  /**
+   * 初始化頭像：判斷顯示圖片或名字首字
+   */
+  function initAvatar() {
+    if (!avatarDisplay) return;
+
+    // 先檢查 localStorage
+    const localAvatar = localStorage.getItem('avatar');
+    if (localAvatar) {
+      avatarDisplay.innerHTML = `<img src="${localAvatar}" 
+        style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+      return;
+    }
+
+    // 再問後端
+    fetch(`/api/getAvatar?playerId=${playerId}`)
+      .then(r => r.json())
+      .then(res => {
+        if (res.success && res.avatar) {
+          avatarDisplay.innerHTML = `<img src="${res.avatar}" 
+            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+        } else {
+          // 沒有 → 顯示首字母
+          const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
+          const randomColor = colors[Math.floor(Math.random() * colors.length)];
+          avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+          avatarDisplay.style.backgroundColor = randomColor;
+          Object.assign(avatarDisplay.style, {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '30px',
+            fontWeight: 'bold',
+            borderRadius: '50%'
+          });
+        }
+      })
+      .catch(err => {
+        console.error('載入頭像失敗:', err);
+        // 失敗時顯示首字母
+        avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+      });
+  }
+
+  // 上傳頭像
+  if (avatarInput) {
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // 即時預覽
+      const previewUrl = URL.createObjectURL(file);
+      avatarDisplay.innerHTML = `<img src="${previewUrl}" 
+        style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+
+      // 存到 localStorage
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        localStorage.setItem('avatar', event.target.result);
+      };
+      reader.readAsDataURL(file);
+
+      // 同步到後端
+      const formData = new FormData();
+      formData.append('playerId', playerId);
+      formData.append('avatar', file);
+
+      fetch('/api/uploadAvatar', {
+        method: 'POST',
+        body: formData
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (!res.success) {
+            console.error('上傳頭像失敗:', res.message);
+          }
+        })
+        .catch(err => console.error('上傳錯誤:', err));
+    });
+  }
 
   // ===== 自訂主題功能 =====
   const modal = document.getElementById('customTopicModal');
@@ -92,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cardGrid.innerHTML = '';
     topicNameInput.value = '';
     renderCardSlot(null);
+    deleteTopicBtn.onclick = null; // 清除舊事件
   });
 
   // 關閉 Modal
@@ -117,6 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(r => r.json())
       .then(data => {
         const list = document.getElementById('customTopicsList');
+        if (!list) return;
+        
         list.innerHTML = '';
 
         data.customTopics.forEach(topic => {
@@ -160,274 +251,212 @@ document.addEventListener('DOMContentLoaded', () => {
           list.appendChild(div);
         });
       })
-      .catch(err => console.error('API 錯誤:', err));
+      .catch(err => console.error('載入自訂主題失敗:', err));
   }
 
-  loadCustomTopics();
+  // ===== 點擊特效選擇功能 =====
+  const effectsList = document.getElementById('effectsList');
+  
+  if (effectsList) {
+    // 定義特效資料
+    const effectsData = [
+      { name: '無', img: null },
+      { name: '柯南', img: 'img-KN/柯南頭像.jpg' },
+      { name: 'Free', img: 'img-Free/free頭像.jpg' }
+    ];
 
-  // 儲存主題
-  saveTopicBtn.addEventListener('click', () => {
-    const topicName = topicNameInput.value.trim();
-    if (!topicName) {
-      alert('請輸入主題名稱');
-      return;
-    }
+    effectsList.innerHTML = '';
 
-    const formData = new FormData();
-    formData.append('userId', myPlayerId);
-    formData.append('topicName', topicName);
-
-    cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
-      const text = slot.querySelector('input[type="text"]').value.trim();
-      const fileInput = slot.querySelector('input[type="file"]');
-      const file = fileInput?.files?.[0];
-
-      formData.append(`cards[${index}][name]`, text || '');
-      if (file) {
-        formData.append(`cards[${index}][file]`, file);
-      }
-    });
-
-    fetch('/api/uploadTopic', {
-      method: 'POST',
-      body: formData
-    })
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) {
-          alert(res.updated ? '主題已更新' : '自訂主題已儲存');
-          modal.style.display = 'none';
-          loadCustomTopics();
-        } else {
-          alert('儲存失敗：' + (res.message || '未知錯誤'));
-        }
-      })
-      .catch(err => {
-        console.error('API 錯誤:', err);
-        alert('伺服器錯誤，請稍後再試');
-      });
-  });
-});
-// ===== 點擊特效選擇功能 =====
-const effectsList = document.getElementById('effectsList');
-
-// 1. 定義特效資料（包含「無」與其他主題）
-const effectsData = [
-  { name: '無', img: null }, // img 為 null 表示純色
-  { name: '柯南', img: 'img-KN/柯南頭像.jpg' },
-  { name: 'Free', img: 'img-Free/free頭像.jpg' }
-];
-
-// 清空舊清單（防止重複生成）
-if (effectsList) {
-  effectsList.innerHTML = '';
-
-  effectsData.forEach(effect => {
-    const div = document.createElement('div');
-    div.className = 'effect-circle';
-    
-    // 2. 判斷是否為「無」
-    if (effect.name === '無') {
-      // 使用淺灰色填滿，並放一個叉叉符號
-      div.style.backgroundColor = '#d3d3d3'; 
-      div.style.display = 'flex';
-      div.style.alignItems = 'center';
-      div.style.justifyContent = 'center';
-      div.innerHTML = '<span style="color: white; font-size: 24px; font-weight: bold;">✕</span>';
-    } else {
-      // 正常主題顯示圖片
-      div.innerHTML = `<img src="${effect.img}" alt="${effect.name}">`;
-    }
-
-    // 3. 檢查目前 localStorage 儲存的設定（用於預設選取）
-    const savedEffect = localStorage.getItem('clickEffectTheme');
-    if (savedEffect === effect.name || (!savedEffect && effect.name === '無')) {
-      div.classList.add('selected');
-    }
-
-    // 4. 點擊事件
-    div.addEventListener('click', () => {
-      // 移除其他人的選中狀態
-      document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
-      // 自己加上選中狀態
-      div.classList.add('selected');
+    effectsData.forEach(effect => {
+      const div = document.createElement('div');
+      div.className = 'effect-circle';
       
-      // 儲存選擇到 localStorage (統一 key 名稱為 clickEffectTheme)
-      localStorage.setItem('clickEffectTheme', effect.name);
-      
-      // 小提示彈窗（選用）
       if (effect.name === '無') {
-        alert('點擊特效已關閉');
+        div.style.backgroundColor = '#d3d3d3'; 
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.justifyContent = 'center';
+        div.innerHTML = '<span style="color: white; font-size: 24px; font-weight: bold;">✕</span>';
       } else {
-        alert(`點擊特效已設定為：${effect.name}`);
+        div.innerHTML = `<img src="${effect.img}" alt="${effect.name}">`;
       }
-    });
 
-    effectsList.appendChild(div);
-  });
-}
-
-// 主題清單：每個主題都提供各頁背景（示例用圖片）
-const ThemeCatalog = {
-   "初始": {
-    // 初始可用你既有的漸層或對應圖片
-    background_profile: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
-    background_index:  "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
-    background_game:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
-    background_rank:   "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)"
-  },
-  "名偵探柯南": {
-    background_profile: "url('img-background/柯南背景.png')",
-    background_index:  "url('img-background/柯南背景.png')",
-    background_game:   "url('img-background/柯南背景.png')",
-    background_match:   "url('img-background/柯南背景.png')"
-  },
-  "FREE!": {
-    background_profile: "url('img-background/FREE!游泳池.jpg')",
-    background_index:  "url('img-background/FREE!游泳池.jpg')",
-    background_game:   "url('img-background/FREE!游泳池.jpg')",
-    background_match:   "url('img-background/FREE!游泳池.jpg')"
-  },
- 
-};
-// 產生主題方格
-const backgroundList = document.getElementById("backgroundList");
-const themes = Object.keys(ThemeCatalog);
-
-// 每個主題用其 profile 頁的背景作為預覽縮圖
-themes.forEach(themeName => {
-  const preview = ThemeCatalog[themeName].background_profile;
-
-  // 外層容器
-  const wrapper = document.createElement("div");
-  wrapper.className = "bg-wrapper";
-
-  // 背景方塊
-  const div = document.createElement("div");
-  div.className = "bg-option";
-  div.style.background = preview;
-
-  // 名稱文字
-  const label = document.createElement("span");
-  label.className = "bg-label";
-  label.textContent = themeName;
-
-  // 點擊事件
-  div.addEventListener("click", () => {
-    document.querySelectorAll(".bg-option").forEach(o => o.classList.remove("selected"));
-    div.classList.add("selected");
-
-    localStorage.setItem("selectedTheme", themeName);
-
-    const pack = ThemeCatalog[themeName];
-    Object.entries(pack).forEach(([pageKey, bgStyle]) => {
-      localStorage.setItem(pageKey, bgStyle);
-    });
-
-    document.body.style.background = pack.background_profile;
-  });
-
-  // 組合並插入
-  wrapper.appendChild(div);
-  wrapper.appendChild(label);
-  backgroundList.appendChild(wrapper);
-});
-document.addEventListener('DOMContentLoaded', () => {
-    // --- 基礎資訊初始化 ---
-    const playerName = localStorage.getItem('playerName') || '玩家';
-    const playerId = localStorage.getItem('playerId') || 'Guest';
-
-    const profileNameEl = document.getElementById('profileName');
-    const profileIdEl = document.getElementById('profileId');
-    if (profileNameEl) profileNameEl.textContent = playerName;
-    if (profileIdEl) profileIdEl.textContent = playerId;
-
-    // --- 頭像功能變數 ---
-    const avatarDisplay = document.getElementById('avatarDisplay');
-    const avatarInput = document.getElementById('avatarInput');
-    const avatarContainer = document.getElementById('avatarContainer');
-
-    /**
-     * 初始化頭像：判斷顯示圖片或名字首字
-     */
-    function initAvatar() {
-  if (!avatarDisplay) return;
-
-  // 先問後端有沒有存過頭像
-  fetch(`/api/getAvatar?playerId=${playerId}`)
-    .then(r => r.json())
-    .then(res => {
-      if (res.success && res.avatar) {
-        avatarDisplay.innerHTML = `<img src="${res.avatar}" 
-          style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-      } else {
-        // 沒有 → 顯示首字母
-        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        avatarDisplay.innerHTML = '';
-        avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
-        avatarDisplay.style.backgroundColor = randomColor;
-        Object.assign(avatarDisplay.style, {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: '30px',
-          fontWeight: 'bold'
-        });
+      // 檢查目前設定
+      const savedEffect = localStorage.getItem('clickEffectTheme');
+      if (savedEffect === effect.name || (!savedEffect && effect.name === '無')) {
+        div.classList.add('selected');
       }
+
+      // 點擊事件
+      div.addEventListener('click', () => {
+        document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
+        div.classList.add('selected');
+        
+        localStorage.setItem('clickEffectTheme', effect.name);
+        
+        if (effect.name === '無') {
+          alert('點擊特效已關閉');
+        } else {
+          alert(`點擊特效已設定為：${effect.name}`);
+        }
+      });
+
+      effectsList.appendChild(div);
     });
-}
+  }
 
-// 上傳事件
-avatarInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  // 即時顯示
-  const preview = document.createElement('img');
-  preview.src = URL.createObjectURL(file);
-  preview.style.width = '100%';
-  preview.style.height = '100%';
-  preview.style.objectFit = 'cover';
-  preview.style.borderRadius = '50%';
-  avatarDisplay.innerHTML = '';
-  avatarDisplay.appendChild(preview);
-
-  // 存到 localStorage
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    localStorage.setItem('avatar', event.target.result);
+  // ===== 背景主題功能 =====
+  const ThemeCatalog = {
+    "初始": {
+      background_profile: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+      background_index: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+      background_game: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)",
+      background_rank: "linear-gradient(135deg, #fcb1d3, #c2a3ff, #a6c1ee, #ff9a9e, #d18fff)"
+    },
+    "名偵探柯南": {
+      background_profile: "url('img-background/柯南背景.png')",
+      background_index: "url('img-background/柯南背景.png')",
+      background_game: "url('img-background/柯南背景.png')",
+      background_match: "url('img-background/柯南背景.png')"
+    },
+    "FREE!": {
+      background_profile: "url('img-background/FREE!游泳池.jpg')",
+      background_index: "url('img-background/FREE!游泳池.jpg')",
+      background_game: "url('img-background/FREE!游泳池.jpg')",
+      background_match: "url('img-background/FREE!游泳池.jpg')"
+    },
   };
-  reader.readAsDataURL(file);
 
-  // 同步到後端
-  const formData = new FormData();
-  formData.append('playerId', playerId);
-  formData.append('avatar', file);
+  // 產生主題方格
+  const backgroundList = document.getElementById("backgroundList");
+  
+  if (backgroundList) {
+    const themes = Object.keys(ThemeCatalog);
+    themes.forEach(themeName => {
+      const preview = ThemeCatalog[themeName].background_profile;
 
-  fetch('/api/uploadAvatar', {
-    method: 'POST',
-    body: formData
-  })
-    .then(r => r.json())
-    .then(res => {
-      if (res.success) {
-        avatarDisplay.innerHTML = `<img src="${res.avatar}" 
-          style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-      }
+      const wrapper = document.createElement("div");
+      wrapper.className = "bg-wrapper";
+
+      const div = document.createElement("div");
+      div.className = "bg-option";
+      div.style.background = preview;
+
+      const label = document.createElement("span");
+      label.className = "bg-label";
+      label.textContent = themeName;
+
+      // 點擊事件
+      div.addEventListener("click", () => {
+        document.querySelectorAll(".bg-option").forEach(o => o.classList.remove("selected"));
+        div.classList.add("selected");
+
+        localStorage.setItem("selectedTheme", themeName);
+
+        const pack = ThemeCatalog[themeName];
+        Object.entries(pack).forEach(([pageKey, bgStyle]) => {
+          localStorage.setItem(pageKey, bgStyle);
+        });
+
+        document.body.style.background = pack.background_profile;
+      });
+
+      wrapper.appendChild(div);
+      wrapper.appendChild(label);
+      backgroundList.appendChild(wrapper);
     });
-});
+  }
 
-// 頁面載入時執行
-initAvatar();
-});
+  // ===== 儲存主題功能 =====
+  if (saveTopicBtn) {
+    saveTopicBtn.addEventListener('click', () => {
+      const topicName = topicNameInput.value.trim();
+      if (!topicName) {
+        alert('請輸入主題名稱');
+        return;
+      }
 
-// 背景更換
-window.addEventListener("DOMContentLoaded", () => {
-  const pageKey = "background_profile"; // 改成對應頁面名稱
+      const formData = new FormData();
+      formData.append('userId', myPlayerId);
+      formData.append('topicName', topicName);
+
+      cardGrid.querySelectorAll('.card-slot').forEach((slot, index) => {
+        const text = slot.querySelector('input[type="text"]').value.trim();
+        const fileInput = slot.querySelector('input[type="file"]');
+        const file = fileInput?.files?.[0];
+
+        formData.append(`cards[${index}][name]`, text || '');
+        if (file) {
+          formData.append(`cards[${index}][file]`, file);
+        }
+      });
+
+      fetch('/api/uploadTopic', {
+        method: 'POST',
+        body: formData
+      })
+        .then(r => r.json())
+        .then(res => {
+          if (res.success) {
+            alert(res.updated ? '主題已更新' : '自訂主題已儲存');
+            modal.style.display = 'none';
+            loadCustomTopics();
+          } else {
+            alert('儲存失敗：' + (res.message || '未知錯誤'));
+          }
+        })
+        .catch(err => {
+          console.error('API 錯誤:', err);
+          alert('伺服器錯誤，請稍後再試');
+        });
+    });
+  }
+
+  // ===== 規則模態框 =====
+  const modal2 = document.getElementById('rulesModal2');
+  const openBtn = document.getElementById('openRules2');
+  const closeBtn = document.getElementById('closeRules2');
+
+  if (openBtn && modal2) {
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      modal2.style.display = 'flex';
+    });
+  }
+  
+  if (closeBtn && modal2) {
+    closeBtn.addEventListener('click', () => {
+      modal2.style.display = 'none';
+    });
+  }
+
+  // ===== 頁面初始化 =====
+  // 1. 初始化頭像
+  initAvatar();
+  
+  // 2. 載入自訂主題
+  loadCustomTopics();
+  
+  // 3. 載入背景
+  const pageKey = "background_profile";
   const savedBg = localStorage.getItem(pageKey);
   if (savedBg) {
     document.body.style.background = savedBg;
+  }
+  
+  // 4. 如果有保存的主題，標記為選中
+  if (backgroundList) {
+    const savedTheme = localStorage.getItem("selectedTheme");
+    if (savedTheme) {
+      setTimeout(() => {
+        const options = backgroundList.querySelectorAll('.bg-option');
+        options.forEach((option, index) => {
+          const label = option.parentElement.querySelector('.bg-label');
+          if (label && label.textContent === savedTheme) {
+            option.classList.add('selected');
+          }
+        });
+      }, 100);
+    }
   }
 });
