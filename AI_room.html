@@ -14,6 +14,7 @@
       <div class="nav-links">
         <a href="#" id="openRules2">遊戲玩法</a> 
         <a href="#" id="openQueryModal">人物查詢</a>
+        <button onclick="showQuestionBank()">題庫</button> 
         <a href="index.html">退出遊戲</a>
       </div>
       <!-- 右側房間資訊 -->
@@ -103,6 +104,18 @@
     <div id="queryResult" class="query-result"></div>
   </div>
 </div>
+
+<div id="question-bank-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeQuestionBank()">&times;</span>
+    <h3 id="bank-title">提問題庫</h3>
+    <p style="font-size: 0.9em; color: #666;">點擊問題即可自動複製，再貼到對話框提問：</p>
+    <div id="question-list" class="question-grid">
+      </div>
+  </div>
+</div>
+
+
 
   <script src="AI_room.js"></script>
   <script src="click-effect.js"></script>

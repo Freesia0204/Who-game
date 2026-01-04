@@ -643,3 +643,18 @@ background-attachment: fixed;
 #rulesModal2 .close:hover {
   color: #d00;
 }
+.question-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+.question-item:hover {
+  background-color: #e3f2fd !important;
+  border-color: #2196f3 !important;
+  color: #1976d2;
+}

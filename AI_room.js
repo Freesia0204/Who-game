@@ -755,97 +755,43 @@ function getAIQuestion(topic) {
   return chosen;
 }
 
-function AIAskQuestion() {
-  const dataList = gridData[selectedTopic] || [];
-  const remaining = dataList.filter(c => possibleCells.includes(c.name));
-
+function askQuestion() {
+  const allTags = {};
   
+  // 1. 統計剩下角色中，每個標籤出現的次數
+  remainingCharacters.forEach(char => {
+    char.tags.forEach(tag => {
+      allTags[tag] = (allTags[tag] || 0) + 1;
+    });
+  });
 
-  // 沒剩候選 → 隨機題庫
-  if (remaining.length === 0) {
-    const allQuestions = [...(AI_DB.common || []), ...(AI_DB[selectedTopic] || [])];
-    let randomQ;
-    do {
-      randomQ = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-    } while (
-      askedQuestions.includes(randomQ.question) ||
-      (randomQ.trait && !hasEliminationPotential(randomQ.trait, dataList)) // ✅ 避免無效題
-    );
+  // 2. 篩選掉已經問過的標籤
+  const unusedTags = Object.keys(allTags).filter(tag => !askedQuestions.includes(tag));
 
-    if (randomQ && randomQ.question) {
-      addMessage('AI', randomQ.question);
-      aiAwaitingAnswer = true;
-      questionsAskedByAI++;
-      lastAIQuestion = randomQ.question;
-      askedQuestions.push(randomQ.question); // ✅ 記錄問題
-      if (randomQ.trait) askedTraits.push(randomQ.trait);
-      turn = 'waitingForAnswer';
-      enableChat();
-    }
+  if (unusedTags.length === 0) {
+    // 如果沒標籤好問了，就直接猜測
+    const finalGuess = remainingCharacters[Math.floor(Math.random() * remainingCharacters.length)];
+    makeFinalGuess(finalGuess);
     return;
   }
 
-  // 🔍 統計 trait 分布
-  const traitCounts = {};
-  remaining.forEach(c => {
-    for (const key in c.traits) {
-      const val = c.traits[key];
-      if (!traitCounts[key]) traitCounts[key] = { yes: 0, no: 0 };
-      if (val === true) traitCounts[key].yes++;
-      else if (val === false) traitCounts[key].no++;
+  // 3. 【關鍵優化】尋找最接近「剩餘人數一半」的標籤
+  const targetCount = remainingCharacters.length / 2;
+  let bestTag = unusedTags[0];
+  let minDiff = Math.abs(allTags[bestTag] - targetCount);
+
+  unusedTags.forEach(tag => {
+    const diff = Math.abs(allTags[tag] - targetCount);
+    if (diff < minDiff) {
+      minDiff = diff;
+      bestTag = tag;
     }
   });
 
-  // 🔍 選出最佳 trait
-  let bestTrait = null;
-  let bestScore = -1;
-
-  for (const key in traitCounts) {
-    const { yes, no } = traitCounts[key];
-
-    if (askedTraits.includes(key)) continue;
-    if (!hasEliminationPotential(key, remaining)) continue;
-
-    // ✅ 必須有至少一個 true
-    if (yes === 0) continue;
-
-    // ✅ 分布越平均越好 → 能排除最多人
-    const score = Math.min(yes, no);
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestTrait = key;
-    }
-  }
-
-  if (bestTrait) {
-    const question = AI_DB.traitMap[bestTrait]
-      ? `他有${AI_DB.traitMap[bestTrait]}嗎？`
-      : `他有${bestTrait}嗎？`;
-
-    addMessage('AI', question);
-    aiAwaitingAnswer = true;
-    questionsAskedByAI++;
-    lastAIQuestion = question;
-    askedQuestions.push(question);
-    askedTraits.push(bestTrait);
-    turn = 'waitingForAnswer';
-    enableChat();
-    return;
-  }
-
-  // 如果沒有合適的 trait，就退回到隨機題庫
-  const fallbackQ = getAIQuestion(selectedTopic);
-  if (fallbackQ && fallbackQ.question) {
-    addMessage('AI', fallbackQ.question);
-    aiAwaitingAnswer = true;
-    questionsAskedByAI++;
-    lastAIQuestion = fallbackQ.question;
-    askedQuestions.push(fallbackQ.question);
-    if (fallbackQ.trait) askedTraits.push(fallbackQ.trait);
-    turn = 'waitingForAnswer';
-    enableChat();
-  }
+  // 4. 提問
+  currentQuestionTag = bestTag;
+  askedQuestions.push(bestTag);
+  addLog(`🤖 AI 問：${bestTag}？`);
 }
 
 // ✅ 檢查是否有區分度
@@ -1306,3 +1252,56 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.style.background = savedBg;
   }
 });
+
+// 顯示動態題庫
+function openQuestionBank() {
+  const modal = document.getElementById('question-bank-modal');
+  const listContainer = document.getElementById('question-list');
+  const title = document.getElementById('bank-title');
+
+  listContainer.innerHTML = ''; // 先清空
+
+  if (!selectedTopic) {
+    listContainer.innerHTML = '<p style="color:red; padding:20px;">請先選擇主題並開始遊戲後再查看題庫。</p>';
+  } else {
+    title.innerText = `【${selectedTopic}】可用提問`;
+    
+    // 從你的 synonyms 變數中抓取「問題描述」
+    // 假設你的 synonyms 結構是 { '名偵探柯南': { 'boy': ['男', '男生'], ... } }
+    const topicQuestions = synonyms[selectedTopic]; 
+    
+    if (topicQuestions) {
+      Object.keys(topicQuestions).forEach(traitKey => {
+        // 取得該特徵的第一個關鍵字來組成問題
+        const keyword = topicQuestions[traitKey][0];
+        const fullQuestion = `他是不是${keyword}？`;
+
+        const item = document.createElement('div');
+        item.className = 'question-item';
+        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f9f9f9; display:inline-block;";
+        item.innerText = fullQuestion;
+        
+        // 點擊複製
+        item.onclick = () => {
+          navigator.clipboard.writeText(fullQuestion);
+          showCopyToast(fullQuestion);
+        };
+        listContainer.appendChild(item);
+      });
+    }
+  }
+  modal.style.display = 'flex';
+}
+
+function closeQuestionBank() {
+  document.getElementById('question-bank-modal').style.display = 'none';
+}
+
+// 複製成功的小提示
+function showCopyToast(text) {
+  const toast = document.createElement('div');
+  toast.innerText = `已複製：${text}`;
+  toast.style = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:white; padding:10px 20px; border-radius:20px; z-index:9999;";
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 1500);
+}
