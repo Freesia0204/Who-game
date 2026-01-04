@@ -574,8 +574,8 @@ const synonyms = {
   die: ['死亡', '死了', '去世', '死掉','死'],
   Texture: ['斑紋'],
   scar: ['傷痕', '疤', '疤痕'],
-  battle: ['參加無限城決戰', '進入無限城', '參加決戰'],
-  leader: ['領袖'],
+  battle: ['參加無限城決戰', '進入無限城', '參加決戰','參加最終決戰','最終決戰'],
+  leader: ['領袖','領導','領導者'],
   ghost: ['鬼', '變鬼'],
   people: ['人類', '人'],
   explode: ['自爆死亡', '自爆', '炸死'],
@@ -759,6 +759,7 @@ function hasEliminationPotential(key, remaining) {
 }
 
 
+
 // ===== AI 回答玩家問題（穩定版） =====
 function AIAnswer(playerQuestion) {
   if (!selectedTopic || !AIChoice) return;
@@ -783,13 +784,19 @@ function AIAnswer(playerQuestion) {
   // 🔹 如果找到 trait → 回答是/不是
   let answer = '不重要';
   if (matchedKey) {
-    const val = antidote.traits[matchedKey];
-    if (typeof val === 'boolean') {
-      answer = val ? '是' : '不是';
-    } else if (typeof val === 'string') {
-      answer = val;
-    }
+  // 標準化 key：去掉空格、轉小寫
+  const normalizedKey = matchedKey.trim().toLowerCase();
+
+  // 嘗試從角色 traits 找值
+  const val = antidote.traits[normalizedKey];
+
+  if (typeof val === 'boolean') {
+    answer = val ? '是' : '不是';
+  } else {
+    answer = '這個問題無法判斷';
   }
+}
+
 
   addMessage('AI', answer);
   updatePossibleCells(playerQuestion, answer);
