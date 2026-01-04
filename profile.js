@@ -353,7 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initAvatar() {
         if (!avatarDisplay) return;
 
-        const savedAvatar = localStorage.getItem(`avatar_${playerName}`);
+        const savedAvatar = localStorage.getItem('avatar');
+        console.log('savedAvatar:', savedAvatar);
         
         if (savedAvatar) {
             // 模式 A: 顯示存儲的圖片
@@ -402,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.onload = (event) => {
                     const base64Image = event.target.result;
                     // 存入 localStorage (以姓名作為 Key)
-                    localStorage.setItem(`avatar_${playerName}`, base64Image);
+                    localStorage.setItem('avatar', base64Image);
                     // 立即更新畫面
                     initAvatar();
                 };
