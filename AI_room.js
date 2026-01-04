@@ -1311,6 +1311,24 @@ function showQuestionBank() {
     }
   }
   modal.style.display = 'flex';
+  // 在你的 DOMContentLoaded 事件內加入
+document.getElementById('closeQueryModal').onclick = function() {
+  document.getElementById('characterQueryModal').style.display = 'none';
+};
+
+// 題庫專用的關閉函數
+function closeQuestionBank() {
+  const qModal = document.getElementById('question-bank-modal');
+  if (qModal) qModal.style.display = 'none';
+}
+
+// 點擊彈窗外部也可以關閉 (選配)
+window.onclick = function(event) {
+  const queryModal = document.getElementById('characterQueryModal');
+  const bankModal = document.getElementById('question-bank-modal');
+  if (event.target == queryModal) queryModal.style.display = 'none';
+  if (event.target == bankModal) bankModal.style.display = 'none';
+};
 }
 
 function closeQuestionBank() {

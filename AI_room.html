@@ -96,22 +96,25 @@
   </div>
 <!-- 人物查詢 Modal -->
 <div id="characterQueryModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="closeQueryModal">&times;</span>
+  <div class="modal-content" style="max-height: 85vh; overflow-y: auto; position: relative;">
+    <span class="close" id="closeQueryModal" style="position: sticky; top: 0; float: right; cursor: pointer; font-size: 28px;">&times;</span>
+    
     <h3>人物查詢</h3>
-    <input type="text" id="queryInput" placeholder="請將AI的問題直接複製上來">
-    <button id="querySubmitBtn">查詢</button>
-    <div id="queryResult" class="query-result"></div>
+    <input type="text" id="queryInput" placeholder="請輸入描述關鍵字...">
+    <button id="queryBtn">查詢</button>
+    <div id="queryResult"></div>
   </div>
 </div>
 
+
 <div id="question-bank-modal" class="modal" style="display:none;">
-  <div class="modal-content" style="max-width: 600px;">
-    <span class="close" onclick="closeQuestionBank()">&times;</span>
+  <div class="modal-content" style="max-height: 80vh; overflow-y: auto; position: relative;">
+    <span class="close" onclick="closeQuestionBank()" style="position: sticky; top: 0; float: right; cursor: pointer; font-size: 28px;">&times;</span>
+    
     <h3 id="question-bank-title">可用提問</h3>
     <p style="font-size: 0.9em; color: #666;">點擊問題即可自動複製</p>
     <hr>
-    <div id="question-list-container" style="max-height: 400px; overflow-y: auto; text-align: left;">
+    <div id="question-list-container">
       </div>
   </div>
 </div>
