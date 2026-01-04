@@ -1254,7 +1254,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- 題庫功能 ---
+
 // --- 題庫功能 ---
 function showQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
@@ -1262,7 +1262,7 @@ function showQuestionBank() {
   const title = document.getElementById('question-bank-title');
 
   if (!selectedTopic) {
-    listContainer.innerHTML = '<p>請先選擇主題並開始遊戲。</p>';
+    listContainer.innerHTML = '<p style="color:white; text-align:center;">請先選擇主題並開始遊戲。</p>';
   } else {
     title.innerText = `【${selectedTopic}】可用提問`;
     const topicQuestions = synonyms[selectedTopic]; 
@@ -1274,7 +1274,7 @@ function showQuestionBank() {
         const fullQuestion = `他是不是${keyword}？`;
         const item = document.createElement('div');
         item.className = 'question-item';
-        item.style = "cursor:pointer; padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px; background:#f8f9fa; display:inline-block;";
+        item.style = "cursor:pointer; padding:10px; border:1px solid #555; margin:5px; border-radius:5px; background:#333; color:white; display:inline-block;";
         item.innerText = fullQuestion;
 
         item.onclick = () => {
@@ -1287,17 +1287,17 @@ function showQuestionBank() {
     }
   }
   modal.style.display = 'flex';
-}
+} // <--- 確保這一個大括號在這裡關閉函數
 
-// --- 關閉邏輯：請確保這些函數在最外層 (Global Scope) ---
+// --- 以下內容必須放在函數外面 (Global Scope) ---
 
 function closeQuestionBank() {
   const modal = document.getElementById('question-bank-modal');
   if (modal) modal.style.display = 'none';
 }
 
-// 監聽人物查詢的關閉按鈕
 document.addEventListener('DOMContentLoaded', () => {
+  // 綁定人物查詢關閉按鈕
   const closeQueryBtn = document.getElementById('closeQueryModal');
   if (closeQueryBtn) {
     closeQueryBtn.onclick = function() {
@@ -1306,11 +1306,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 點擊彈窗外部區域關閉
+// 全域點擊事件：點擊彈窗外面關閉
 window.onclick = function(event) {
   const queryModal = document.getElementById('characterQueryModal');
   const bankModal = document.getElementById('question-bank-modal');
-  const rulesModal = document.getElementById('rulesModal'); // 玩法彈窗
+  const rulesModal = document.getElementById('rulesModal');
 
   if (event.target == queryModal) queryModal.style.display = 'none';
   if (event.target == bankModal) bankModal.style.display = 'none';

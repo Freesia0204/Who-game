@@ -351,36 +351,33 @@ document.addEventListener('DOMContentLoaded', () => {
      * 初始化頭像：判斷顯示圖片或名字首字
      */
     function initAvatar() {
-        if (!avatarDisplay) return;
+  if (!avatarDisplay) return;
 
-        const savedAvatar = localStorage.getItem('avatar');
-        console.log('savedAvatar:', savedAvatar);
-        
-        if (savedAvatar) {
-            // 模式 A: 顯示存儲的圖片
-            avatarDisplay.innerHTML = `<img src="${savedAvatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-            avatarDisplay.style.backgroundColor = 'transparent';
-            avatarDisplay.innerText = ''; // 清除文字
-        } else {
-            // 模式 B: 顯示隨機顏色 + 名字首字
-            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            avatarDisplay.innerHTML = ''; // 清除舊圖片
-            avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
-            avatarDisplay.style.backgroundColor = randomColor;
-            
-            // 強制確保居中樣式
-            Object.assign(avatarDisplay.style, {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: '30px',
-                fontWeight: 'bold'
-            });
-        }
-    }
+  const savedAvatar = localStorage.getItem('avatar'); // ✅ 固定 key
+  console.log('savedAvatar:', savedAvatar);
+
+  if (savedAvatar) {
+    avatarDisplay.innerHTML = `<img src="${savedAvatar}" 
+      style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+    avatarDisplay.style.backgroundColor = 'transparent';
+    avatarDisplay.innerText = '';
+  } else {
+    // 顯示首字母
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F3A683'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    avatarDisplay.innerHTML = '';
+    avatarDisplay.innerText = playerName.charAt(0).toUpperCase();
+    avatarDisplay.style.backgroundColor = randomColor;
+    Object.assign(avatarDisplay.style, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      fontSize: '30px',
+      fontWeight: 'bold'
+    });
+  }
+}
 
     // --- 事件監聽 ---
     if (avatarContainer && avatarInput) {
@@ -394,24 +391,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const file = e.target.files[0];
   if (!file) return;
 
-  // 即時顯示預覽（像自訂主題）
+  // 即時顯示
   const preview = document.createElement('img');
   preview.src = URL.createObjectURL(file);
   preview.style.width = '100%';
   preview.style.height = '100%';
   preview.style.objectFit = 'cover';
   preview.style.borderRadius = '50%';
-
-  avatarDisplay.innerHTML = ''; // 清掉舊內容
+  avatarDisplay.innerHTML = '';
   avatarDisplay.appendChild(preview);
 
-  // 同時存到 localStorage（方便下次載入）
+  // 同時存到 localStorage
   const reader = new FileReader();
   reader.onload = (event) => {
-    localStorage.setItem('avatar', event.target.result);
+    localStorage.setItem('avatar', event.target.result); // ✅ 固定 key
   };
   reader.readAsDataURL(file);
 });
+
 
     }
 
