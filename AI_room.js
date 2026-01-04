@@ -1135,46 +1135,53 @@ if (cancelGuessBtn) {
 
 
 
-// ===== 表單送出（玩家問或回答） =====
-// ===== 修正表單提交處理 =====
+// ===== 修正表單提交處理（解決重複問題） =====
 if (chatForm) {
-  // 移除舊的事件監聽器（避免重複綁定）
-  chatForm.removeEventListener('submit', handleChatSubmit);
+  // 先移除所有可能的舊事件監聽器
+  const newChatForm = chatForm.cloneNode(true);
+  chatForm.parentNode.replaceChild(newChatForm, chatForm);
   
-  // 新增事件處理函數
-  function handleChatSubmit(e) {
-    e.preventDefault();
-    const msg = chatInput.value.trim();
-    if (!msg) return;
-
-    console.log('[Chat] 玩家輸入:', msg, '當前回合:', turn);
-    
-    // 清除輸入並暫時禁用
-    chatInput.value = '';
-    disableChat();
-
-    // 根據不同狀態處理
-    if (turn === 'player') {
-      // 玩家回合：問問題
-      addMessage('player', msg);
-      handlePlayerAsk_forSubmit(msg);
-    } else if (turn === 'waitingForAnswer') {
-      // 等待回答：回答AI問題
-      addMessage('player', msg);
-      handlePlayerAnswer(msg);
-    } else {
-      // 其他狀態：恢復聊天，但不處理為遊戲動作
-      addMessage('player', msg);
-      setTimeout(() => {
-        addMessage('system', '現在不是你的回合喔～');
-        if (turn === 'player') enableChat();
-      }, 500);
-    }
+  // 重新獲取元素
+  const chatFormFixed = document.getElementById('chatForm');
+  const chatInputFixed = document.getElementById('chatInput');
+  
+  if (chatFormFixed) {
+    chatFormFixed.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msg = chatInputFixed.value.trim();
+      if (!msg) return;
+      
+      console.log('[Chat] 玩家輸入:', msg, '當前回合:', turn);
+      
+      // 清除輸入並暫時禁用
+      chatInputFixed.value = '';
+      disableChat();
+      
+      // 根據不同狀態處理
+      if (turn === 'player') {
+        // 玩家回合：問問題
+        addMessage('player', msg);
+        setTimeout(() => {
+          handlePlayerAsk_forSubmit(msg);
+        }, 100);
+      } else if (turn === 'waitingForAnswer') {
+        // 等待回答：回答AI問題
+        addMessage('player', msg);
+        setTimeout(() => {
+          handlePlayerAnswer(msg);
+        }, 100);
+      } else {
+        // 其他狀態：恢復聊天，但不處理為遊戲動作
+        addMessage('player', msg);
+        setTimeout(() => {
+          addMessage('system', '現在不是你的回合喔～');
+          if (turn === 'player') enableChat();
+        }, 500);
+      }
+    });
   }
-  
-  // 重新綁定事件
-  chatForm.addEventListener('submit', handleChatSubmit);
 }
+
 // ===== 玩家回答 AI 的問題 =====
 function handlePlayerAnswer(msg) {
   const validAns = ['是', '不是', '有', '沒有'];
@@ -1380,136 +1387,142 @@ document.addEventListener('DOMContentLoaded', () => {
     });
  }
 });
-// ===== 人物查詢 Modal 控制 =====
+// ===== 修正人物查詢功能（匹配HTML中的ID） =====
 document.addEventListener('DOMContentLoaded', () => {
   const queryModal = document.getElementById('characterQueryModal');
   const openQueryBtn = document.getElementById('openQueryModal');
   const closeQueryBtn = document.getElementById('closeQueryModal');
-  const querySubmitBtn = document.getElementById('querySubmitBtn');
+  const queryBtn = document.getElementById('queryBtn'); // HTML中是 queryBtn
   const queryInput = document.getElementById('queryInput');
   const queryResult = document.getElementById('queryResult');
 
   // 打開 Modal
   if (openQueryBtn) {
     openQueryBtn.addEventListener('click', e => {
-      e.preventDefault(); // 避免跳頁
-      queryModal.style.display = 'flex';
+      e.preventDefault();
+      if (queryModal) queryModal.style.display = 'flex';
+      if (queryInput) queryInput.focus();
     });
   }
 
   // 關閉 Modal
   if (closeQueryBtn) {
     closeQueryBtn.addEventListener('click', () => {
-      queryModal.style.display = 'none';
-      queryInput.value = '';
-      queryResult.innerHTML = '';
+      if (queryModal) queryModal.style.display = 'none';
+      if (queryInput) queryInput.value = '';
+      if (queryResult) queryResult.innerHTML = '';
     });
   }
 
-  // 查詢邏輯
-// ===== 修正人物查詢功能 =====
-if (querySubmitBtn) {
-  querySubmitBtn.addEventListener('click', () => {
-    const question = queryInput.value.trim();
-    if (!question) {
-      queryResult.innerHTML = '請輸入問題';
-      return;
-    }
-
-    // 檢查是否有選擇主題
-    if (!selectedTopic) {
-      queryResult.innerHTML = '請先選擇遊戲主題';
-      return;
-    }
-
-    // 獲取當前主題的資料
-    const dataList = gridData[selectedTopic] || [];
-    const topicSynonyms = synonyms[selectedTopic] || {};
-    const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
-
-    console.log('[Query] 查詢問題:', question, '主題:', selectedTopic);
-    console.log('[Query] 可用同義詞:', Object.keys(topicSynonyms));
-
-    // 查找匹配的關鍵字
-    let matchedKey = null;
-    let matchedTrait = null;
-    
-    // 先檢查同義詞
-    for (const key in topicSynonyms) {
-      if (topicSynonyms[key].some(word => question.includes(word))) {
-        matchedKey = key;
-        matchedTrait = topicTraitMap[key] || key;
-        break;
+  // 查詢邏輯 - 使用 queryBtn 而不是 querySubmitBtn
+  if (queryBtn) {
+    queryBtn.addEventListener('click', () => {
+      const question = queryInput.value.trim();
+      if (!question) {
+        if (queryResult) queryResult.innerHTML = '請輸入問題';
+        return;
       }
-    }
-    
-    // 如果沒找到，檢查特徵表
-    if (!matchedKey) {
-      for (const key in topicTraitMap) {
-        if (question.includes(topicTraitMap[key])) {
+
+      // 檢查是否有選擇主題
+      if (!selectedTopic) {
+        if (queryResult) queryResult.innerHTML = '請先開始遊戲並選擇主題';
+        return;
+      }
+
+      // 獲取當前主題的資料
+      const dataList = gridData[selectedTopic] || [];
+      const topicSynonyms = synonyms[selectedTopic] || {};
+      const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
+
+      console.log('[Query] 查詢問題:', question, '主題:', selectedTopic);
+
+      // 查找匹配的關鍵字
+      let matchedKey = null;
+      let matchedTrait = null;
+      
+      // 先檢查同義詞
+      for (const key in topicSynonyms) {
+        if (topicSynonyms[key].some(word => question.includes(word))) {
           matchedKey = key;
-          matchedTrait = topicTraitMap[key];
+          matchedTrait = topicTraitMap[key] || key;
           break;
         }
       }
-    }
-
-    if (!matchedKey) {
-      queryResult.innerHTML = '❓ 無法辨識問題，請換個問法<br>範例：他是警察嗎？他有戴眼鏡嗎？';
-      return;
-    }
-
-    // 分析哪些角色有此特徵
-    const hasTrait = [];    // 有此特徵的角色
-    const noTrait = [];     // 無此特徵的角色
-    
-    dataList.forEach(character => {
-      const traits = character.traits || {};
-      const has = traits[matchedKey] === true || traits[matchedKey] === 'true' || traits[matchedKey] === '是';
       
-      if (has) {
-        hasTrait.push(character.name);
-      } else {
-        noTrait.push(character.name);
+      // 如果沒找到，檢查特徵表
+      if (!matchedKey) {
+        for (const key in topicTraitMap) {
+          if (question.includes(topicTraitMap[key])) {
+            matchedKey = key;
+            matchedTrait = topicTraitMap[key];
+            break;
+          }
+        }
       }
-    });
 
-    // 顯示結果
-    const resultHTML = `
-      <div style="margin-bottom: 15px;">
-        <strong>🔍 分析問題：</strong>「${question}」<br>
-        <strong>對應特徵：</strong>${matchedTrait}
-      </div>
+      if (!matchedKey) {
+        if (queryResult) queryResult.innerHTML = '❓ 無法辨識問題，請換個問法<br>範例：他是警察嗎？他有戴眼鏡嗎？<br><br><small>提示：請使用簡短明確的問題</small>';
+        return;
+      }
+
+      // 分析哪些角色有此特徵
+      const hasTrait = [];    // 有此特徵的角色
+      const noTrait = [];     // 無此特徵的角色
       
-      <div style="display: flex; gap: 20px;">
-        <div style="flex: 1;">
-          <strong style="color: #2e7d32;">✓ 有此特徵 (${hasTrait.length}人)：</strong><br>
-          <div style="max-height: 150px; overflow-y: auto; margin-top: 5px; padding: 5px; background: #f0f9f0; border-radius: 4px;">
-            ${hasTrait.length > 0 ? hasTrait.join('、') : '（無）'}
+      dataList.forEach(character => {
+        const traits = character.traits || {};
+        const has = traits[matchedKey] === true || traits[matchedKey] === 'true' || traits[matchedKey] === '是';
+        
+        if (has) {
+          hasTrait.push(character.name);
+        } else {
+          noTrait.push(character.name);
+        }
+      });
+
+      // 顯示結果
+      const resultHTML = `
+        <div style="margin-bottom: 15px;">
+          <strong>🔍 分析問題：</strong>「${question}」<br>
+          <strong>對應特徵：</strong>${matchedTrait}
+        </div>
+        
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <strong style="color: #2e7d32;">✓ 有此特徵 (${hasTrait.length}人)：</strong><br>
+            <div style="max-height: 150px; overflow-y: auto; margin-top: 5px; padding: 5px; background: #f0f9f0; border-radius: 4px; border: 1px solid #c8e6c9;">
+              ${hasTrait.length > 0 ? hasTrait.join('、') : '（無）'}
+            </div>
+          </div>
+          
+          <div style="flex: 1; min-width: 250px;">
+            <strong style="color: #c62828;">✗ 無此特徵 (${noTrait.length}人)：</strong><br>
+            <div style="max-height: 150px; overflow-y: auto; margin-top: 5px; padding: 5px; background: #fff0f0; border-radius: 4px; border: 1px solid #ffcdd2;">
+              ${noTrait.length > 0 ? noTrait.join('、') : '（無）'}
+            </div>
           </div>
         </div>
         
-        <div style="flex: 1;">
-          <strong style="color: #c62828;">✗ 無此特徵 (${noTrait.length}人)：</strong><br>
-          <div style="max-height: 150px; overflow-y: auto; margin-top: 5px; padding: 5px; background: #fff0f0; border-radius: 4px;">
-            ${noTrait.length > 0 ? noTrait.join('、') : '（無）'}
-          </div>
+        <div style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 4px; font-size: 0.9em; border: 1px solid #bbdefb;">
+          <strong>💡 策略提示：</strong>
+          <br>• 如果你回答「是」，AI會排除 <strong style="color: #c62828;">${noTrait.length}</strong> 個角色
+          <br>• 如果你回答「不是」，AI會排除 <strong style="color: #2e7d32;">${hasTrait.length}</strong> 個角色
+          <br>• 建議提問能排除約一半角色的問題
         </div>
-      </div>
+      `;
       
-      <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 4px; font-size: 0.9em;">
-        <strong>💡 小提示：</strong>
-        <br>• 如果你回答「是」，AI會排除 <strong style="color: #c62828;">${noTrait.length}</strong> 個角色
-        <br>• 如果你回答「不是」，AI會排除 <strong style="color: #2e7d32;">${hasTrait.length}</strong> 個角色
-      </div>
-    `;
-    
-    queryResult.innerHTML = resultHTML;
-  });
-}
-
-
+      if (queryResult) {
+        queryResult.innerHTML = resultHTML;
+        // 自動滾動到底部
+        setTimeout(() => {
+          queryResult.scrollTop = queryResult.scrollHeight;
+        }, 100);
+      }
+    });
+  }
 });
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const rulesModal2 = document.getElementById('rulesModal2');
   const openRules2 = document.getElementById('openRules2');
@@ -1592,14 +1605,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ===== 題庫功能 =====
-// ===== 修正題庫功能 =====
-function showQuestionBank() {
+// ===== 修正題庫功能（HTML中是直接onclick調用） =====
+// 定義全局函數，讓HTML可以直接調用
+window.showQuestionBank = function() {
   const modal = document.getElementById('question-bank-modal');
   const listContainer = document.getElementById('question-list');
   const title = document.getElementById('question-bank-title');
 
-  if (!modal || !listContainer) return;
+  if (!modal || !listContainer) {
+    console.error('題庫Modal元素不存在');
+    return;
+  }
   
   listContainer.innerHTML = '';
 
@@ -1637,20 +1653,20 @@ function showQuestionBank() {
         item.innerText = `${index + 1}. ${q.question}`;
         
         // 滑鼠懸停效果
-        item.onmouseover = () => {
+        item.addEventListener('mouseover', () => {
           item.style.background = '#e3f2fd';
           item.style.borderColor = '#2196f3';
           item.style.transform = 'translateY(-2px)';
-        };
+        });
         
-        item.onmouseout = () => {
+        item.addEventListener('mouseout', () => {
           item.style.background = 'white';
           item.style.borderColor = '#ddd';
           item.style.transform = 'translateY(0)';
-        };
+        });
         
         // 點擊複製功能
-        item.onclick = async () => {
+        item.addEventListener('click', async () => {
           try {
             await navigator.clipboard.writeText(q.question);
             
@@ -1659,6 +1675,9 @@ function showQuestionBank() {
             item.style.borderColor = '#4caf50';
             item.innerHTML = `${index + 1}. ${q.question} <span style="color:#4caf50; margin-left:10px;">✓ 已複製</span>`;
             
+            // 顯示全局提示
+            showToast('已複製到剪貼簿！');
+            
             // 2秒後恢復
             setTimeout(() => {
               item.style.background = 'white';
@@ -1666,9 +1685,9 @@ function showQuestionBank() {
               item.innerHTML = `${index + 1}. ${q.question}`;
             }, 2000);
           } catch (err) {
-            alert('複製失敗，請手動選取文字複製');
+            showToast('複製失敗，請手動選取文字複製');
           }
-        };
+        });
         
         listContainer.appendChild(item);
       });
@@ -1695,9 +1714,58 @@ function showQuestionBank() {
   }
   
   modal.style.display = 'flex';
+};
+
+// 添加顯示提示的函數
+function showToast(message) {
+  const toast = document.getElementById('copy-toast');
+  if (toast) {
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 2000);
+  } else {
+    // 如果沒有toast元素，創建一個
+    const toastDiv = document.createElement('div');
+    toastDiv.textContent = message;
+    toastDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 24px;
+      z-index: 10000;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: fadeInOut 2s ease-in-out;
+    `;
+    
+    // 添加動畫樣式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(toastDiv);
+    setTimeout(() => {
+      if (toastDiv.parentNode) {
+        toastDiv.parentNode.removeChild(toastDiv);
+      }
+    }, 2000);
+  }
 }
 
-function closeQuestionBank() {
+window.closeQuestionBank = function() {
   const modal = document.getElementById('question-bank-modal');
   if (modal) {
     modal.style.display = 'none';
@@ -1710,7 +1778,36 @@ function closeQuestionBank() {
       item.style.transform = 'translateY(0)';
     });
   }
-}
+};
+
+// ===== 點擊外部關閉彈窗 =====
+document.addEventListener('DOMContentLoaded', () => {
+  // 點擊題庫彈窗外部關閉
+  const bankModal = document.getElementById('question-bank-modal');
+  if (bankModal) {
+    bankModal.addEventListener('click', (e) => {
+      if (e.target === bankModal) {
+        closeQuestionBank();
+      }
+    });
+  }
+  
+  // 點擊查詢彈窗外部關閉
+  const queryModal = document.getElementById('characterQueryModal');
+  if (queryModal) {
+    queryModal.addEventListener('click', (e) => {
+      if (e.target === queryModal) {
+        queryModal.style.display = 'none';
+        const queryInput = document.getElementById('queryInput');
+        const queryResult = document.getElementById('queryResult');
+        if (queryInput) queryInput.value = '';
+        if (queryResult) queryResult.innerHTML = '';
+      }
+    });
+  }
+});
+
+
 
 
 // ===== 修正題庫按鈕綁定 =====
