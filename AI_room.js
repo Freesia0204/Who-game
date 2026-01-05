@@ -103,7 +103,58 @@ window.addEventListener('DOMContentLoaded', () => {
   // 初始化 chat 狀態
   disableChat();
 });
+// ===== 在 DOMContentLoaded 中添加 =====
+window.addEventListener('DOMContentLoaded', () => {
+  const name = localStorage.getItem('playerName') || '未知玩家';
+  const mode = 'AI';
+  const roomInfo = document.getElementById('roomInfo');
+  if (roomInfo) {
+    roomInfo.innerHTML = `玩家姓名: ${name}　｜　對戰模式: ${mode}<br>`;
+  }
 
+  // 開始按鈕（可能在 modal 裡）
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) startBtn.addEventListener('click', startGame);
+
+  // ===== 初始化聊天表單事件 =====
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  
+  if (chatForm && chatInput) {
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault(); // ⚠️ 這行最重要！阻止表單提交重整頁面
+      
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+      
+      console.log('[Chat] 玩家輸入:', msg, '當前回合:', turn);
+      
+      // 清除輸入
+      chatInput.value = '';
+      disableChat();
+      
+      // 顯示玩家訊息
+      addMessage('player', msg);
+      
+      // 根據狀態處理
+      if (turn === 'player') {
+        setTimeout(() => handlePlayerAsk_forSubmit(msg), 100);
+      } else if (turn === 'waitingForAnswer') {
+        setTimeout(() => handlePlayerAnswer(msg), 100);
+      } else {
+        setTimeout(() => {
+          addMessage('system', '現在不是你的回合喔～');
+          if (turn === 'player') enableChat();
+        }, 500);
+      }
+    });
+    
+    console.log('聊天表單初始化完成');
+  }
+
+  // 初始化 chat 狀態
+  disableChat();
+});
 // ===== 開始遊戲 =====
 function startGame(topic) {
   // --- 新增：針對防風少年的特殊判斷 ---
