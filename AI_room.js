@@ -975,61 +975,77 @@ function AIAnswer(playerQuestion) {
   }, 800);
 }
 
-// 刪除第 628-662 行的舊版 updatePossibleCells 函式
-// 只保留一個統一的 updatePossibleCells 函式
-
-// ===== 統一的 updatePossibleCells 函式（保留第 418-460 行的版本） =====
+// ===== 統一 updatePossibleCells 函式 =====
 function updatePossibleCells(question, answer) {
-  console.log('[AI] updatePossibleCells', { question, answer });
+  console.log('[AI] updatePossibleCells', { question, answer, turn });
   
   const before = possibleCells.map(c => c.name);
   
-  // 玩家問問題時，AI 回答後要更新可能選項
-  if (turn === 'player') {
+  // 🚫 特殊情況：如果 AI 猜錯了，不要基於猜測結果來排除
+  // 只在正常的問答過程中進行排除
+  
+  // 情況 1：AI 回答玩家問題後（玩家回合）
+  if (turn === 'player' && question && answer) {
+    console.log('[AI] 情況1：AI回答玩家問題後');
+    
     const topicSynonyms = synonyms[selectedTopic] || {};
     const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
     
     possibleCells = possibleCells.filter(cell => {
       const traits = cell.traits || {};
+      let matched = false;
+      let expectedValue;
       
-      // 檢查是否匹配問題關鍵字
+      // 檢查同義詞
       for (const key in topicSynonyms) {
         if (topicSynonyms[key].some(word => question.includes(word))) {
+          matched = true;
           const traitValue = traits[key];
-          if (traitValue === undefined) return true;
+          if (traitValue === undefined) return true; // 沒有此特徵，保留
           
-          const expectedAnswer = (traitValue === true || traitValue === 'true' || traitValue === '是') ? '是' : '不是';
-          return answer === expectedAnswer;
+          expectedValue = (traitValue === true || traitValue === 'true' || traitValue === '是');
+          break;
         }
       }
       
       // 檢查特徵表
-      for (const key in topicTraitMap) {
-        if (question.includes(topicTraitMap[key])) {
-          const traitValue = traits[key];
-          if (traitValue === undefined) return true;
-          
-          const expectedAnswer = (traitValue === true || traitValue === 'true' || traitValue === '是') ? '是' : '不是';
-          return answer === expectedAnswer;
+      if (!matched) {
+        for (const key in topicTraitMap) {
+          if (question.includes(topicTraitMap[key])) {
+            matched = true;
+            const traitValue = traits[key];
+            if (traitValue === undefined) return true;
+            
+            expectedValue = (traitValue === true || traitValue === 'true' || traitValue === '是');
+            break;
+          }
         }
       }
       
-      return true;
+      if (!matched) return true; // 未匹配到任何特徵，保留
+      
+      // 根據 AI 的回答過濾
+      const aiAnswerIsYes = answer === '是' || answer === '有' || answer === '對';
+      return expectedValue === aiAnswerIsYes;
     });
   } 
-  // AI 問問題後，根據玩家回答更新可能選項
-  else if (turn === 'waitingForAnswer') {
-    const isPositive = answer === '是' || answer === '有';
+  // 情況 2：玩家回答 AI 問題後（AI 回合）
+  else if (turn === 'waitingForAnswer' && question && answer) {
+    console.log('[AI] 情況2：玩家回答AI問題後');
+    
+    const isPositive = answer === '是' || answer === '有' || answer === '對';
+    const topicSynonyms = synonyms[selectedTopic] || {};
+    const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
+    
+    // 使用 lastAIQuestion 作為問題參考
+    const questionToCheck = lastAIQuestion || question;
     
     possibleCells = possibleCells.filter(cell => {
       const traits = cell.traits || {};
       
       // 解析 AI 剛才問的問題對應的特徵
-      const topicSynonyms = synonyms[selectedTopic] || {};
-      const topicTraitMap = AI_DB.traitMap[selectedTopic] || {};
-      
       for (const key in topicSynonyms) {
-        if (topicSynonyms[key].some(word => lastAIQuestion.includes(word))) {
+        if (topicSynonyms[key].some(word => questionToCheck.includes(word))) {
           const traitValue = traits[key];
           if (traitValue === undefined) return true;
           
@@ -1039,7 +1055,7 @@ function updatePossibleCells(question, answer) {
       }
       
       for (const key in topicTraitMap) {
-        if (lastAIQuestion.includes(topicTraitMap[key])) {
+        if (questionToCheck.includes(topicTraitMap[key])) {
           const traitValue = traits[key];
           if (traitValue === undefined) return true;
           
@@ -1051,9 +1067,44 @@ function updatePossibleCells(question, answer) {
       return true;
     });
   }
+  // 情況 3：AI 猜錯後（不要排除）
+  else if (aiGuessLocked) {
+    console.log('[AI] 情況3：AI猜錯後，不進行排除');
+    return;
+  }
 
   const after = possibleCells.map(c => c.name);
-  console.log('[AI] 排除後剩下：', after);
+  const eliminated = before.filter(name => !after.includes(name));
+  
+  console.log('[AI] 排除結果：', { 
+    過濾前: before.length, 
+    過濾後: after.length,
+    排除: eliminated,
+    剩餘選項: after 
+  });
+  
+  // 如果沒有可能選項了，重置為所有角色
+  if (possibleCells.length === 0) {
+    console.warn('[AI] 可能選項為空，重置為所有角色');
+    const dataList = gridData[selectedTopic] || [];
+    possibleCells = [...dataList];
+  }
+  
+  // 更新推理紀錄
+  if (question && answer) {
+    window.AIDebugLog = window.AIDebugLog || [];
+    window.AIDebugLog.push({
+      timestamp: new Date().toISOString(),
+      turn: turn,
+      question: question,
+      answer: answer,
+      eliminated: eliminated || [],
+      remaining: after || [],
+      remainingCount: after.length
+    });
+    
+    console.log('[DebugLog] 推理紀錄更新', window.AIDebugLog);
+  }
 }
 
 // ===== 修正 startRockPaperScissors =====
