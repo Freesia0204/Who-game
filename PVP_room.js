@@ -322,12 +322,13 @@ function showCardSelection() {
         }
 
         const isCorrect = guessedName.trim() === opponentCard.trim();
-        if (isCorrect) {
-          addMessage('system', '🎉 你猜對了！你贏了！');
-          endGame('你猜對了！');
-        } else {
-          addMessage('system', `猜錯啦！你選的是「${guessedName}」，請再問一題後才能再猜`);
-        }
+        // 原本的猜對處理（約第 163 行附近）
+if (isCorrect) {
+  addMessage('system', '🎉 你猜對了！你贏了！');
+  // 修改這行：
+  endGame('你猜對了！', myCard, opponentCard);
+  // 原本是：endGame('你猜對了！');
+}
 
         canGuess = false;
         gridArea.classList.remove('guess-mode');
@@ -356,17 +357,31 @@ function showCardSelection() {
   }); // ← forEach 收尾
 }
 
-
+// 可能在其他 socket 事件中，例如：
+socket.on('player_guessed', ({ playerId, guessedName, isCorrect }) => {
+  if (playerId !== myPlayerId) {
+    if (isCorrect) {
+      addMessage('system', '⚠️ 對手猜對了！對手獲勝！');
+      endGame('對手猜對了！對手獲勝！', myCard, opponentCard);
+    }
+  }
+});
 // 當任何玩家選卡時，伺服器廣播
 socket.on('player_chosen', ({ player, playerId, card }) => {
   addMessage('system', `${player} 已選好`);
+  
   // 如果是對手，記錄對手卡牌名稱
-  if (playerId !== myPlayerId && typeof card === 'string') {
+  if (playerId !== myPlayerId) {
     opponentCard = card;
     console.log('[PVP] 對手卡牌記錄：', opponentCard);
   }
+  
+  // 如果是自己，記錄自己的卡牌
+  if (playerId === myPlayerId) {
+    myCard = card;
+    console.log('[PVP] 我的卡牌記錄：', myCard);
+  }
 });
-
 
 socket.on('game_start', () => {
   addMessage('system', '雙方都選好，遊戲開始！');
@@ -423,8 +438,9 @@ function generateUniquePlayerId() {
 socket.on('system_message', (text) => {
   addMessage('system', text);
 
-  // 如果有人退出房間 → 顯示斷線彈窗
+  // 如果有人退出房間
   if (text.includes('離開了房間')) {
+    endGame('對手已斷線，遊戲結束', myCard, opponentCard);
     showDisconnectModal();
   }
 });
@@ -497,7 +513,15 @@ cancelGuessBtn.addEventListener('click', () => {
 function endGame(resultText, myCard, opponentCard) {
   addMessage('system', '遊戲結束');
 
-  const payload = { resultText, myCard, opponentCard };
+  const payload = { 
+    resultText: resultText, 
+    myCard: myCard || '未選擇', 
+    opponentCard: opponentCard || '未知' 
+  };
+  
+  // 確保 payload 包含所有必要資訊
+  console.log('遊戲結束資料:', payload);
+  
   // 🔹 廣播給另一位玩家
   if (socket) socket.emit('gameOver', payload);
 
