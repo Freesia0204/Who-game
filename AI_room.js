@@ -412,7 +412,7 @@ const AI_DB = {
     { question: '他是誰的父母嗎？', trait: 'parents' },
     { question: '他是演員嗎？', trait: 'actor' },
     { question: '他是魔術師嗎？', trait: 'magic' },
-    { question: '他成年人嗎？', trait: 'adult' },
+    { question: '他是成年人嗎？', trait: 'adult' },
   ],
   
   '名偵探柯南-紅黑篇': [
@@ -1655,10 +1655,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ===== 修正題庫功能 =====
+// ===== 修正 closeQuestionBank 函式（確保可關閉彈窗） =====
+function closeQuestionBank() {
+  const modal = document.getElementById('question-bank-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// ===== 修正 showQuestionBank 函式（優化文字對齊和滾動） =====
 window.showQuestionBank = function() {
   const modal = document.getElementById('question-bank-modal');
-  // 注意：HTML中是 question-list-container，不是 question-list
   const listContainer = document.getElementById('question-list-container');
   const title = document.getElementById('question-bank-title');
 
@@ -1684,6 +1691,41 @@ window.showQuestionBank = function() {
     if (allQuestions.length === 0) {
       listContainer.innerHTML = '<p style="color:#666; text-align:center; padding:20px;">此主題暫無題庫資料</p>';
     } else {
+      // 創建一個容器來包裹所有問題項目，方便滾動控制
+      const questionsWrapper = document.createElement('div');
+      questionsWrapper.id = 'questions-wrapper';
+      questionsWrapper.style.cssText = `
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+      `;
+      
+      // 添加自定義滾動條樣式
+      questionsWrapper.style.cssText += `
+        scrollbar-width: thin;
+        scrollbar-color: #2196f3 #f0f0f0;
+      `;
+      
+      // 為 Webkit 瀏覽器添加滾動條樣式
+      const scrollbarStyle = document.createElement('style');
+      scrollbarStyle.textContent = `
+        #questions-wrapper::-webkit-scrollbar {
+          width: 8px;
+        }
+        #questions-wrapper::-webkit-scrollbar-track {
+          background: #f0f0f0;
+          border-radius: 4px;
+        }
+        #questions-wrapper::-webkit-scrollbar-thumb {
+          background: #2196f3;
+          border-radius: 4px;
+        }
+        #questions-wrapper::-webkit-scrollbar-thumb:hover {
+          background: #1976d2;
+        }
+      `;
+      document.head.appendChild(scrollbarStyle);
+      
       // 顯示問題列表
       allQuestions.forEach((q, index) => {
         const item = document.createElement('div');
@@ -1699,6 +1741,9 @@ window.showQuestionBank = function() {
           color: #333;
           font-size: 14px;
           box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          text-align: left; /* 確保文字靠左對齊 */
+          word-break: break-word; /* 長文字自動換行 */
+          line-height: 1.4;
         `;
         
         item.textContent = `${index + 1}. ${q.question}`;
@@ -1724,7 +1769,7 @@ window.showQuestionBank = function() {
             // 顯示複製成功提示
             item.style.background = '#e8f5e9';
             item.style.borderColor = '#4caf50';
-            item.innerHTML = `${index + 1}. ${q.question} <span style="color:#4caf50; margin-left:10px;">✓ 已複製</span>`;
+            item.innerHTML = `<div style="text-align: left;">${index + 1}. ${q.question} <span style="color:#4caf50; margin-left:10px; float: right;">✓ 已複製</span></div>`;
             
             // 顯示全局提示
             showToast('已複製到剪貼簿！');
@@ -1740,10 +1785,13 @@ window.showQuestionBank = function() {
           }
         });
         
-        listContainer.appendChild(item);
+        questionsWrapper.appendChild(item);
       });
       
-      // 添加使用說明
+      // 將問題包裝容器加入主容器
+      listContainer.appendChild(questionsWrapper);
+      
+      // 添加使用說明（在滾動容器外部）
       const info = document.createElement('div');
       info.style.cssText = `
         margin-top: 20px;
@@ -1753,30 +1801,125 @@ window.showQuestionBank = function() {
         font-size: 12px;
         color: #666;
         border-left: 4px solid #2196f3;
+        text-align: left; /* 確保文字靠左對齊 */
       `;
       info.innerHTML = `
-        <strong>💡 使用說明：</strong>
-        <br>• 點擊問題即可複製到剪貼簿
-        <br>• 貼到聊天框問AI
-        <br>• 共 ${allQuestions.length} 個問題
+        <div style="font-weight: bold; margin-bottom: 5px;">💡 使用說明：</div>
+        <div style="margin-left: 5px;">
+          • 點擊問題即可複製到剪貼簿<br>
+          • 貼到聊天框問AI<br>
+          • 共 ${allQuestions.length} 個問題
+        </div>
       `;
       listContainer.appendChild(info);
     }
   }
   
+  // 確保彈窗顯示正確
   modal.style.display = 'flex';
+  modal.style.zIndex = '1000'; // 確保在最上層
+  
+  // 防止背景滾動
+  document.body.style.overflow = 'hidden';
 };
 
-// ===== 添加調試功能，檢查題庫元素是否存在 =====
-function debugQuestionBank() {
-  console.log('=== 題庫元素檢查 ===');
-  console.log('modal:', document.getElementById('question-bank-modal'));
-  console.log('listContainer:', document.getElementById('question-list-container'));
-  console.log('title:', document.getElementById('question-bank-title'));
-  console.log('selectedTopic:', selectedTopic);
-  console.log('AI_DB:', AI_DB);
-  console.log('====================');
+// ===== 添加 showToast 函式（如果沒有） =====
+function showToast(message) {
+  // 如果已經有 toast 就移除
+  const existingToast = document.querySelector('.toast-message');
+  if (existingToast) {
+    existingToast.remove();
+  }
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast-message';
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    animation: fadeInOut 3s ease-in-out;
+  `;
+  
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  // 3秒後自動移除
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+  }, 3000);
 }
+
+// ===== 修正 DOMContentLoaded 中的事件綁定 =====
+document.addEventListener('DOMContentLoaded', () => {
+  const openBankBtn = document.getElementById('openQuestionBank');
+  const closeBankBtn = document.getElementById('closeQuestionBank');
+  const bankModal = document.getElementById('question-bank-modal');
+  
+  // 打開題庫按鈕
+  if (openBankBtn) {
+    openBankBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      showQuestionBank();
+    });
+  }
+  
+  // 關閉題庫按鈕（直接綁定關閉函式）
+  if (closeBankBtn) {
+    closeBankBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeQuestionBank();
+    });
+  }
+  
+  // 點擊彈窗外部關閉（但排除點擊彈窗內部）
+  if (bankModal) {
+    bankModal.addEventListener('click', (e) => {
+      if (e.target === bankModal) {
+        closeQuestionBank();
+      }
+    });
+    
+    // 防止彈窗內部點擊事件冒泡到外部
+    const modalContent = bankModal.querySelector('.modal-content');
+    if (modalContent) {
+      modalContent.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+  }
+  
+  // 修正彈窗關閉時的滾動恢復
+  const originalCloseQuestionBank = closeQuestionBank;
+  closeQuestionBank = function() {
+    const modal = document.getElementById('question-bank-modal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+    // 恢復背景滾動
+    document.body.style.overflow = '';
+  };
+});
 
 // 在控制台可以調用 debugQuestionBank() 來檢查
 
@@ -1840,4 +1983,5 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+});  
+
