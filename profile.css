@@ -13,16 +13,16 @@
 .profile-header {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* ✅ 改成靠左 */
+  justify-content: flex-start;
   margin-bottom: 20px;
   color: #fff;
 }
-
 
 .profile-info {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
 }
 
 .avatar {
@@ -37,8 +37,8 @@
 .player-meta p {
   margin: 0;
   font-weight: bold;
+  color: #fff;
 }
-
 
 #customTopicsList div {
   background: rgba(255,255,255,0.1);
@@ -47,10 +47,9 @@
   color: #fff;
   font-weight: bold;
   cursor: pointer;
-  white-space: nowrap;     /* ✅ 防止文字換行 */
+  white-space: nowrap;
   transition: background 0.2s ease;
 }
-
 
 #addCustomTopicBtn {
   padding: 10px 40px;
@@ -63,8 +62,10 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   transition: all 0.3s ease;
-  display: block; /* 置中需要 block */ margin: 16px auto; /* 水平置中 */
+  display: block;
+  margin: 16px auto;
 }
+
 #addCustomTopicBtn:hover {
   background: linear-gradient(135deg, #a6c1ee, #fbc2eb);
   transform: translateY(-2px);
@@ -87,6 +88,7 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   transition: all 0.3s ease;
 }
+
 .profile-footer button:hover {
   background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
   transform: translateY(-2px);
@@ -95,8 +97,10 @@
 .modal {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0,0,0,0.5);
   justify-content: center;
   align-items: center;
@@ -120,7 +124,6 @@
   margin: 20px 0;
 }
 
-/* 卡片格子 */
 .card-slot {
   position: relative;
   width: 160px;
@@ -142,7 +145,6 @@
   box-sizing: border-box;
 }
 
-
 .card-header.delete-bar {
   height: 28px;
   background: linear-gradient(135deg, #f87171, #fbc2eb);
@@ -151,23 +153,23 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  justify-content: center; /* ✅ 置中 */
+  justify-content: center;
   text-align: center;
   line-height: 28px;
   border-radius: 6px;
   cursor: pointer;
-  user-select: none;            /* ✅ 防止選取文字 */
+  user-select: none;
   transition: background 0.2s, transform 0.1s;
 }
+
 .card-header.delete-bar:hover {
   background: linear-gradient(135deg, #fca5a5, #fbc2eb);
 }
+
 .card-header.delete-bar:active {
-  transform: translateY(1px);   /* ✅ 壓按回饋 */
+  transform: translateY(1px);
 }
 
-
-/* 原本圖片區塊與提示 */
 .card-image {
   position: relative;
   width: 100%;
@@ -181,7 +183,9 @@
   background: rgba(255,255,255,0.08);
 }
 
-.card-image input[type="file"] { display: none; }
+.card-image input[type="file"] {
+  display: none;
+}
 
 .card-image::before {
   content: "點我上傳圖片";
@@ -194,14 +198,15 @@
   font-size: 12px;
   pointer-events: none;
 }
-.card-image.has-image::before { opacity: 0; }
 
+.card-image.has-image::before {
+  opacity: 0;
+}
 
-
-/* 卡片文字 */
 .card-text {
   margin-top: 6px;
 }
+
 .card-text input[type="text"] {
   width: 100%;
   padding: 4px 6px;
@@ -210,25 +215,22 @@
   box-sizing: border-box;
 }
 
-
-
-/* 固定底部按鈕區 */
 .editor-buttons {
   padding: 16px;
   background: #f9f9f9;
   border-top: 1px solid #ccc;
   display: flex;
-  flex-wrap: nowrap;      /* ❌ 不允許換行 */
-  gap: 12px;              /* ✅ 按鈕間距 */
-  justify-content: center;/* ✅ 水平置中 */
+  flex-wrap: nowrap;
+  gap: 12px;
+  justify-content: center;
   position: sticky;
   bottom: 0;
   z-index: 1;
 }
 
 .editor-buttons button {
-  flex: 1;                /* ✅ 四個按鈕平均分配寬度 */
-  min-width: 120px;       /* ✅ 每個按鈕至少有固定寬度 */
+  flex: 1;
+  min-width: 120px;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -247,10 +249,6 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
-
-
-
-
 .topic-item {
   background: rgba(255,255,255,0.1);
   padding: 8px 12px;
@@ -261,40 +259,42 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
+
 .topic-item:hover {
   background: rgba(255,255,255,0.2);
 }
+
 .profile-title {
   width: 100%;
-  text-align: center; /* ✅ 置中 */
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
   color: #fff;
   margin-bottom: 12px;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
-  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
-  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6),
+               1px 1px 2px rgba(0, 0, 0, 0.4),
+               -1px -1px 2px rgba(0, 0, 0, 0.4);
 }
-
 
 .topic-title {
   width: 100%;
-  text-align: left; /* ✅ 靠左 */
+  text-align: left;
   font-size: 18px;
   font-weight: bold;
   color: #fff;
   margin-bottom: 8px;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
-  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
-  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6),
+               1px 1px 2px rgba(0, 0, 0, 0.4),
+               -1px -1px 2px rgba(0, 0, 0, 0.4);
 }
+
 .profile-main {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* ✅ 讓裡面的標題和內容靠左 */
+  align-items: flex-start;
 }
-/* Modal 外層 */
+
 #customTopicModal {
   position: fixed;
   inset: 0;
@@ -305,7 +305,6 @@
   z-index: 999;
 }
 
-/* Modal 內容區塊 */
 .modal-content {
   background: #fff;
   width: 90%;
@@ -317,54 +316,54 @@
   flex-direction: column;
 }
 
-/* 編輯器區塊 */
 .card-editor {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: 90vh; /* ✅ 加這行，讓內部區塊撐滿 modal-content */
+  max-height: 90vh;
 }
 
-/* 卡片區域滾動 */
 #cardGrid {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
 }
 
-.profile-effects { 
-  margin-top: 20px; 
+.profile-effects {
+  margin-top: 20px;
   display: flex;
-   flex-direction: column; 
-   align-items: flex-start; /* 整區塊靠左 */
-   }
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
 
 .effect-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
-  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
-  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6),
+               1px 1px 2px rgba(0, 0, 0, 0.4),
+               -1px -1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .effects-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  justify-content: flex-start; /* 靠左 */
+  justify-content: flex-start;
 }
 
 .effect-circle {
   width: 80px;
   height: 80px;
-  border-radius: 50%;       /* ✅ 圓形 */
-  overflow: hidden;         /* ✅ 圖片裁切成圓形 */
+  border-radius: 50%;
+  overflow: hidden;
   border: 2px solid #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .effect-circle img {
@@ -375,149 +374,63 @@
 
 .effect-circle:hover {
   transform: scale(1.1);
-  border-color: #8b5cf6;    /* hover 時紫色邊框 */
+  border-color: #8b5cf6;
 }
 
 .effect-circle.selected {
-  border-color: #f472b6;    /* 選中時粉色邊框 */
+  border-color: #f472b6;
   box-shadow: 0 0 8px #f472b6;
 }
 
-/* 背景選擇區塊標題 */
 .background-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  justify-content: flex-start; /* 靠左排列 */
+  justify-content: flex-start;
 }
 
 .bg-option {
   width: 80px;
-  height: 80px; /* 正方形 */
+  height: 80px;
   border-radius: 8px;
   cursor: pointer;
   border: 2px solid transparent;
   background-size: cover;
   background-position: center;
   transition: transform 0.2s, border-color 0.2s;
-}
-.bg-option:hover { transform: scale(1.05); border-color: #8b5cf6; }
-.bg-option.selected { border-color: #f472b6; }
-#customTopicsList { 
-  width: 100%; /* 拉滿行寬，避免被容器置中影響對齊 */ 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 12px; 
-  justify-content: flex-start; /* 靠左 */ 
-} 
-/* 主題卡片（沿用你現有 #customTopicsList div 樣式，不改 class） */ 
-#customTopicsList div { 
-  background: rgba(255,255,255,0.1); 
-  padding: 8px 12px; 
-  border-radius: 6px; 
-  color: #fff; 
-  font-weight: bold; 
-  cursor: pointer; 
-  white-space: nowrap; 
-  transition: background 0.2s ease; 
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* 主題卡片容器（例如 .card-slot 或 .topic-item） */
-.card-slot,
-.topic-item {
-  background: rgba(0, 0, 0, 0.3);       /* 深灰半透明底 */
-  color: #fff;                          /* 白字清晰 */
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* 微陰影提升層次 */
+.bg-option:hover {
+  transform: scale(1.05);
+  border-color: #8b5cf6;
 }
 
-/* 點擊特效圓形 */
-.effect-circle {
-  background-color: rgba(0, 0, 0, 0.2); /* 深一點底色 */
-  border: 2px solid #fff;
-  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+.bg-option.selected {
+  border-color: #f472b6;
 }
 
-/* 背景選項方塊 */
-.bg-option {
-  background-color: rgba(0, 0, 0, 0.2); /* 增加底色 */
-  border: 2px solid #fff;
-  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+#customTopicsList {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
 }
 
-/* 整個卡片區塊外層加遮罩（可套用在 .card-grid、.effects-grid、.background-grid） */
-.card-grid,
-.effects-grid,
-.background-grid {
-  background: rgba(255,255,255,0.2);    /* 淺白遮罩 */
-  backdrop-filter: blur(4px);           /* 模糊背景 */
-  border-radius: 12px;
-  padding: 12px;
-}
 .bg-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;   /* ✅ 文字置中 */
-  gap: 6px;              /* 方塊與文字間距 */
+  align-items: center;
+  gap: 6px;
 }
 
 .bg-label {
   font-size: 0.8rem;
-  color: #fff;           /* 白字在深背景上清晰 */
+  color: #fff;
   text-align: center;
 }
-/* 我的主題、點擊特效、背景區塊統一靠左 */
-.profile-main {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* ✅ 所有區塊靠左 */
-  width: 100%;
-}
 
-/* 區塊標題靠左 */
-.topic-title,
-.effect-title,
-.background-title {
-  width: 100%;
-  text-align: left;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.background-title{
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6), /* 中心陰影 */ 
-  1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */ 
-  -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
-}
-/* 主題列表靠左排列 */
-#customTopicsList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-start; /* ✅ 靠左排列 */
-  width: 100%;
-}
-
-/* 點擊特效列表靠左排列 */
-.effects-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-start; /* ✅ 靠左排列 */
-  width: 100%;
-}
-
-/* 背景選項列表靠左排列 */
-.background-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: flex-start; /* ✅ 靠左排列 */
-  width: 100%;
-}
-.profile-effects,
 .profile-backgrounds {
   margin-top: 20px;
   display: flex;
@@ -526,29 +439,34 @@
   width: 100%;
 }
 
-.white-text {
-  color: white;
-  text-shadow:
-    0 0 2px rgba(0, 0, 0, 0.6),   /* 中心陰影 */
-    1px 1px 2px rgba(0, 0, 0, 0.4), /* 右下柔影 */
-    -1px -1px 2px rgba(0, 0, 0, 0.4); /* 左上柔影 */
+.background-title {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6),
+               1px 1px 2px rgba(0, 0, 0, 0.4),
+               -1px -1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* 叉叉按鈕固定右上角 */ 
-.modal-content .close { 
+.modal-content .close {
   position: absolute;
-   top: 10px; /* 距離上方 */ 
-   right: 15px; /* 距離右邊 */
-   font-size: 24px;
-   font-weight: bold;
-    color: #333; 
-    cursor: pointer;
-   }
- .modal-content .close:hover { 
-  color: #d00; /* 滑過時變紅色 */
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
 }
+
+.modal-content .close:hover {
+  color: #d00;
+}
+
 #rulesModal2 .modal-content {
-  position: relative; /* 讓 close 可以定位在右上角 */
+  position: relative;
 }
 
 #rulesModal2 .close {
@@ -560,10 +478,11 @@
   color: #555;
   cursor: pointer;
 }
+
 #rulesModal2 .close:hover {
   color: #d00;
 }
-/* 頭像容器 */
+
 .avatar-wrapper {
   position: relative;
   width: 70px;
@@ -580,15 +499,18 @@
   transform: scale(1.05);
 }
 
-/* 圓形頭像主體 */
 .avatar-circle {
   width: 100%;
   height: 100%;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: white;
 }
 
-/* 懸停時的遮罩文字 */
 .avatar-overlay {
   position: absolute;
   top: 0;
@@ -609,7 +531,6 @@
   opacity: 1;
 }
 
-/* 玩家資訊區佈局修正 */
 .profile-info {
   display: flex;
   align-items: center;
@@ -618,103 +539,16 @@
   width: 100%;
 }
 
-/* 名字旁的大頭像 */
-.avatar-wrapper {
-  position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  cursor: pointer;
-  overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.avatar-circle {
-  width: 100%;
-  height: 100%;
-}
-
-.avatar-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  font-size: 12px;
-  text-align: center;
-  padding: 2px 0;
-  opacity: 0;
-  transition: 0.3s;
-}
-
-.avatar-wrapper:hover .avatar-overlay {
-  opacity: 1;
-}
-
-/* 特效選擇圓圈 (修正你原本的 .effect-circle) */
-.effect-circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  cursor: pointer;
-  overflow: hidden;
-  transition: 0.2s;
-  background: #eee;
-}
-
-.effect-circle.selected {
-  border-color: #ff4757;
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
-}
 .avatar-circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
   display: block;
-  position: relative; 
-  z-index: 1; /* 確保圖片在上層 */
+  position: relative;
+  z-index: 1;
 }
+
 .avatar-overlay {
-   z-index: 2; /* 遮罩在圖片上，但只有 hover 時才顯示 */ 
-  }
-.avatar-container {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    background: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
-  
-  .avatar-display {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    font-weight: bold;
-    color: white;
-    border-radius: 50%;
-  }
-  
-  .avatar-display img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-  
-  #avatarInput {
-    display: none;
-  }
+  z-index: 2;
+}
